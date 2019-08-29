@@ -1,0 +1,22 @@
+<GuiXml>
+	<Controls>
+		<TopLevelControl name="DragonTrackerGUI" mouseEnabled="true" movable="true" hidden="false">
+			<Dimensions x="200" y="60" />
+			<Anchor relativeTo="GuiRoot" relativePoint="LEFT" offsetY="000" offsetX="0"/>
+			<OnMoveStop>
+				DragonTracker.OnGuiMoveStop()
+			</OnMoveStop>
+			<Controls>
+				<Label name="DragonTrackerGUIDragonNorth" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="[--:--:--] North : Waiting next event data">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="0" offsetX="0"/>
+				</Label>
+				<Label name="DragonTrackerGUIDragonSouth" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="[--:--:--] South : Waiting next event data">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="20" offsetX="0"/>
+				</Label>
+				<Label name="DragonTrackerGUIDragonWest" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="[--:--:--] West  : Waiting next event data">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="40" offsetX="0"/>
+				</Label>
+			</Controls>
+		</TopLevelControl>
+	</Controls>
+</GuiXml>
