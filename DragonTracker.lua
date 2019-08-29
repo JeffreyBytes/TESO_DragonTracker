@@ -1,62 +1,110 @@
 ﻿DragonTracker = {}
 
 DragonTracker.name = "DragonTracker"
-DragonTracker.version = "1.0.0"
-DragonTracker.initialised = false
+DragonTracker.savedVariables = nil
+	
+DragonTracker.dragonInfo = {
+	[1] = {
+		position = "South",
+		gui      = nil,
+		status   = nil
+	},
+	[2] = {
+		position = "North",
+		gui      = nil,
+		status   = nil
+	},
+	[3] = {
+		position = "West ",
+		gui      = nil,
+		status   = nil
+	}
+}
 
-function DragonTracker.Initialise(eventCode, addOnName)
+DragonTracker.status = {
+	killed  = "Killed",
+	waiting = "waiting",
+	figth   = "fight",
+	weak    = "weak"
+}
+	
+DragonTracker.zoneInfo = {
+	onDragonZone   = false,
+	lastMapZoneIdx = nil
+}
 
-	-- Initialize self only.
-	if (DragonTracker.name ~= addOnName) then return end
+function DragonTracker.OnAddOnLoaded(eventCode, addOnName)
+	-- The event fires each time *any* addon loads - but we only care about when our own addon loads.
+	if addOnName == DragonTracker.name then
+		DragonTracker:Initialise()
+	end
+end
 
-    -- Event registration.
+function DragonTracker:Initialise()
+	-- self:obtainSavedVariables()
+	DragonTracker.savedVariables = ZO_SavedVars:NewAccountWide("DragonTrackerSavedVariables", 1, nil, {})
+	
+	self:GuiRestorePosition()
+	self:GuiShowHide()
+	self:initDragonGuiItems()
+	self:checkZone()
+	self:addEvents()
+	
+	self.initialised = true
+end
+
+function DragonTracker:addEvents()
 	EVENT_MANAGER:RegisterForEvent("DragonTracker", EVENT_WORLD_EVENT_DEACTIVATED, DragonTracker.OnWEDeactivate)
 	EVENT_MANAGER:RegisterForEvent("DragonTracker", EVENT_WORLD_EVENT_UNIT_CHANGED_PIN_TYPE, DragonTracker.OnWEUnitPin)
 	EVENT_MANAGER:RegisterForEvent("DragonTracker", EVENT_ZONE_CHANGED, DragonTracker.OnZoneChanged)
-	-- EVENT_MANAGER:RegisterForEvent("DragonTracker", EVENT_GAME_CAMERA_UI_MODE_CHANGED, DragonTracker.OnGuiChanged) -- Used to dump some data
-	
-	-- Saved variable
-	DragonTracker.savedVariables = ZO_SavedVars:NewAccountWide("DragonTrackerSavedVariables", 1, nil, {})
-	DragonTracker.GuiRestorePosition()
-
-	-- Display/hide gui
-	local fragment = ZO_SimpleSceneFragment:New(DragonTrackerGUI)
-	SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)
-	SCENE_MANAGER:GetScene("hudui"):AddFragment(fragment)
-	
-	DragonTracker.position = {[1]="South", [2]="North", [3]="West "}
-	DragonTracker.guiItems = {[1]=DragonTrackerGUIDragonSouth, [2]=DragonTrackerGUIDragonNorth, [3]=DragonTrackerGUIDragonWest}
-	
-	DragonTracker.onDragonZone   = false
-	DragonTracker.lastMapZoneIdx = nil
-	DragonTracker.checkZone()
-
-	DragonTracker.initialised = true   
-	-- d("DragonTracker Debug: Ran Through Init") 
+	-- EVENT_MANAGER:RegisterForEvent("DragonTracker", EVENT_GAME_CAMERA_UI_MODE_CHANGED, DragonTracker:OnGuiChanged) -- Used to dump some data
 end
 
-EVENT_MANAGER:RegisterForEvent("DragonTracker", EVENT_ADD_ON_LOADED, DragonTracker.Initialise)
+function DragonTracker:obtainSavedVariables()
+	DragonTracker.savedVariables = ZO_SavedVars:NewAccountWide("DragonTrackerSavedVariables", 1, nil, {})
+end
 
-function DragonTracker.checkZone()
+function DragonTracker:GuiRestorePosition()
+	local left = self.savedVariables.left
+	local top  = self.savedVariables.top
+
+	DragonTrackerGUI:ClearAnchors()
+	DragonTrackerGUI:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, left, top)
+end
+
+function DragonTracker:GuiShowHide()
+	local fragment = ZO_SimpleSceneFragment:New(DragonTrackerGUI)
+	
+	SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)
+	SCENE_MANAGER:GetScene("hudui"):AddFragment(fragment)
+end
+
+function DragonTracker:initDragonGuiItems()
+	self.dragonInfo[1].gui = DragonTrackerGUIDragonSouth
+	self.dragonInfo[2].gui = DragonTrackerGUIDragonNorth
+	self.dragonInfo[3].gui = DragonTrackerGUIDragonWest
+end
+
+function DragonTracker:checkZone()
 	local currentMapZoneIdx = GetCurrentMapZoneIndex()
-	DragonTracker.onDragonZone = false
+	self.zoneInfo.onDragonZone = false
 	
 	if currentMapZoneIdx == 680 then -- Elsweyr
-		DragonTracker.onDragonZone = true
+		self.zoneInfo.onDragonZone = true
 	end
 	
-	if DragonTracker.lastMapZoneIdx ~= currentMapZoneIdx then
-		DragonTracker.lastMapZoneIdx = currentMapZoneIdx
-		DragonTracker.initDragonStatus()
+	if self.zoneInfo.lastMapZoneIdx ~= currentMapZoneIdx then
+		self.zoneInfo.lastMapZoneIdx = currentMapZoneIdx
+		self:initDragonStatus()
 	end
 	
 	for worldEventInstanceId=1,3,1 do
-		DragonTracker.guiItems[worldEventInstanceId]:SetHidden(not DragonTracker.onDragonZone)
+		DragonTracker.dragonInfo[worldEventInstanceId].gui:SetHidden(not self.zoneInfo.onDragonZone)
 	end
 end
 
-function DragonTracker.initDragonStatus()
-	if DragonTracker.onDragonZone == false then
+function DragonTracker:initDragonStatus()
+	if self.zoneInfo.onDragonZone == false then
 		return
 	end
 
@@ -69,67 +117,76 @@ function DragonTracker.initDragonStatus()
 		d(worldEventInstanceId .. " - worldEventId : " .. worldEventId)
 		
 		if worldEventId == 0 then
-			DragonTracker.OnWEDeactivate(nil, worldEventInstanceId)
+			self.OnWEDeactivate(nil, worldEventInstanceId)
 		else
 			unitTag = GetWorldEventInstanceUnitTag(worldEventInstanceId, 1)
 			d(worldEventInstanceId .. " - unitTag : " .. unitTag)
 			unitPin = GetWorldEventInstanceUnitPinType(worldEventInstanceId, unitTag)
 			d(worldEventInstanceId .. " - unitPin : " .. unitPin)
 			
-			DragonTracker.OnWEUnitPin(nil, worldEventInstanceId, nil, nil, unitPin)
+			self.OnWEUnitPin(nil, worldEventInstanceId, nil, nil, unitPin)
 		end
 	end
 end
 
 function DragonTracker.OnWEDeactivate(eventCode, worldEventInstanceId)
-	if DragonTracker.onDragonZone == false then
+	if DragonTracker.zoneInfo.onDragonZone == false then
 		return
 	end
 
-	-- d("Dragon Alert : Dragon on the " .. DragonTracker.position[worldEventInstanceId] .. " has been killed at " .. os.date("%H:%M:%S"))
+	-- d("Dragon Alert : Dragon on the " .. DragonTracker.dragonInfo[worldEventInstanceId].position .. " has been killed at " .. os.date("%H:%M:%S"))
 
 	local fromEvent = true
 	if eventCode == nil then
 		fromEvent = false
 	end
 	
-	updateGui(worldEventInstanceId, "Killed", fromEvent)
+	DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.killed)
+	DragonTracker:updateGui(worldEventInstanceId, "Killed", fromEvent)
 end
 
 function DragonTracker.OnWEUnitPin(eventCode, worldEventInstanceId, unitTag, oldPinType, newPinType)
-	if DragonTracker.onDragonZone == false then
+	if DragonTracker.zoneInfo.onDragonZone == false then
 		return
 	end
 
 	local txtStatus = ""
 
 	if newPinType == MAP_PIN_TYPE_DRAGON_IDLE_HEALTHY then
+		DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.waiting)
 		txtStatus = "Waiting or flying"
 	elseif newPinType == MAP_PIN_TYPE_DRAGON_IDLE_WEAK then
+		DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.waiting)
 		txtStatus = "Waiting or flying (life < 50%)"
 	elseif newPinType == MAP_PIN_TYPE_DRAGON_COMBAT_HEALTHY then
+		DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.fight)
 		txtStatus = "In fight"
 	elseif newPinType == MAP_PIN_TYPE_DRAGON_COMBAT_WEAK then
+		DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.weak)
 		txtStatus = "In fight (life < 50%)"
 	end
 
-	-- d("Dragon Alert : Dragon on the " .. DragonTracker.position[worldEventInstanceId] .. " is now " .. txtStatus)
+	-- d("Dragon Alert : Dragon on the " .. DragonTracker.dragonInfo[worldEventInstanceId].position .. " is now " .. txtStatus)
 
 	local fromEvent = true
 	if eventCode == nil then
 		fromEvent = false
 	end
 	
-	updateGui(worldEventInstanceId, txtStatus, fromEvent)
+	DragonTracker:updateGui(worldEventInstanceId, txtStatus, fromEvent)
 end
 
-function updateGui(worldEventInstanceId, textStatus, addTime)
+function DragonTracker:changeDragonStatus(worldEventInstanceId, newStatus)
+	self.dragonInfo[worldEventInstanceId].status = newStatus
+end
+
+function DragonTracker:updateGui(worldEventInstanceId, textStatus, addTime)
 	if worldEventInstanceId > 4 then
 		return
 	end
 	
-	local guiItem        = DragonTracker.guiItems[worldEventInstanceId]
-	local dragonPosition = DragonTracker.position[worldEventInstanceId]
+	local guiItem        = self.dragonInfo[worldEventInstanceId].gui
+	local dragonPosition = self.dragonInfo[worldEventInstanceId].position
 	local currentTime    = os.date("%H:%M:%S")
 	
 	if addTime == false then
@@ -140,7 +197,7 @@ function updateGui(worldEventInstanceId, textStatus, addTime)
 end
 
 function DragonTracker.OnZoneChanged(eventCode, zoneName, subZoneName, newSubzone, zoneId, subZoneId)
-	DragonTracker.checkZone()
+	DragonTracker:checkZone()
 end
 
 function DragonTracker.OnGuiMoveStop()
@@ -148,14 +205,8 @@ function DragonTracker.OnGuiMoveStop()
 	DragonTracker.savedVariables.top  = DragonTrackerGUI:GetTop()
 end
 
-function DragonTracker.GuiRestorePosition()
-	local left = DragonTracker.savedVariables.left
-	local top  = DragonTracker.savedVariables.top
-
-	DragonTrackerGUI:ClearAnchors()
-	DragonTrackerGUI:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, left, top)
-end
-
 function DragonTracker.OnGuiChanged(eventCode)
 	-- do an action
 end
+
+EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_ADD_ON_LOADED, DragonTracker.OnAddOnLoaded)
