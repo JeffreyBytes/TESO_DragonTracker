@@ -7,13 +7,13 @@
 				DragonTracker.OnGuiMoveStop()
 			</OnMoveStop>
 			<Controls>
-				<Label name="DragonTrackerGUIDragonNorth" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="[--:--:--] North : Waiting next event data">
+				<Label name="DragonTrackerGUIDragonNorth" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="North : Waiting next event data">
 					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="0" offsetX="0"/>
 				</Label>
-				<Label name="DragonTrackerGUIDragonSouth" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="[--:--:--] South : Waiting next event data">
+				<Label name="DragonTrackerGUIDragonSouth" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="South : Waiting next event data">
 					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="20" offsetX="0"/>
 				</Label>
-				<Label name="DragonTrackerGUIDragonWest" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="[--:--:--] West  : Waiting next event data">
+				<Label name="DragonTrackerGUIDragonWest" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="West  : Waiting next event data">
 					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="40" offsetX="0"/>
 				</Label>
 			</Controls>
