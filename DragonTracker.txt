@@ -5,8 +5,14 @@
 ## APIVersion: 100028
 ## SavedVariables: DragonTrackerSavedVariables
 
-DragonTracker.xml
-DragonTracker.lua
+Interface.xml
+Definition.lua
+DragonStatus.lua
+Events.lua
+GUI.lua
+Timer.lua
+Zone.lua
+Initialise.lua
 
 ;
 ; This Add-on is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates. 
