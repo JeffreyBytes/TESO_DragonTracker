@@ -1,7 +1,8 @@
-﻿DragonTracker = {}
+DragonTracker = {}
 
 DragonTracker.name = "DragonTracker"
 DragonTracker.savedVariables = nil
+DragonTracker.updateTimeEnabled = false
 	
 DragonTracker.dragonInfo = {
 	[1] = {
@@ -25,6 +26,7 @@ DragonTracker.dragonInfo = {
 }
 
 DragonTracker.status = {
+	unknown = "Unknown",
 	killed  = "Killed",
 	waiting = "waiting",
 	figth   = "fight",
@@ -62,9 +64,25 @@ function DragonTracker:addEvents()
 	EVENT_MANAGER:RegisterForEvent(self.name, EVENT_WORLD_EVENT_DEACTIVATED, DragonTracker.OnWEDeactivate)
 	EVENT_MANAGER:RegisterForEvent(self.name, EVENT_WORLD_EVENT_UNIT_CHANGED_PIN_TYPE, DragonTracker.OnWEUnitPin)
 	EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ZONE_CHANGED, DragonTracker.OnZoneChanged)
-	-- EVENT_MANAGER:RegisterForEvent("DragonTracker", EVENT_GAME_CAMERA_UI_MODE_CHANGED, DragonTracker:OnGuiChanged) -- Used to dump some data
+	-- EVENT_MANAGER:RegisterForEvent("DragonTracker", EVENT_GAME_CAMERA_UI_MODE_CHANGED, DragonTracker.OnGuiChanged) -- Used to dump some data
+end
+
+function DragonTracker:enabledUpdateTime()
+	if DragonTracker.updateTimeEnabled == true then
+		return
+	end
 	
 	EVENT_MANAGER:RegisterForUpdate(self.name, 1000, DragonTracker.updateTime)
+	DragonTracker.updateTimeEnabled = true
+end
+
+function DragonTracker:disableUpdateTiem()
+	if DragonTracker.updateTimeEnabled == false then
+		return
+	end
+	
+	EVENT_MANAGER:UnregisterForUpdate(self.name)
+	DragonTracker.updateTimeEnabled = false
 end
 
 function DragonTracker:obtainSavedVariables()
@@ -105,8 +123,23 @@ function DragonTracker:checkZone()
 		self:initDragonStatus()
 	end
 	
+	if self.zoneInfo.onDragonZone == true then
+		self:enabledUpdateTime()
+	else
+		self:disableUpdateTiem()
+		self:resetDragonStatus()
+	end
+	
 	for worldEventInstanceId=1,3,1 do
 		DragonTracker.dragonInfo[worldEventInstanceId].gui:SetHidden(not self.zoneInfo.onDragonZone)
+	end
+end
+
+function DragonTracker:resetDragonStatus()
+	for worldEventInstanceId=1,3,1 do
+		self.dragonInfo[worldEventInstanceId].status     = DragonTracker.status.unknown
+		self.dragonInfo[worldEventInstanceId].statusTime = 0
+		self.dragonInfo[worldEventInstanceId].statusPrev = nil
 	end
 end
 
@@ -193,6 +226,8 @@ function DragonTracker:updateGui(worldEventInstanceId)
 		textMessage = "In fight"
 	elseif dragonStatus == self.status.weak then
 		textMessage = "In fight (life < 50%)"
+	else
+		textMessage = "Unknown"
 	end
 	
 	if dragonTime ~= 0 then
