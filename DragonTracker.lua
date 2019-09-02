@@ -115,9 +115,10 @@ end
 
 function DragonTracker:checkZone()
 	local currentMapZoneIdx = GetCurrentMapZoneIndex()
+	local currentMapCtnType = GetMapContentType()
 	self.zoneInfo.onDragonZone = false
 	
-	if currentMapZoneIdx == 680 then -- Elsweyr
+	if currentMapZoneIdx == 680 and currentMapCtnType == 0 then -- Elsweyr
 		self.zoneInfo.onDragonZone = true
 	end
 	
