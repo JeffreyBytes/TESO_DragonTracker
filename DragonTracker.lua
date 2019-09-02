@@ -9,19 +9,22 @@ DragonTracker.dragonInfo = {
 		position   = "South",
 		gui        = nil,
 		status     = nil,
-		statusTime = 0
+		statusTime = 0,
+		statusPrev = nil,
 	},
 	[2] = {
 		position   = "North",
 		gui        = nil,
 		status     = nil,
-		statusTime = 0
+		statusTime = 0,
+		statusPrev = nil,
 	},
 	[3] = {
 		position   = "West ",
 		gui        = nil,
 		status     = nil,
-		statusTime = 0
+		statusTime = 0,
+		statusPrev = nil,
 	}
 }
 
@@ -196,8 +199,16 @@ function DragonTracker.OnWEUnitPin(eventCode, worldEventInstanceId, unitTag, old
 end
 
 function DragonTracker:changeDragonStatus(worldEventInstanceId, newStatus)
+	self.dragonInfo[worldEventInstanceId].statusPrev = self.dragonInfo[worldEventInstanceId].status
 	self.dragonInfo[worldEventInstanceId].status     = newStatus
 	self.dragonInfo[worldEventInstanceId].statusTime = os.time()
+	
+	local currentStatus  = self.dragonInfo[worldEventInstanceId].status
+	local previousStatus = self.dragonInfo[worldEventInstanceId].statusPrev
+	
+	if previousStatus == nil or previousStatus == currentStatus then
+		self.dragonInfo[worldEventInstanceId].statusTime = 0
+	end
 end
 
 function DragonTracker:updateGui(worldEventInstanceId)
