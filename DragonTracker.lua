@@ -58,8 +58,6 @@ function DragonTracker:Initialise()
 	self:initDragonGuiItems()
 	self:checkZone()
 	self:addEvents()
-	
-	self.initialised = true
 end
 
 function DragonTracker:addEvents()
