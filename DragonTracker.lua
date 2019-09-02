@@ -51,8 +51,7 @@ end
 EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_ADD_ON_LOADED, DragonTracker.OnAddOnLoaded)
 
 function DragonTracker:Initialise()
-	-- self:obtainSavedVariables()
-	DragonTracker.savedVariables = ZO_SavedVars:NewAccountWide("DragonTrackerSavedVariables", 1, nil, {})
+	self:obtainSavedVariables()
 	
 	self:GuiRestorePosition()
 	self:GuiShowHide()
