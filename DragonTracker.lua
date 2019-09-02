@@ -173,8 +173,6 @@ function DragonTracker.OnWEDeactivate(eventCode, worldEventInstanceId)
 		return
 	end
 
-	-- d("Dragon Alert : Dragon on the " .. DragonTracker.dragonInfo[worldEventInstanceId].position .. " has been killed at " .. os.date("%H:%M:%S"))
-
 	DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.killed)
 	DragonTracker:updateGui(worldEventInstanceId)
 end
@@ -183,8 +181,6 @@ function DragonTracker.OnWEUnitPin(eventCode, worldEventInstanceId, unitTag, old
 	if DragonTracker.zoneInfo.onDragonZone == false then
 		return
 	end
-
-	local txtStatus = ""
 
 	if newPinType == MAP_PIN_TYPE_DRAGON_IDLE_HEALTHY then
 		DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.waiting)
@@ -195,8 +191,6 @@ function DragonTracker.OnWEUnitPin(eventCode, worldEventInstanceId, unitTag, old
 	elseif newPinType == MAP_PIN_TYPE_DRAGON_COMBAT_WEAK then
 		DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.weak)
 	end
-
-	-- d("Dragon Alert : Dragon on the " .. DragonTracker.dragonInfo[worldEventInstanceId].position .. " is now " .. txtStatus)
 
 	DragonTracker:updateGui(worldEventInstanceId)
 end
