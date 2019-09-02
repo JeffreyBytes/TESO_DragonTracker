@@ -29,7 +29,7 @@ DragonTracker.status = {
 	unknown = "Unknown",
 	killed  = "Killed",
 	waiting = "waiting",
-	figth   = "fight",
+	fight   = "fight",
 	weak    = "weak"
 }
 	
