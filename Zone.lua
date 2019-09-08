@@ -20,9 +20,5 @@ function DragonTracker:checkZone()
     end
 
     DragonTracker:changeTimerStatus(DragonTracker.zoneInfo.onDragonZone)
-
-    -- Hide or show GUI items
-    for worldEventInstanceId=1,3,1 do
-        DragonTracker.dragonInfo[worldEventInstanceId].gui:SetHidden(not self.zoneInfo.onDragonZone)
-    end
+    DragonTracker:GuiShowHide(DragonTracker.zoneInfo.onDragonZone)
 end

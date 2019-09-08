@@ -30,6 +30,18 @@ function DragonTracker:initDragonGuiItems()
 end
 
 --[[
+-- Hide or show GUI items according to status value
+--
+-- @param boolean status : true to display gui, false to hide it
+--]]
+function DragonTracker:GuiShowHide(status)
+    -- Hide or show GUI items
+    for worldEventInstanceId=1,3,1 do
+        DragonTracker.dragonInfo[worldEventInstanceId].gui:SetHidden(not status)
+    end
+end
+
+--[[
 -- Update the message displayed in GUI for a specific dragon
 --
 -- @param number worldEventInstanceId The concerned world event (aka dragon).
