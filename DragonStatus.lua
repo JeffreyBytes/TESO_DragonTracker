@@ -19,9 +19,9 @@ function DragonTracker:initDragonStatus()
 
     self:execOnDragonStatus(function(worldEventInstanceId, dragonStatus, unitTag, unitPin)
         if dragonStatus == DragonTracker.status.killed then
-            DragonTracker.OnWEDeactivate(nil, worldEventInstanceId)
+            DragonTracker.onWEDeactivate(nil, worldEventInstanceId)
         else
-            DragonTracker.OnWEUnitPin(nil, worldEventInstanceId, nil, nil, unitPin)
+            DragonTracker.onWEUnitPin(nil, worldEventInstanceId, nil, nil, unitPin)
         end
 
         DragonTracker.dragonInfo[worldEventInstanceId].statusTime = 0

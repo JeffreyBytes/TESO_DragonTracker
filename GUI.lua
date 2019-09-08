@@ -1,7 +1,7 @@
 --[[
 -- Restore the GUI's position from savedVariables
 --]]
-function DragonTracker:GuiRestorePosition()
+function DragonTracker:guiRestorePosition()
     local left = self.savedVariables.left
     local top  = self.savedVariables.top
 
@@ -13,7 +13,7 @@ end
 -- Define GUI has a fragment linked to scenes.
 -- With that, the GUI is hidden when we open a menu (like inventory or map)
 --]]
-function DragonTracker:GuiDefineFragment()
+function DragonTracker:guiDefineFragment()
     local fragment = ZO_SimpleSceneFragment:New(DragonTrackerGUI)
 
     SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)
@@ -34,7 +34,7 @@ end
 --
 -- @param boolean status : true to display gui, false to hide it
 --]]
-function DragonTracker:GuiShowHide(status)
+function DragonTracker:guiShowHide(status)
     -- Hide or show GUI items
     for worldEventInstanceId=1,3,1 do
         DragonTracker.dragonInfo[worldEventInstanceId].gui:SetHidden(not status)

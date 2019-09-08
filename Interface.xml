@@ -4,7 +4,7 @@
 			<Dimensions x="200" y="60" />
 			<Anchor relativeTo="GuiRoot" relativePoint="LEFT" offsetY="000" offsetX="0"/>
 			<OnMoveStop>
-				DragonTracker.OnGuiMoveStop()
+				DragonTracker.onGuiMoveStop()
 			</OnMoveStop>
 			<Controls>
 				<Label name="DragonTrackerGUIDragonNorth" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="North : Waiting next event data">
