@@ -55,3 +55,24 @@ function DragonTracker:changeDragonStatus(worldEventInstanceId, newStatus)
         self.dragonInfo[worldEventInstanceId].statusTime = 0
     end
 end
+
+--[[
+-- Convert from MAP_PIN_TYPE_DRAGON_* constant value to DragonTracker.status value
+--
+-- @param number mapPin
+--
+-- @return string
+--]]
+function DragonTracker:obtainDragonStatus(mapPin)
+    if mapPin == MAP_PIN_TYPE_DRAGON_IDLE_HEALTHY then
+        return DragonTracker.status.waiting
+    elseif mapPin == MAP_PIN_TYPE_DRAGON_IDLE_WEAK then
+        return DragonTracker.status.waiting
+    elseif mapPin == MAP_PIN_TYPE_DRAGON_COMBAT_HEALTHY then
+        return DragonTracker.status.fight
+    elseif mapPin == MAP_PIN_TYPE_DRAGON_COMBAT_WEAK then
+        return DragonTracker.status.weak
+    else
+        return DragonTracker.status.killed
+    end
+end

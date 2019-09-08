@@ -62,17 +62,10 @@ function DragonTracker.OnWEUnitPin(eventCode, worldEventInstanceId, unitTag, old
     if DragonTracker.zoneInfo.onDragonZone == false then
         return
     end
-
-    if newPinType == MAP_PIN_TYPE_DRAGON_IDLE_HEALTHY then
-        DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.waiting)
-    elseif newPinType == MAP_PIN_TYPE_DRAGON_IDLE_WEAK then
-        DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.waiting)
-    elseif newPinType == MAP_PIN_TYPE_DRAGON_COMBAT_HEALTHY then
-        DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.fight)
-    elseif newPinType == MAP_PIN_TYPE_DRAGON_COMBAT_WEAK then
-        DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.weak)
-    end
-
+    
+    local dragonStatus = DragonTracker:obtainDragonStatus(newPinType)
+    
+    DragonTracker:changeDragonStatus(worldEventInstanceId, dragonStatus)
     DragonTracker:updateGui(worldEventInstanceId)
 end
 
