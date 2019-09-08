@@ -32,3 +32,17 @@ function DragonTracker.updateTime()
         DragonTracker:updateGui(worldEventInstanceId)
     end
 end
+
+--[[
+-- Call the method to enable or disable timer according to newStatus value
+--
+-- @param boolean newStatus : true to enable timer, false to disable it
+--]]
+function DragonTracker:changeTimerStatus(newStatus)
+    if newStatus == true then
+        self:enabledUpdateTime()
+    else
+        self:disableUpdateTime()
+        self:resetDragonStatus()
+    end
+end

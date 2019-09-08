@@ -19,13 +19,7 @@ function DragonTracker:checkZone()
         self:initDragonStatus()
     end
 
-    -- Enable or disable timer
-    if self.zoneInfo.onDragonZone == true then
-        self:enabledUpdateTime()
-    else
-        self:disableUpdateTime()
-        self:resetDragonStatus()
-    end
+    DragonTracker:changeTimerStatus(DragonTracker.zoneInfo.onDragonZone)
 
     -- Hide or show GUI items
     for worldEventInstanceId=1,3,1 do
