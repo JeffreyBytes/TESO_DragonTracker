@@ -26,6 +26,7 @@ function DragonTracker.OnLoadScreen(eventCode, initial)
     DragonTracker:updateZoneInfo()
     DragonTracker:changeTimerStatus(DragonTracker.zoneInfo.onDragonZone)
     DragonTracker:GuiShowHide(DragonTracker.zoneInfo.onDragonZone)
+    DragonTracker:checkDragonStatus()
 end
 
 --[[

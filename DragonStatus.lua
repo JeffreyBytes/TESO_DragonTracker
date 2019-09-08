@@ -86,6 +86,26 @@ function DragonTracker:execOnDragonStatus(callback)
 end
 
 --[[
+-- Check the status of all dragon to know if the status is correct or not.
+-- If not, update it to the real status.
+-- Used because I had the case where the dragon status had changed during a fast-travel, and status not updated.
+--]]
+function DragonTracker:checkDragonStatus()
+    if self.zoneInfo.onDragonZone == false then
+        return
+    end
+    
+    self:execOnDragonStatus(function(worldEventInstanceId, realDragonStatus, unitTag, unitPin)
+        local knowDragonStatus = DragonTracker.dragonInfo[worldEventInstanceId].status
+        
+        if knowDragonStatus ~= realDragonStatus then
+            DragonTracker.dragonInfo[worldEventInstanceId].status     = realDragonStatus
+            DragonTracker.dragonInfo[worldEventInstanceId].statusTime = 0
+        end
+    end)
+end
+
+--[[
 -- Convert from MAP_PIN_TYPE_DRAGON_* constant value to DragonTracker.status value
 --
 -- @param number mapPin
