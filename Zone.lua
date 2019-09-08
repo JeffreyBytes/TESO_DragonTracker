@@ -3,19 +3,16 @@
 -- Also call methods used to define dragons status.
 -- And hide or show GUI items we are (or not) in Elsweyr.
 --]]
-function DragonTracker:checkZone()
+function DragonTracker:updateZoneInfo()
     local currentMapZoneIdx = GetCurrentMapZoneIndex()
     
     self:CheckZoneWithDragons(currentMapZoneIdx)
 
-    -- Check parent zone changed (function also called with sub-zone change) to reset dragon info
+    -- Check parent zone changed (function also called with sub-zone change)
     if self.zoneInfo.lastMapZoneIdx ~= currentMapZoneIdx then
         self.zoneInfo.lastMapZoneIdx = currentMapZoneIdx
         self:initDragonStatus()
     end
-
-    DragonTracker:changeTimerStatus(DragonTracker.zoneInfo.onDragonZone)
-    DragonTracker:GuiShowHide(DragonTracker.zoneInfo.onDragonZone)
 end
 
 --[[
