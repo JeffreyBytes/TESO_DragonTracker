@@ -13,7 +13,7 @@ end
 -- Define GUI has a fragment linked to scenes.
 -- With that, the GUI is hidden when we open a menu (like inventory or map)
 --]]
-function DragonTracker:GuiShowHide()
+function DragonTracker:GuiDefineFragment()
     local fragment = ZO_SimpleSceneFragment:New(DragonTrackerGUI)
 
     SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)

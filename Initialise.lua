@@ -6,7 +6,7 @@ function DragonTracker:Initialise()
     DragonTracker.savedVariables = ZO_SavedVars:NewAccountWide("DragonTrackerSavedVariables", 1, nil, {})
 
     self:GuiRestorePosition()
-    self:GuiShowHide()
+    self:GuiDefineFragment()
     self:initDragonGuiItems()
 
     DragonTracker.ready = true
