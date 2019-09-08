@@ -5,7 +5,7 @@
 --]]
 function DragonTracker:updateZoneInfo()
     local currentMapZoneIdx = GetCurrentMapZoneIndex()
-    
+
     self:CheckZoneWithDragons(currentMapZoneIdx)
 
     -- Check parent zone changed (function also called with sub-zone change)
@@ -23,7 +23,7 @@ end
 --]]
 function DragonTracker:CheckZoneWithDragons(currentMapZoneIdx)
     self.zoneInfo.onDragonZone = false
-    
+
     -- No world event (currently aka Dragon) on the zone
     if GetNextWorldEventInstanceId() == nil then
         return

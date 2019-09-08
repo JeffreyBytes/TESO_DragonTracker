@@ -16,14 +16,14 @@ function DragonTracker:initDragonStatus()
     if self.zoneInfo.onDragonZone == false then
         return
     end
-    
+
     self:execOnDragonStatus(function(worldEventInstanceId, dragonStatus, unitTag, unitPin)
         if dragonStatus == DragonTracker.status.killed then
             DragonTracker.OnWEDeactivate(nil, worldEventInstanceId)
         else
             DragonTracker.OnWEUnitPin(nil, worldEventInstanceId, nil, nil, unitPin)
         end
-        
+
         DragonTracker.dragonInfo[worldEventInstanceId].statusTime = 0
     end)
 end
@@ -80,7 +80,7 @@ function DragonTracker:execOnDragonStatus(callback)
 
             dragonStatus = self:obtainDragonStatus(unitPin)
         end
-        
+
         callback(worldEventInstanceId, dragonStatus, unitTag, unitPin)
     end
 end
@@ -94,10 +94,10 @@ function DragonTracker:checkDragonStatus()
     if self.zoneInfo.onDragonZone == false then
         return
     end
-    
+
     self:execOnDragonStatus(function(worldEventInstanceId, realDragonStatus, unitTag, unitPin)
         local knowDragonStatus = DragonTracker.dragonInfo[worldEventInstanceId].status
-        
+
         if knowDragonStatus ~= realDragonStatus then
             DragonTracker.dragonInfo[worldEventInstanceId].status     = realDragonStatus
             DragonTracker.dragonInfo[worldEventInstanceId].statusTime = 0

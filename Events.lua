@@ -22,7 +22,7 @@ function DragonTracker.OnLoadScreen(eventCode, initial)
     if DragonTracker.ready == false then
         return
     end
-    
+
     DragonTracker:updateZoneInfo()
     DragonTracker:changeTimerStatus(DragonTracker.zoneInfo.onDragonZone)
     DragonTracker:GuiShowHide(DragonTracker.zoneInfo.onDragonZone)
@@ -39,7 +39,7 @@ function DragonTracker.OnWEDeactivate(eventCode, worldEventInstanceId)
     if DragonTracker.ready == false then
         return
     end
-    
+
     if DragonTracker.zoneInfo.onDragonZone == false then
         return
     end
@@ -61,13 +61,13 @@ function DragonTracker.OnWEUnitPin(eventCode, worldEventInstanceId, unitTag, old
     if DragonTracker.ready == false then
         return
     end
-    
+
     if DragonTracker.zoneInfo.onDragonZone == false then
         return
     end
-    
+
     local dragonStatus = DragonTracker:obtainDragonStatus(newPinType)
-    
+
     DragonTracker:changeDragonStatus(worldEventInstanceId, dragonStatus)
     DragonTracker:updateGui(worldEventInstanceId)
 end
@@ -79,7 +79,7 @@ function DragonTracker.OnGuiMoveStop()
     if DragonTracker.ready == false then
         return
     end
-    
+
     DragonTracker.savedVariables.left = DragonTrackerGUI:GetLeft()
     DragonTracker.savedVariables.top  = DragonTrackerGUI:GetTop()
 end
