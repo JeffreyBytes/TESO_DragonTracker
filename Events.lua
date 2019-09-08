@@ -1,11 +1,29 @@
 --[[
--- Declare all events to follow
+-- Called when the addon is loaded
+--
+-- @param number eventCode
+-- @param string addonName name of the loaded addon
 --]]
-function DragonTracker:addEvents()
-    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_WORLD_EVENT_DEACTIVATED, DragonTracker.OnWEDeactivate)
-    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_WORLD_EVENT_UNIT_CHANGED_PIN_TYPE, DragonTracker.OnWEUnitPin)
-    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ZONE_CHANGED, DragonTracker.OnZoneChanged)
-    -- EVENT_MANAGER:RegisterForEvent("DragonTracker", EVENT_GAME_CAMERA_UI_MODE_CHANGED, DragonTracker.OnGuiChanged) -- Used to dump some data
+function DragonTracker.OnLoaded(eventCode, addOnName)
+    -- The event fires each time *any* addon loads - but we only care about when our own addon loads.
+    if addOnName == DragonTracker.name then
+        DragonTracker:Initialise()
+    end
+end
+
+--[[
+-- Called when the user's interface loads and their character is activated after logging in or performing a reload of the UI.
+-- This happens after <EVENT_ADD_ON_LOADED>, so the UI and all addons should be initialised already.
+--
+-- @param integer eventCode
+-- @param boolean initial : true if the user just logged on, false with a UI reload (for example)
+--]]
+function DragonTracker.OnLoadScreen(eventCode, initial)
+    if DragonTracker.ready == false then
+        return
+    end
+    
+    DragonTracker:checkZone()
 end
 
 --[[
@@ -15,6 +33,10 @@ end
 -- @param number worldEventInstanceId The concerned world event (aka dragon).
 --]]
 function DragonTracker.OnWEDeactivate(eventCode, worldEventInstanceId)
+    if DragonTracker.ready == false then
+        return
+    end
+    
     if DragonTracker.zoneInfo.onDragonZone == false then
         return
     end
@@ -33,6 +55,10 @@ end
 -- number MapDisplayPinType newPinType
 --]]
 function DragonTracker.OnWEUnitPin(eventCode, worldEventInstanceId, unitTag, oldPinType, newPinType)
+    if DragonTracker.ready == false then
+        return
+    end
+    
     if DragonTracker.zoneInfo.onDragonZone == false then
         return
     end
@@ -51,23 +77,13 @@ function DragonTracker.OnWEUnitPin(eventCode, worldEventInstanceId, unitTag, old
 end
 
 --[[
--- Called when the zone change.
---
--- @param number eventCode
--- @param string zoneName
--- @param string subZoneName
--- @param boolean newSubzone
--- @param number zoneId
--- @param number subZoneId
---]]
-function DragonTracker.OnZoneChanged(eventCode, zoneName, subZoneName, newSubzone, zoneId, subZoneId)
-    DragonTracker:checkZone()
-end
-
---[[
 -- Called when GUI items has been moved by user
 --]]
 function DragonTracker.OnGuiMoveStop()
+    if DragonTracker.ready == false then
+        return
+    end
+    
     DragonTracker.savedVariables.left = DragonTrackerGUI:GetLeft()
     DragonTracker.savedVariables.top  = DragonTrackerGUI:GetTop()
 end
@@ -77,5 +93,7 @@ end
 -- Used to some debug, the add to event is commented.
 --]]
 function DragonTracker.OnGuiChanged(eventCode)
-    -- do an action
+    if DragonTracker.ready == false then
+        return
+    end
 end

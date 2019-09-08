@@ -2,6 +2,7 @@ DragonTracker = {}
 
 DragonTracker.name = "DragonTracker"
 DragonTracker.savedVariables = nil
+DragonTracker.ready = false
 DragonTracker.updateTimeEnabled = false
 
 DragonTracker.dragonInfo = {

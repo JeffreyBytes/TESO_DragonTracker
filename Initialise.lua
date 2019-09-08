@@ -1,19 +1,4 @@
 --[[
--- Called when the addon is loaded
---
--- @param number eventCode
--- @param string addonName name of the loaded addon
---]]
-function DragonTracker.OnAddOnLoaded(eventCode, addOnName)
-    -- The event fires each time *any* addon loads - but we only care about when our own addon loads.
-    if addOnName == DragonTracker.name then
-        DragonTracker:Initialise()
-    end
-end
-
-EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_ADD_ON_LOADED, DragonTracker.OnAddOnLoaded)
-
---[[
 -- Module initialiser
 -- Intiialise savedVariables, GUI, and events
 --]]
@@ -24,6 +9,11 @@ function DragonTracker:Initialise()
     self:GuiShowHide()
     self:initDragonGuiItems()
 
-    self:checkZone()
-    self:addEvents()
+    DragonTracker.ready = true
 end
+
+EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_ADD_ON_LOADED, DragonTracker.OnLoaded)
+EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_PLAYER_ACTIVATED, DragonTracker.OnLoadScreen)
+EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_WORLD_EVENT_DEACTIVATED, DragonTracker.OnWEDeactivate)
+EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_WORLD_EVENT_UNIT_CHANGED_PIN_TYPE, DragonTracker.OnWEUnitPin)
+-- EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_GAME_CAMERA_UI_MODE_CHANGED, DragonTracker.OnGuiChanged) -- Used to dump some data, so to debug only
