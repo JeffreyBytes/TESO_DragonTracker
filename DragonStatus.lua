@@ -16,25 +16,16 @@ function DragonTracker:initDragonStatus()
     if self.zoneInfo.onDragonZone == false then
         return
     end
-
-    local worldEventId = nil
-    local unitTag = nil
-    local unitPin = nil
-
-    for worldEventInstanceId=1,3,1 do
-        worldEventId = GetWorldEventId(worldEventInstanceId)
-
-        if worldEventId == 0 then
-            self.OnWEDeactivate(nil, worldEventInstanceId)
+    
+    self:execOnDragonStatus(function(worldEventInstanceId, dragonStatus, unitTag, unitPin)
+        if dragonStatus == DragonTracker.status.killed then
+            DragonTracker.OnWEDeactivate(nil, worldEventInstanceId)
         else
-            unitTag = GetWorldEventInstanceUnitTag(worldEventInstanceId, 1)
-            unitPin = GetWorldEventInstanceUnitPinType(worldEventInstanceId, unitTag)
-
-            self.OnWEUnitPin(nil, worldEventInstanceId, nil, nil, unitPin)
+            DragonTracker.OnWEUnitPin(nil, worldEventInstanceId, nil, nil, unitPin)
         end
-
-        self.dragonInfo[worldEventInstanceId].statusTime = 0
-    end
+        
+        DragonTracker.dragonInfo[worldEventInstanceId].statusTime = 0
+    end)
 end
 
 --[[
@@ -53,6 +44,44 @@ function DragonTracker:changeDragonStatus(worldEventInstanceId, newStatus)
 
     if previousStatus == nil or previousStatus == currentStatus then
         self.dragonInfo[worldEventInstanceId].statusTime = 0
+    end
+end
+
+--[[
+-- Execute the callback function for all dragons on the zone
+--
+-- @param function callback : The method which will be called for each dragon
+-- Callback parameters are :
+-- * integer worldEventInstanceId
+-- * string dragonStatus The status in DragonTracker.status
+-- * string unitTag
+-- * number unitPin
+--]]
+function DragonTracker:execOnDragonStatus(callback)
+    if self.zoneInfo.onDragonZone == false then
+        return
+    end
+
+    local worldEventId = nil
+    local dragonStatus = nil
+    local unitTag = nil
+    local unitPin = nil
+
+    for worldEventInstanceId=1,3,1 do
+        worldEventId = GetWorldEventId(worldEventInstanceId)
+
+        if worldEventId == 0 then
+            unitPin      = nil
+            unitTag      = nil
+            dragonStatus = self.status.killed
+        else
+            unitTag = GetWorldEventInstanceUnitTag(worldEventInstanceId, 1)
+            unitPin = GetWorldEventInstanceUnitPinType(worldEventInstanceId, unitTag)
+
+            dragonStatus = self:obtainDragonStatus(unitPin)
+        end
+        
+        callback(worldEventInstanceId, dragonStatus, unitTag, unitPin)
     end
 end
 
