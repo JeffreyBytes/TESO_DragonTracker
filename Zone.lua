@@ -1,7 +1,6 @@
 --[[
--- Check if the current zone is Elsweyr.
--- Also call methods used to define dragons status.
--- And hide or show GUI items we are (or not) in Elsweyr.
+-- Update info about the current zone.
+-- Call the method who check if the zone have Dragons.
 --]]
 function DragonTracker:updateZoneInfo()
     local currentMapZoneIdx = GetCurrentMapZoneIndex()
