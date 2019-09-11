@@ -24,8 +24,8 @@ end
 function DragonTracker:checkZoneWithDragons(currentMapZoneIdx)
     self.zoneInfo.onDragonZone = false
 
-    -- No world event (currently aka Dragon) on the zone
-    if GetNextWorldEventInstanceId() == nil then
+    -- Not in a dungeon or battleground
+    if GetMapContentType() ~= MAP_CONTENT_NONE then
         return
     end
 
