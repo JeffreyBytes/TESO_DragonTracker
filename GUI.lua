@@ -55,43 +55,68 @@ function DragonTracker:updateGui(worldEventInstanceId)
     local dragonPosition = self.dragonInfo[worldEventInstanceId].position
     local dragonStatus   = self.dragonInfo[worldEventInstanceId].status
     local dragonTime     = self.dragonInfo[worldEventInstanceId].statusTime
-    local currentTime    = os.time()
-    local textMessage    = ""
+    local statusText     = self:obtainTextForStatus(dragonStatus)
+    local timerText      = self:obtainTimerTextForDragon(dragonTime)
 
+    guiItem:SetText(string.format(
+        "%s : %s%s",
+        dragonPosition,
+        statusText,
+        timerText
+    ))
+end
+
+--[[
+-- Obtain the status to display from a dragon status (DragonTracker:status)
+--
+-- @param string dragonStatus The dragon status
+--
+-- @return string
+--]]
+function DragonTracker:obtainTextForStatus(dragonStatus)
     if dragonStatus == self.status.killed then
-        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_KILLED)
+        return GetString(SI_DRAGON_TRACKER_STATUS_KILLED)
     elseif dragonStatus == self.status.waiting then
-        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_WAITING)
+        return GetString(SI_DRAGON_TRACKER_STATUS_WAITING)
     elseif dragonStatus == self.status.fight then
-        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_FIGHT)
+        return GetString(SI_DRAGON_TRACKER_STATUS_FIGHT)
     elseif dragonStatus == self.status.weak then
-        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_WEAK)
-    else
-        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_UNKNOWN)
+        return GetString(SI_DRAGON_TRACKER_STATUS_WEAK)
     end
 
-    if dragonTime ~= 0 then
-        local timeDiff       = currentTime - dragonTime
-        local timeUnit       = GetString(SI_DRAGON_TRACKER_TIMER_SECOND)
+    return GetString(SI_DRAGON_TRACKER_STATUS_UNKNOWN)
+end
 
-        if timeDiff > 60 then
-            timeDiff = timeDiff / 60
-            timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_MINUTE)
-        end
-
-        if timeDiff > 60 then
-            timeDiff = timeDiff / 60
-            timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_HOUR)
-        end
-
-        textMessage = string.format(
-            "%s %s %d %s",
-            textMessage,
-            GetString(SI_DRAGON_TRACKER_TIMER_SINCE),
-            math.floor(timeDiff),
-            timeUnit
-        )
+--[[
+-- Obtain the timer text to display for a dragon
+--
+-- @param number dragonTime the os.time() of the last event
+--
+-- @return string
+--]]
+function DragonTracker:obtainTimerTextForDragon(dragonTime)
+    if dragonTime == 0 then
+        return ""
     end
 
-    guiItem:SetText(dragonPosition .. " : " .. textMessage)
+    local currentTime = os.time()
+    local timeDiff    = currentTime - dragonTime
+    local timeUnit    = GetString(SI_DRAGON_TRACKER_TIMER_SECOND)
+
+    if timeDiff > 60 then
+        timeDiff = timeDiff / 60
+        timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_MINUTE)
+    end
+
+    if timeDiff > 60 then
+        timeDiff = timeDiff / 60
+        timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_HOUR)
+    end
+
+    return string.format(
+        " %s %d %s",
+        GetString(SI_DRAGON_TRACKER_TIMER_SINCE),
+        math.floor(timeDiff),
+        timeUnit
+    )
 end
