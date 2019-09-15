@@ -59,32 +59,38 @@ function DragonTracker:updateGui(worldEventInstanceId)
     local textMessage    = ""
 
     if dragonStatus == self.status.killed then
-        textMessage = "Killed"
+        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_KILLED)
     elseif dragonStatus == self.status.waiting then
-        textMessage = "Waiting or flying"
+        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_WAITING)
     elseif dragonStatus == self.status.fight then
-        textMessage = "In fight"
+        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_FIGHT)
     elseif dragonStatus == self.status.weak then
-        textMessage = "In fight (life < 50%)"
+        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_WEAK)
     else
-        textMessage = "Unknown"
+        textMessage = GetString(SI_DRAGON_TRACKER_STATUS_UNKNOWN)
     end
 
     if dragonTime ~= 0 then
         local timeDiff       = currentTime - dragonTime
-        local timeUnit       = "sec"
+        local timeUnit       = GetString(SI_DRAGON_TRACKER_TIMER_SECOND)
 
         if timeDiff > 60 then
             timeDiff = timeDiff / 60
-            timeUnit = "min"
+            timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_MINUTE)
         end
 
         if timeDiff > 60 then
             timeDiff = timeDiff / 60
-            timeUnit = "h"
+            timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_HOUR)
         end
 
-        textMessage = textMessage .. " since " .. math.floor(timeDiff) .. timeUnit
+        textMessage = string.format(
+            "%s %s %d %s",
+            textMessage,
+            GetString(SI_DRAGON_TRACKER_TIMER_SINCE),
+            math.floor(timeDiff),
+            timeUnit
+        )
     end
 
     guiItem:SetText(dragonPosition .. " : " .. textMessage)

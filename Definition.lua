@@ -7,21 +7,21 @@ DragonTracker.updateTimeEnabled = false
 
 DragonTracker.dragonInfo = {
     [1] = {
-        position   = "South",
+        position   = GetString(SI_DRAGON_TRACKER_CP_SOUTH),
         gui        = nil,
         status     = nil,
         statusTime = 0,
         statusPrev = nil,
     },
     [2] = {
-        position   = "North",
+        position   = GetString(SI_DRAGON_TRACKER_CP_NORTH),
         gui        = nil,
         status     = nil,
         statusTime = 0,
         statusPrev = nil,
     },
     [3] = {
-        position   = "West ",
+        position   = GetString(SI_DRAGON_TRACKER_CP_WEST),
         gui        = nil,
         status     = nil,
         statusTime = 0,

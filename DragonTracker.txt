@@ -5,6 +5,9 @@
 ## APIVersion: 100028
 ## SavedVariables: DragonTrackerSavedVariables
 
+lang\en.lua
+lang\$(language).lua
+
 Interface.xml
 Definition.lua
 DragonStatus.lua
