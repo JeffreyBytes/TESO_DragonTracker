@@ -1,6 +1,6 @@
 ## Title: Dragon Tracker
 ## Description: Track all dragons status in Elsweyr
-## Version: 1.2.1
+## Version: 1.3.0
 ## Author: bulton-fr
 ## APIVersion: 100028
 ## SavedVariables: DragonTrackerSavedVariables
