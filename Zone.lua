@@ -35,6 +35,20 @@ DragonTracker.Zone.list           = {
                 [3] = 3,
             },
         },
+    },
+    [2] = { -- South Elsweyr
+        mapZoneIdx = 719,
+        nbDragons  = 2,
+        dragons    = {
+            title = {
+                [1] = GetString(SI_DRAGON_TRACKER_CP_NORTH),
+                [2] = GetString(SI_DRAGON_TRACKER_CP_SOUTH)
+            },
+            WEInstanceId = {
+                [1] = 12,
+                [2] = 13,
+            },
+        },
     }
 }
 
