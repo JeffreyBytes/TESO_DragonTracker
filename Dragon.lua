@@ -37,7 +37,7 @@ function DragonTracker.Dragon:new(dragonIdx, WEInstanceId)
     setmetatable(newDragon, self)
 
     newDragon:updateUnit()
-    newDragon.GUI.item = DragonTracker.GUI:obtainItem(newDragon)
+    newDragon.GUI.item = DragonTracker.GUI:createItem(newDragon)
     DragonTracker.DragonStatus:initForDragon(newDragon)
 
     -- Not need, already updated each 1 second
