@@ -1,122 +1,104 @@
+DragonTracker.GUI = {}
+
+-- @var table The TopLevelControl in interface
+DragonTracker.GUI.container = nil
+
+-- @var table List of GUIItems associate to a dragon
+DragonTracker.GUI.items     = {}
+
+-- @var number Number of GUIItems in items
+DragonTracker.GUI.nbItems   = 0
+
+--[[
+-- Initialise the GUI
+--]]
+function DragonTracker.GUI:init()
+    self:obtainContainer()
+    self:defineFragment()
+    self:restorePosition()
+end
+
+--[[
+-- Obtain the TopLevelControl's table
+--]]
+function DragonTracker.GUI:obtainContainer()
+    self.container = DragonTrackerGUI
+end
+
 --[[
 -- Restore the GUI's position from savedVariables
 --]]
-function DragonTracker:guiRestorePosition()
-    local left = self.savedVariables.left
-    local top  = self.savedVariables.top
+function DragonTracker.GUI:restorePosition()
+    local left = DragonTracker.savedVariables.left
+    local top  = DragonTracker.savedVariables.top
 
-    DragonTrackerGUI:ClearAnchors()
-    DragonTrackerGUI:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, left, top)
+    self.container:ClearAnchors()
+    self.container:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, left, top)
+end
+
+--[[
+-- Save the GUI's position from savedVariables
+--]]
+function DragonTracker.GUI:savePosition()
+    DragonTracker.savedVariables.left = self.container:GetLeft()
+    DragonTracker.savedVariables.top  = self.container:GetTop()
 end
 
 --[[
 -- Define GUI has a fragment linked to scenes.
 -- With that, the GUI is hidden when we open a menu (like inventory or map)
 --]]
-function DragonTracker:guiDefineFragment()
-    local fragment = ZO_SimpleSceneFragment:New(DragonTrackerGUI)
+function DragonTracker.GUI:defineFragment()
+    local fragment = ZO_SimpleSceneFragment:New(self.container)
 
     SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)
     SCENE_MANAGER:GetScene("hudui"):AddFragment(fragment)
 end
 
 --[[
--- Define GUI item for each dragons
---]]
-function DragonTracker:initDragonGuiItems()
-    self.dragonInfo[1].gui = DragonTrackerGUIDragonSouth
-    self.dragonInfo[2].gui = DragonTrackerGUIDragonNorth
-    self.dragonInfo[3].gui = DragonTrackerGUIDragonWest
-end
-
---[[
--- Hide or show GUI items according to status value
+-- Hide or show all GUIItems.
 --
--- @param boolean status : true to display gui, false to hide it
+-- @param boolean status true to show it, false to hide it
 --]]
-function DragonTracker:guiShowHide(status)
-    -- Hide or show GUI items
-    for worldEventInstanceId=1,3,1 do
-        DragonTracker.dragonInfo[worldEventInstanceId].gui:SetHidden(not status)
+function DragonTracker.GUI:display(status)
+    -- self.container:SetHidden(not status) -- Not work :(
+    
+    local itemIdx = 1
+    for itemIdx = 1, self.nbItems do
+        self.items[itemIdx]:display(status)
     end
 end
 
 --[[
--- Update the message displayed in GUI for a specific dragon
+-- To create a GUIItem instance for a Dragon and show it
 --
--- @param number worldEventInstanceId The concerned world event (aka dragon).
+-- @param Dragon dragon The dragon instance to link with the new GUIItem
+--
+-- @return GUIItem
 --]]
-function DragonTracker:updateGui(worldEventInstanceId)
-    if worldEventInstanceId > 4 then
-        return
-    end
+function DragonTracker.GUI:createItem(dragon)
+    local item    = DragonTracker.GUIItem:new(dragon)
+    local itemIdx = self.nbItems + 1
 
-    local guiItem        = self.dragonInfo[worldEventInstanceId].gui
-    local dragonPosition = self.dragonInfo[worldEventInstanceId].position
-    local dragonStatus   = self.dragonInfo[worldEventInstanceId].status
-    local dragonTime     = self.dragonInfo[worldEventInstanceId].statusTime
-    local statusText     = self:obtainTextForStatus(dragonStatus)
-    local timerText      = self:obtainTimerTextForDragon(dragonTime)
+    self.items[itemIdx] = item
+    self.nbItems        = itemIdx
 
-    guiItem:SetText(string.format(
-        "%s : %s%s",
-        dragonPosition,
-        statusText,
-        timerText
-    ))
+    item:show()
+
+    return item
 end
 
 --[[
--- Obtain the status to display from a dragon status (DragonTracker:status)
---
--- @param string dragonStatus The dragon status
---
--- @return string
+-- To reset the list of GUIItems
 --]]
-function DragonTracker:obtainTextForStatus(dragonStatus)
-    if dragonStatus == self.status.killed then
-        return GetString(SI_DRAGON_TRACKER_STATUS_KILLED)
-    elseif dragonStatus == self.status.waiting then
-        return GetString(SI_DRAGON_TRACKER_STATUS_WAITING)
-    elseif dragonStatus == self.status.fight then
-        return GetString(SI_DRAGON_TRACKER_STATUS_FIGHT)
-    elseif dragonStatus == self.status.weak then
-        return GetString(SI_DRAGON_TRACKER_STATUS_WEAK)
+function DragonTracker.GUI:resetItem()
+    local itemIdx = 1
+
+    for itemIdx = 1, self.nbItems do
+        self.items[itemIdx]:clear()
+        self.items[itemIdx]:hide()
     end
 
-    return GetString(SI_DRAGON_TRACKER_STATUS_UNKNOWN)
-end
-
---[[
--- Obtain the timer text to display for a dragon
---
--- @param number dragonTime the os.time() of the last event
---
--- @return string
---]]
-function DragonTracker:obtainTimerTextForDragon(dragonTime)
-    if dragonTime == 0 then
-        return ""
-    end
-
-    local currentTime = os.time()
-    local timeDiff    = currentTime - dragonTime
-    local timeUnit    = GetString(SI_DRAGON_TRACKER_TIMER_SECOND)
-
-    if timeDiff > 60 then
-        timeDiff = timeDiff / 60
-        timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_MINUTE)
-    end
-
-    if timeDiff > 60 then
-        timeDiff = timeDiff / 60
-        timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_HOUR)
-    end
-
-    return string.format(
-        " %s %d %s",
-        GetString(SI_DRAGON_TRACKER_TIMER_SINCE),
-        math.floor(timeDiff),
-        timeUnit
-    )
+    self.items   = {}
+    self.nbItems = 0
 end

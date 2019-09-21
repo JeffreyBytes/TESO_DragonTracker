@@ -1,10 +1,12 @@
+DragonTracker.Events = {}
+
 --[[
 -- Called when the addon is loaded
 --
 -- @param number eventCode
 -- @param string addonName name of the loaded addon
 --]]
-function DragonTracker.onLoaded(eventCode, addOnName)
+function DragonTracker.Events.onLoaded(eventCode, addOnName)
     -- The event fires each time *any* addon loads - but we only care about when our own addon loads.
     if addOnName == DragonTracker.name then
         DragonTracker:Initialise()
@@ -18,15 +20,16 @@ end
 -- @param integer eventCode
 -- @param boolean initial : true if the user just logged on, false with a UI reload (for example)
 --]]
-function DragonTracker.onLoadScreen(eventCode, initial)
+function DragonTracker.Events.onLoadScreen(eventCode, initial)
     if DragonTracker.ready == false then
         return
     end
 
-    DragonTracker:updateZoneInfo()
-    DragonTracker:changeTimerStatus(DragonTracker.zoneInfo.onDragonZone)
-    DragonTracker:guiShowHide(DragonTracker.zoneInfo.onDragonZone)
-    DragonTracker:checkDragonStatus()
+    DragonTracker.Zone:updateInfo()
+    DragonTracker.DragonList:update()
+    DragonTracker.GUITimer:changeStatus(DragonTracker.Zone.onDragonMap)
+    DragonTracker.GUI:display(DragonTracker.Zone.onDragonMap)
+    DragonTracker.DragonStatus:checkAllDragon()
 end
 
 --[[
@@ -35,17 +38,17 @@ end
 -- @param number eventCode
 -- @param number worldEventInstanceId The concerned world event (aka dragon).
 --]]
-function DragonTracker.onWEDeactivate(eventCode, worldEventInstanceId)
+function DragonTracker.Events.onWEDeactivate(eventCode, worldEventInstanceId)
     if DragonTracker.ready == false then
         return
     end
 
-    if DragonTracker.zoneInfo.onDragonZone == false then
+    if DragonTracker.Zone.onDragonMap == false then
         return
     end
 
-    DragonTracker:changeDragonStatus(worldEventInstanceId, DragonTracker.status.killed)
-    DragonTracker:updateGui(worldEventInstanceId)
+    local dragon = DragonTracker.DragonList:obtainForWEInstanceId(worldEventInstanceId)
+    dragon:changeStatus(DragonTracker.DragonStatus.list.killed)
 end
 
 --[[
@@ -57,38 +60,37 @@ end
 -- number MapDisplayPinType oldPinType
 -- number MapDisplayPinType newPinType
 --]]
-function DragonTracker.onWEUnitPin(eventCode, worldEventInstanceId, unitTag, oldPinType, newPinType)
+function DragonTracker.Events.onWEUnitPin(eventCode, worldEventInstanceId, unitTag, oldPinType, newPinType)
     if DragonTracker.ready == false then
         return
     end
 
-    if DragonTracker.zoneInfo.onDragonZone == false then
+    if DragonTracker.Zone.onDragonMap == false then
         return
     end
 
-    local dragonStatus = DragonTracker:obtainDragonStatus(newPinType)
+    local dragon = DragonTracker.DragonList:obtainForWEInstanceId(worldEventInstanceId)
+    local status = DragonTracker.DragonStatus:convertMapPin(newPinType)
 
-    DragonTracker:changeDragonStatus(worldEventInstanceId, dragonStatus)
-    DragonTracker:updateGui(worldEventInstanceId)
+    dragon:changeStatus(status, unitTag, newPinType)
 end
 
 --[[
 -- Called when GUI items has been moved by user
 --]]
-function DragonTracker.onGuiMoveStop()
+function DragonTracker.Events.onGuiMoveStop()
     if DragonTracker.ready == false then
         return
     end
 
-    DragonTracker.savedVariables.left = DragonTrackerGUI:GetLeft()
-    DragonTracker.savedVariables.top  = DragonTrackerGUI:GetTop()
+    DragonTracker.GUI:savePosition()
 end
 
 --[[
 -- Called when something change in GUI (like open inventory).
 -- Used to some debug, the add to event is commented.
 --]]
-function DragonTracker.onGuiChanged(eventCode)
+function DragonTracker.Events.onGuiChanged(eventCode)
     if DragonTracker.ready == false then
         return
     end

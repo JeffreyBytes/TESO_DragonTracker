@@ -1,34 +1,82 @@
+DragonTracker.Zone = {}
+
+-- @var boolean If player is on a zone with dragon
+DragonTracker.Zone.onDragonZone   = false -- Elweyr is a zone
+
+-- @var boolean If player is on a map with dragon
+DragonTracker.Zone.onDragonMap    = false -- A delve is a map in the zone
+
+-- @var nil|number The previous MapZoneIndex
+DragonTracker.Zone.lastMapZoneIdx = nil
+
+-- @var boolean If the player has changed zone
+DragonTracker.Zone.changedZone    = false
+
+-- @var ref-to-table Info about the current zone (ref to list value corresponding to the zone)
+DragonTracker.Zone.info           = nil
+
+-- @var number Number of zone in the list
+DragonTracker.Zone.nbZone         = 2
+
+-- @var table List of info about zones with dragons.
+DragonTracker.Zone.list           = {
+    [1] = { -- North Elsweyr
+        mapZoneIdx = 680,
+        nbDragons  = 3,
+        dragons    = {
+            title = {
+                [1] = GetString(SI_DRAGON_TRACKER_CP_NORTH),
+                [2] = GetString(SI_DRAGON_TRACKER_CP_SOUTH),
+                [3] = GetString(SI_DRAGON_TRACKER_CP_WEST)
+            },
+            WEInstanceId = {
+                [1] = 2,
+                [2] = 1,
+                [3] = 3,
+            },
+        },
+    }
+}
+
 --[[
 -- Update info about the current zone.
--- Call the method who check if the zone have Dragons.
 --]]
-function DragonTracker:updateZoneInfo()
+function DragonTracker.Zone:updateInfo()
     local currentMapZoneIdx = GetCurrentMapZoneIndex()
 
-    self:checkZoneWithDragons(currentMapZoneIdx)
+    self:checkDragonZone(currentMapZoneIdx)
 
-    -- Check parent zone changed (function also called with sub-zone change)
-    if self.zoneInfo.lastMapZoneIdx ~= currentMapZoneIdx then
-        self.zoneInfo.lastMapZoneIdx = currentMapZoneIdx
-        self:initDragonStatus()
+    self.changedZone = false
+    if self.lastMapZoneIdx ~= currentMapZoneIdx then
+        self.changedZone    = true
+        self.lastMapZoneIdx = currentMapZoneIdx
     end
 end
 
 --[[
--- Check if it's a zone with Dragon.
--- Currently only Elsweyr.
+-- Check if it's a zone with dragons.
 --
--- @param integer currentMapZoneIdx zone index
+-- @param number currentMapZoneIdx The current MapZoneIndex
 --]]
-function DragonTracker:checkZoneWithDragons(currentMapZoneIdx)
-    self.zoneInfo.onDragonZone = false
+function DragonTracker.Zone:checkDragonZone(currentMapZoneIdx)
+    self.onDragonZone = false
+    self.onDragonMap  = false
 
-    -- Not in a dungeon or battleground
-    if GetMapContentType() ~= MAP_CONTENT_NONE then
-        return
+    local listIdx    = 1
+    local mapZoneIdx = 0
+
+    for listIdx=1, self.nbZone do
+        mapZoneIdx = self.list[listIdx].mapZoneIdx
+
+        if currentMapZoneIdx == mapZoneIdx then
+            self.onDragonMap  = true
+            self.onDragonZone = true
+            self.info         = self.list[listIdx]
+        end
     end
 
-    if currentMapZoneIdx == 680 then -- Elsweyr
-        self.zoneInfo.onDragonZone = true
+    -- If we are in a dungeon/delve or battleground : no world event.
+    if GetMapContentType() ~= MAP_CONTENT_NONE then
+        self.onDragonMap = false
     end
 end

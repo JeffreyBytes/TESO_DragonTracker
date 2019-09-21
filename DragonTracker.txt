@@ -1,6 +1,6 @@
 ## Title: Dragon Tracker
 ## Description: Track all dragons status in Elsweyr
-## Version: 1.3.0
+## Version: 2.0.0
 ## Author: bulton-fr
 ## APIVersion: 100028
 ## SavedVariables: DragonTrackerSavedVariables
@@ -9,13 +9,16 @@ lang\en.lua
 lang\$(language).lua
 
 Interface.xml
-Definition.lua
+Initialise.lua
+Dragon.lua
+DragonList.lua
 DragonStatus.lua
 Events.lua
 GUI.lua
-Timer.lua
+GUIItem.lua
+GUITimer.lua
 Zone.lua
-Initialise.lua
+Run.lua
 
 ;
 ; This Add-on is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates. 
