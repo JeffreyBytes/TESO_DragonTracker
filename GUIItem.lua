@@ -64,7 +64,7 @@ function DragonTracker.GUIItem:update()
     local newValue     = ""
 
     if dragonStatus == killedStatus and repopTime > 0 then
-        newValue = self:obtainRepopInValue()
+        newValue = self:obtainRepopInValue(dragonStatus)
     else
         newValue = self:obtainSinceValue(dragonStatus)
     end
@@ -111,16 +111,12 @@ end
 --
 -- @return string
 --]]
-function DragonTracker.GUIItem:obtainRepopInValue()
+function DragonTracker.GUIItem:obtainRepopInValue(dragonStatus)
     local dragonTime = self.dragon.status.time
     local timerInfo  = self:obtainInTimerInfo(dragonTime)
 
     if timerInfo == nil then
-        return string.format(
-            GetString(SI_DRAGON_TRACKER_GUI_SIMPLE),
-            self.title,
-            statusText
-        )
+        return self:obtainSinceValue(dragonStatus)
     else
         return string.format(
             GetString(SI_DRAGON_TRACKER_GUI_REPOP),
