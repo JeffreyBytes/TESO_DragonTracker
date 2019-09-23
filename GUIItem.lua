@@ -59,16 +59,15 @@ end
 --]]
 function DragonTracker.GUIItem:update()
     local dragonStatus = self.dragon.status.current
-    local dragonTime   = self.dragon.status.time
-    local statusText   = self:obtainStatusText(dragonStatus)
-    local timerText    = self:obtainTimerText(dragonTime)
+    local killedStatus = DragonTracker.DragonStatus.list.killed
+    local repopTime    = DragonTracker.Zone.repopTime
+    local newValue     = ""
 
-    local newValue = string.format(
-        "%s : %s%s",
-        self.title,
-        statusText,
-        timerText
-    )
+    if dragonStatus == killedStatus and repopTime > 0 then
+        newValue = self:obtainRepopInValue()
+    else
+        newValue = self:obtainSinceValue(dragonStatus)
+    end
 
     if newValue == self.value then
         return
@@ -76,6 +75,60 @@ function DragonTracker.GUIItem:update()
 
     self.value = newValue
     self.labelctr:SetText(newValue)
+end
+
+--[[
+-- Obtain the text to display with a "[status] since..."
+--
+-- @param string dragonStatus Current dragon's status
+--
+-- @return string
+--]]
+function DragonTracker.GUIItem:obtainSinceValue(dragonStatus)
+    local dragonTime = self.dragon.status.time
+    local statusText = self:obtainStatusText(dragonStatus)
+    local timerInfo  = self:obtainSinceTimerInfo(dragonTime)
+
+    if timerInfo == nil then
+        return string.format(
+            GetString(SI_DRAGON_TRACKER_GUI_SIMPLE),
+            self.title,
+            statusText
+        )
+    else
+        return string.format(
+            GetString(SI_DRAGON_TRACKER_GUI_STATUS),
+            self.title,
+            statusText,
+            timerInfo.value,
+            timerInfo.unit
+        )
+    end
+end
+
+--[[
+-- Obtain the text to display with a "repop in..."
+--
+-- @return string
+--]]
+function DragonTracker.GUIItem:obtainRepopInValue()
+    local dragonTime = self.dragon.status.time
+    local timerInfo  = self:obtainInTimerInfo(dragonTime)
+
+    if timerInfo == nil then
+        return string.format(
+            GetString(SI_DRAGON_TRACKER_GUI_SIMPLE),
+            self.title,
+            statusText
+        )
+    else
+        return string.format(
+            GetString(SI_DRAGON_TRACKER_GUI_REPOP),
+            self.title,
+            timerInfo.value,
+            timerInfo.unit
+        )
+    end
 end
 
 --[[
@@ -102,35 +155,70 @@ function DragonTracker.GUIItem:obtainStatusText(dragonStatus)
 end
 
 --[[
--- Obtain the timer text to display for a dragon
+-- Obtain the timer text to display when message is "[status] since..." (so count from 0)
 --
 -- @param number dragonTime the os.time() of the last event
 --
--- @return string
+-- @return table
 --]]
-function DragonTracker.GUIItem:obtainTimerText(dragonTime)
+function DragonTracker.GUIItem:obtainSinceTimerInfo(dragonTime)
     if dragonTime == 0 then
-        return ""
+        return nil
     end
 
     local currentTime = os.time()
     local timeDiff    = currentTime - dragonTime
-    local timeUnit    = GetString(SI_DRAGON_TRACKER_TIMER_SECOND)
 
-    if timeDiff > 60 then
-        timeDiff = timeDiff / 60
+    return self:formatTime(timeDiff)
+end
+
+--[[
+-- Obtain the timer text to display when message is "repop in..." (so count to 0)
+--
+-- @param number dragonTime the os.time() of the last event
+--
+-- @return table
+--]]
+function DragonTracker.GUIItem:obtainInTimerInfo(dragonTime)
+    local repopTime  = DragonTracker.Zone.repopTime
+
+    if dragonTime == 0 then
+        return nil
+    end
+
+    local currentTime = os.time()
+    local repopTime   = dragonTime + repopTime
+    local timeDiff    = repopTime - currentTime
+
+    if timeDiff < 0 then
+        timeDiff = 0
+    end
+
+    return self:formatTime(timeDiff)
+end
+
+--[[
+-- Format the time to have it for second, minute, or hour
+--
+-- @param number timeValue the os.time() of the last event
+--
+-- @return table
+--]]
+function DragonTracker.GUIItem:formatTime(timeValue)
+    local timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_SECOND)
+
+    if timeValue > 60 then
+        timeValue = timeValue / 60
         timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_MINUTE)
     end
 
-    if timeDiff > 60 then
-        timeDiff = timeDiff / 60
+    if timeValue > 60 then
+        timeValue = timeValue / 60
         timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_HOUR)
     end
 
-    return string.format(
-        " %s %d %s",
-        GetString(SI_DRAGON_TRACKER_TIMER_SINCE),
-        math.floor(timeDiff),
-        timeUnit
-    )
+    return {
+        value = timeValue,
+        unit  = timeUnit
+    }
 end

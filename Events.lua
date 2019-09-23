@@ -33,6 +33,25 @@ function DragonTracker.Events.onLoadScreen(eventCode, initial)
 end
 
 --[[
+-- Called when a World Event start (aka dragon pop).
+--
+-- @param number eventCode
+-- @param number worldEventInstanceId The concerned world event (aka dragon).
+--]]
+function DragonTracker.Events.onWEActivate(eventCode, worldEventInstanceId)
+    if DragonTracker.ready == false then
+        return
+    end
+
+    if DragonTracker.Zone.onDragonMap == false then
+        return
+    end
+
+    local dragon = DragonTracker.DragonList:obtainForWEInstanceId(worldEventInstanceId)
+    dragon:poped()
+end
+
+--[[
 -- Called when a World Event is finished (aka dragon killed).
 --
 -- @param number eventCode
@@ -49,6 +68,7 @@ function DragonTracker.Events.onWEDeactivate(eventCode, worldEventInstanceId)
 
     local dragon = DragonTracker.DragonList:obtainForWEInstanceId(worldEventInstanceId)
     dragon:changeStatus(DragonTracker.DragonStatus.list.killed)
+    dragon:killed()
 end
 
 --[[

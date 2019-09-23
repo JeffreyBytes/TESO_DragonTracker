@@ -31,6 +31,10 @@ function DragonTracker.Dragon:new(dragonIdx, WEInstanceId)
             previous = nil,
             current  = nil,
             time     = 0,
+        },
+        repop        = {
+            killTime  = 0,
+            repopTime = 0,
         }
     }
 
@@ -97,4 +101,26 @@ function DragonTracker.Dragon:resetWithStatus(newStatus)
     self.status.previous = nil
     self.status.current  = newStatus
     self.status.time     = 0
+end
+
+--[[
+-- Called when the dragon (re)pop
+--]]
+function DragonTracker.Dragon:poped()
+    self.repop.repopTime = os.time()
+
+    if self.repop.killTime == 0 then
+        return
+    end
+
+    local diffTime = self.repop.repopTime - self.repop.killTime
+
+    DragonTracker.Zone.repopTime = diffTime
+end
+
+--[[
+-- Called when the dragon is killed
+--]]
+function DragonTracker.Dragon:killed()
+    self.repop.killTime = os.time()
 end

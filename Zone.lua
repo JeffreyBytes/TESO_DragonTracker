@@ -52,6 +52,8 @@ DragonTracker.Zone.list           = {
     }
 }
 
+DragonTracker.Zone.repopTime = 0
+
 --[[
 -- Update info about the current zone.
 --]]
