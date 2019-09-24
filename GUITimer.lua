@@ -36,7 +36,7 @@ end
 -- Update the GUI for each dragons.
 --]]
 function DragonTracker.GUITimer.update()
-    DragonTracker.DragonList:execOnAll(function(dragon)
+    LibDragonWorldEvent.DragonList:execOnAll(function(dragon)
         dragon.GUI.item:update()
     end)
 end

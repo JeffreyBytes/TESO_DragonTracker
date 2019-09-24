@@ -25,74 +25,31 @@ function DragonTracker.Events.onLoadScreen(eventCode, initial)
         return
     end
 
-    DragonTracker.Zone:updateInfo()
-    DragonTracker.DragonList:update()
-    DragonTracker.GUITimer:changeStatus(DragonTracker.Zone.onDragonMap)
-    DragonTracker.GUI:display(DragonTracker.Zone.onDragonMap)
-    DragonTracker.DragonStatus:checkAllDragon()
+    DragonTracker.GUITimer:changeStatus(LibDragonWorldEvent.Zone.onDragonMap)
+    DragonTracker.GUI:display(LibDragonWorldEvent.Zone.onDragonMap)
 end
 
 --[[
--- Called when a World Event start (aka dragon pop).
+-- Called when a new dragon instance is created
 --
--- @param number eventCode
--- @param number worldEventInstanceId The concerned world event (aka dragon).
+-- @param table dragon The new dragon instance
 --]]
-function DragonTracker.Events.onWEActivate(eventCode, worldEventInstanceId)
-    if DragonTracker.ready == false then
-        return
-    end
+function DragonTracker.Events.onNewDragon(dragon)
+    dragon.GUI = {
+        item  = nil,
+        title = dragon.title,
+    }
 
-    if DragonTracker.Zone.onDragonMap == false then
-        return
-    end
-
-    local dragon = DragonTracker.DragonList:obtainForWEInstanceId(worldEventInstanceId)
-    dragon:poped()
+    dragon.GUI.item = DragonTracker.GUI:createItem(dragon)
 end
 
 --[[
--- Called when a World Event is finished (aka dragon killed).
+-- Called when all dragon is removed from DragonList
 --
--- @param number eventCode
--- @param number worldEventInstanceId The concerned world event (aka dragon).
+-- @param table dragonList The DragonList table
 --]]
-function DragonTracker.Events.onWEDeactivate(eventCode, worldEventInstanceId)
-    if DragonTracker.ready == false then
-        return
-    end
-
-    if DragonTracker.Zone.onDragonMap == false then
-        return
-    end
-
-    local dragon = DragonTracker.DragonList:obtainForWEInstanceId(worldEventInstanceId)
-    dragon:changeStatus(DragonTracker.DragonStatus.list.killed)
-    dragon:killed()
-end
-
---[[
--- Called when a World Event has this map pin changed (aka new dragon or dragon in fight).
---
--- @param number eventCode
--- @param number worldEventInstanceId The concerned world event (aka dragon).
--- string unitTag
--- number MapDisplayPinType oldPinType
--- number MapDisplayPinType newPinType
---]]
-function DragonTracker.Events.onWEUnitPin(eventCode, worldEventInstanceId, unitTag, oldPinType, newPinType)
-    if DragonTracker.ready == false then
-        return
-    end
-
-    if DragonTracker.Zone.onDragonMap == false then
-        return
-    end
-
-    local dragon = DragonTracker.DragonList:obtainForWEInstanceId(worldEventInstanceId)
-    local status = DragonTracker.DragonStatus:convertMapPin(newPinType)
-
-    dragon:changeStatus(status, unitTag, newPinType)
+function DragonTracker.Events.onRemoveAllFromDragonList(dragonList)
+    DragonTracker.GUI:resetItem()
 end
 
 --[[
