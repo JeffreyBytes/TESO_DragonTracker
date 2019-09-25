@@ -145,6 +145,8 @@ function DragonTracker.GUIItem:obtainStatusText(dragonStatus)
         return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_FIGHT)
     elseif dragonStatus == statusList.weak then
         return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_WEAK)
+    elseif dragonStatus == statusList.flying then
+        return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_FLYING)
     end
 
     return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_UNKNOWN)
