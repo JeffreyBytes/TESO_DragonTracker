@@ -145,21 +145,14 @@ Methods :
 
 ### GUITimer.lua
 
-Table : `DragonTracker.GUITimer`
+Table : `DragonTracker.GUITimer`  
+Extends : `LibDragonWorldEvent.Timer`
 
 Contain all function to manage the timer used to display "since..."
 
-Properties :
-
-* `name` : The timer's name
-* `enabled` : If the timer is enabled or not
-
 Methods :
 
-* `DragonTracker.GUITimer:enable` : Enable timer used to know since how many time dragon has its status
-* `DragonTracker.GUITimer:disable` : Disable timer used to know since how many time dragon has its status
 * `DragonTracker.GUITimer.update` : Callback function on timer. Called each 1sec in dragons zone. Update the GUI for each dragon.
-* `DragonTracker.GUITimer:changeStatus` : Call the method to enable or disable timer according to newStatus value
 
 ### Run.lua
 
