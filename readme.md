@@ -16,7 +16,7 @@ Into the addon folder (`Elder Scrolls Online\live\AddOns` in your document folde
 So you can :
 
 * Clone the repository in the AddOns folder and name it `DragonTracker`.
-* Or download the zip file of the last release in github, extract it in the AddOns folder, and rename `TESO_DragonTracker-{release}` to `DragonTracker`.
+* Or download the zip file started by `esoui-` of the last release in github, and extract it in the AddOns folder.
 
 ## In game
 
