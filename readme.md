@@ -7,7 +7,7 @@ And, you can install the addon World Event Alert in addition if you want because
 
 ## Dependencies
 
-Only the game. No addon or library is needed.
+One included library : `LibDragonWorldEvent`.
 
 ## Install it
 
@@ -16,7 +16,7 @@ Into the addon folder (`Elder Scrolls Online\live\AddOns` in your document folde
 So you can :
 
 * Clone the repository in the AddOns folder and name it `DragonTracker`.
-* Or download the zip file of the last release in github, extract it in the AddOns folder, and rename `TESO_DragonTracker-{release}` to `DragonTracker`.
+* Or download the zip file started by `esoui-` of the last release in github, and extract it in the AddOns folder.
 
 ## In game
 
@@ -33,25 +33,18 @@ If you are not in Elsweyr zone (also in Elsweyr public dungeons), info will be h
 
 A dragon is a "World Event" in the API, so we use some event on WorldEvents.
 
-Events triggered :
+Game Events triggered :
 
 * `EVENT_ADD_ON_LOADED` : When the addon is loaded
 * `EVENT_PLAYER_ACTIVATED` : When a load screen displayed
-* `EVENT_WORLD_EVENT_DEACTIVATED` : When a WorldEvent finish (aka dragon killed)
-* `EVENT_WORLD_EVENT_UNIT_CHANGED_PIN_TYPE` : When the worldEvent's map pin change (aka new dragon, of change status to "in fight" or "waiting")
 * `EVENT_GAME_CAMERA_UI_MODE_CHANGED` : A change in camera mode (free mouse, open inventory, etc). **In released versions, this event is not triggered.** I use it to dump some data when I dev or debug.
 
+`LibDragonWorldEvent` events triggered :
+
+* `LibDragonWorldEvent.Events.callbackEvents.dragon.new` : When a new dragon instance is created.
+* `LibDragonWorldEvent.Events.callbackEvents.dragonList.removeAll` : When all dragon are removed from `DragonList`.
+
 Note : Dark anchor, world bosses, etc are not trigger WorldEvent events. So I cannot catch events on them.
-
-## Status
-
-There are 5 status displayed :
-
-* Waiting or flying : Dragon just appears, and flying, or it's on the ground and waiting for the fight.
-* In fight : Currently in fight against players, with his life > 50%.
-* In fight (life < 50%) : Currently in fight against players, with his life < 50%.
-* Killed : Dead.
-* Unknown : Only to catch not managed cases, normally you should never see this status.
 
 ## Timer
 
@@ -65,17 +58,16 @@ To know if the timer is created, you can use the variable `DragonTracker.updateT
 
 There are loaded in order :
 
-* Definition.lua
-* DragonStatus.lua
+* Initialise.lua
 * Events.lua
 * GUI.lua
-* Timer.lua
-* Zone.lua
-* Initialise.lua
+* GUIItem.lua
+* GUITimer.lua
+* Run.lua
 
-### Definitiion.lua
+### Initialise.lua
 
-Declare all variables and tables used by the addon.
+Declare all variables and the initialise function.
 
 Declared variables :
 
@@ -83,61 +75,85 @@ Declared variables :
 * `DragonTracker.name` : The addon name
 * `DragonTracker.savedVariables` : The `ZO_SavedVars` table which contains saved variable for this addon.
 * `DragonTracker.ready` : If the addon is ready to be used
-* `DragonTracker.updateTimeEnabled` : If the timer which displays "since time" if enabled
-* `DragonTracker.dragonInfo` : All info about each dragon
-* `DragonTracker.status` : All status
-* `DragonTracker.zoneInfo` : Info about the current zone
-
-### DragonStatus.lua
-
-Contain all functions used to check and define the current status of a dragon, or all dragons.
-
-* `DragonTracker:resetDragonStatus` : Reset all info about all dragons.
-* `DragonTracker:initDragonStatus` : Initialise info about all dragons.
-* `DragonTracker:changeDragonStatus` : To change the dragon's status.
-* `DragonTracker:execOnDragonStatus` : Execute a callback function for all dragons in the zone
-* `DragonTracker:checkDragonStatus` : Check the status of all dragons to know if the status is correct or not.
-* `DragonTracker:obtainDragonStatus` : Convert from `MAP_PIN_TYPE_DRAGON_*` constant value to `DragonTracker.status` value
 
 ### Events.lua
 
+Table : `DragonTracker.Events`
+
 Contain all functions called when a listened event is triggered.
 
-* `DragonTracker.onLoaded` : Called when the addon is loaded
-* `DragonTracker.onLoadScreen` : Called after each load screen
-* `DragonTracker.onWEDeactivate` : Called when a World Event is finished (aka dragon killed).
-* `DragonTracker.onWEUnitPin` : Called when a World Event has this map pin changed (aka new dragon or dragon in fight).
-* `DragonTracker.onGuiMoveStop` : Called when GUI items have been moved by the user
-* `DragonTracker.onGuiChanged` : Called when something changes in the GUI (like open inventory).  
+* `DragonTracker.Events.onLoaded` : Called when the addon is loaded
+* `DragonTracker.Events.onLoadScreen` : Called after each load screen
+* `DragonTracker.Events.onNewDragon` : Called when a new dragon instance is created
+* `DragonTracker.Events.onRemoveAllFromDragonList` : Called when all dragon is removed from DragonList
+* `DragonTracker.Events.onGuiMoveStop` : Called when GUI items have been moved by the user
+* `DragonTracker.Events.onGuiChanged` : Called when something changes in the GUI (like open inventory).  
 Used to debug only, the line to add the listener on the event is commented.
 
 ### GUI.lua
 
-Contains all functions to modify info displayed on the GUI.
+Table : `DragonTracker.GUI`
 
-* `DragonTracker:guiRestorePosition` : Restore the GUI's position from savedVariables
-* `DragonTracker:guiDefineFragment` : Define GUI has a fragment linked to scenes.  
+Contains all functions to define the GUI container and save GUIItems instances.
+
+Properties :
+
+* `container` : The TopLevelControl in interface
+* `items` : List of GUIItems associate to a dragon
+* `nbItems` : Number of GUIItems in `items`.
+
+Methods :
+
+* `DragonTracker.GUI:init` : Initialise the GUI
+* `DragonTracker.GUI:obtainContainer` : Obtain the TopLevelControl's table
+* `DragonTracker.GUI:restorePosition` : Restore the GUI's position from savedVariables
+* `DragonTracker.GUI:savePosition` : Save the GUI's position from savedVariables
+* `DragonTracker.GUI:defineFragment` : Define GUI has a fragment linked to scenes.  
 -- With that, the GUI is hidden when we open a menu (like inventory or map)
-* `DragonTracker:initDragonGuiItems` : Define GUI item for each dragons in `DragonTracker.dragonInfo`
-* `DragonTracker:guiShowHide` : Hide or show all DragonTrackers GUI items.
-* `DragonTracker:updateGui` : Update the message displayed in GUI for a specific dragon.
+* `DragonTracker.GUI:display` : Hide or show all GUIItems.
+* `DragonTracker.GUI:createItem` : To create a GUIItem instance for a Dragon
+* `DragonTracker.GUI:resetItem` : To reset the list of GUIItems
 
-## Initialise.lua
+### GUIItems.lua
 
-Contain the function called to initialise the addon, and registered for all events we want to listen.
+Table : `DragonTracker.GUIItem`
 
-## Timer.lua
+Contain all info about a LabelControl in the gui. It's a POO like with one instance of GUIItem by LabelControl.
+Each GUIItem is linked to a Dragon instance. Else, the text value is empty and label is hidden.
+
+Properties :
+
+* `dragon` : The Dragon instance linked to the GUIItem
+* `labelctr` : The LabelControl in interface
+* `title` : The prefix to use for the dragon (like "North")
+* `value` : The text displayed
+
+Methods :
+
+* `DragonTracker.GUIItem:new` : To instanciate a new GUIItem instance
+* `DragonTracker.GUIItem:clear` : Define the text value as empty string
+* `DragonTracker.GUIItem:display` : Define the value of SetHidden to show or hide the label
+* `DragonTracker.GUIItem:show` : Show the label
+* `DragonTracker.GUIItem:hide` : Hide the label
+* `DragonTracker.GUIItem:update` : Update the text value
+* `DragonTracker.GUIItem:obtainSinceValue` : Obtain the text to display with a "[status] since..."
+* `DragonTracker.GUIItem:obtainRepopInValue` : Obtain the text to display with a "repop in..."
+* `DragonTracker.GUIItem:obtainStatusText` : Obtain the status to display from a dragon status
+* `DragonTracker.GUIItem:obtainSinceTimerInfo` : Obtain the timer text to display when message is "[status] since..." (so count from 0)
+* `DragonTracker.GUIItem:obtainInTimerInfo` : Obtain the timer text to display when message is "repop in..." (so count to 0)
+* `DragonTracker.GUIItem:formatTime` : Format the time to have it for second, minute, or hour
+
+### GUITimer.lua
+
+Table : `DragonTracker.GUITimer`  
+Extends : `LibDragonWorldEvent.Timer`
 
 Contain all function to manage the timer used to display "since..."
 
-* `DragonTracker:enabledUpdateTime` : Enable timer used to know since how many time dragon has its status
-* `DragonTracker:disableUpdateTime` : Disable timer used to know since how many time dragon has its status
-* `DragonTracker.updateTime` : Callback function on timer. Called each 1sec in dragons zone. Update the GUI for each dragon.
-* `DragonTracker:changeTimerStatus` : Call the method to enable or disable timer according to newStatus value
+Methods :
 
-## Zone.lua
+* `DragonTracker.GUITimer.update` : Callback function on timer. Called each 1sec in dragons zone. Update the GUI for each dragon.
 
-Contain all function to know if the current zone has dragons or not
+### Run.lua
 
-* `DragonTracker:updateZoneInfo` : Update info about the current zone.
-* `DragonTracker:checkZoneWithDragons` : Check if it's a zone with dragons.
+Define a listener to all used events.
