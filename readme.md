@@ -7,7 +7,7 @@ And, you can install the addon World Event Alert in addition if you want because
 
 ## Dependencies
 
-One included library : `LibDragonWorldEvent`.
+One library : [`LibDragonWorldEvent`](https://www.esoui.com/downloads/info2473-LibDragonWorldEvent.html).
 
 ## Install it
 
