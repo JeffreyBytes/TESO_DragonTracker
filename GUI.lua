@@ -134,7 +134,7 @@ function DragonTracker.GUI:changeLabelType(newType)
     local widthText = 0
 
     for itemIdx = 1, self.nbItems do
-        widthText = self.items[itemIdx]:updateTitle(newType)
+        widthText = self.items[itemIdx]:changeTitleType(newType)
 
         if widthText > widthMax then
             widthMax = widthText

@@ -10,5 +10,13 @@ LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
     LibDragonWorldEvent.Events.callbackEvents.dragonList.removeAll,
     DragonTracker.Events.onRemoveAllFromDragonList
 )
+LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
+    LibDragonWorldEvent.Events.callbackEvents.dragon.changeType,
+    DragonTracker.Events.onDragonChangeType
+)
+LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
+    LibDragonWorldEvent.Events.callbackEvents.dragon.killed,
+    DragonTracker.Events.onDragonKilled
+)
 
 SLASH_COMMANDS["/dragontrackerlabeltype"] = DragonTracker.Events.changeLabelType

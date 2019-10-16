@@ -14,6 +14,7 @@ function DragonTracker.GUIItem:new(dragon)
 
     local guiItem = {
         dragon   = dragon,
+        colorctr = nil,
         labelctr = nil,
         valuectr = nil,
         title    = dragon.GUI.title[titleFormat],
@@ -22,10 +23,61 @@ function DragonTracker.GUIItem:new(dragon)
 
     setmetatable(guiItem, self)
     
+    guiItem.colorctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Color"]
     guiItem.labelctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Label"]
     guiItem.valuectr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Value"]
 
+    guiItem:show()
+    guiItem:defineTooltips()
+
     return guiItem
+end
+
+--[[
+-- Define all tooltip
+--]]
+function DragonTracker.GUIItem:defineTooltips()
+    local guiItem = self
+
+    -- Color control tooltip
+    self.colorctr:SetHandler("OnMouseEnter", function(self)
+        local colorTooltipTxt = guiItem:obtainTypeTooltipText()
+
+        if colorTooltipTxt ~= "" then
+            ZO_Tooltips_ShowTextTooltip(self, BOTTOM, colorTooltipTxt)
+        end
+    end)
+
+    self.colorctr:SetHandler("OnMouseExit", function(self)
+        ZO_Tooltips_HideTextTooltip()
+    end)
+end
+
+--[[
+-- Return the text to use in color tooltip
+--]]
+function DragonTracker.GUIItem:obtainTypeTooltipText()
+    if self.dragon.type.name == "" then
+        return ""
+    end
+
+    return zo_strformat(
+        "<<1>> (<<2>>)",
+        self.dragon.type.name,
+        self.dragon.type.colorTxt
+    )
+end
+
+--[[
+-- To change the color in the dragon color box
+--
+-- @param table newColor The new color to use.
+--  The table must contain properties "r", "g" and "b"
+--  /!\ It's 0-1 RGB values, not 0-255
+-- @param number alpha The alpha value (0 to 1)
+--]]
+function DragonTracker.GUIItem:changeColor(newColor, alpha)
+    self.colorctr:SetCenterColor(newColor.r, newColor.g, newColor.b, alpha)
 end
 
 --[[
@@ -35,14 +87,13 @@ end
 --
 -- @return number The width taken by the label text.
 --]]
-function DragonTracker.GUIItem:updateTitle(newTitleType)
-    self.title = self.dragon.GUI.title[newTitleType]
-    
-    if self.labelctr:GetText() ~= "" then
-        self.labelctr:SetText(self.title)
-    end
+function DragonTracker.GUIItem:changeTitleType(newTitleType)
+    local anchorOffsetX = 18 -- I don't want to do a call to GetAnchor()
 
-    return self.labelctr:GetStringWidth(self.title)
+    self.title = self.dragon.GUI.title[newTitleType]
+    self.labelctr:SetText(self.title)
+
+    return self.labelctr:GetStringWidth(self.title) + anchorOffsetX
 end
 
 --[[
@@ -61,6 +112,7 @@ end
 -- Define the text value of LabelControls to empty string
 --]]
 function DragonTracker.GUIItem:clear()
+    self.colorctr:SetCenterColor(0, 0, 0, 0)
     self.labelctr:SetText("")
     self.valuectr:SetText("")
 end
@@ -71,6 +123,7 @@ end
 -- @param boolean status true to show it, false to hide it
 --]]
 function DragonTracker.GUIItem:display(status)
+    self.colorctr:SetHidden(not status)
     self.labelctr:SetHidden(not status)
     self.valuectr:SetHidden(not status)
 end
@@ -109,7 +162,7 @@ function DragonTracker.GUIItem:update()
     end
 
     self.value = newValue
-    self.labelctr:SetText(self.title)
+    -- self.labelctr:SetText(self.title)
     self.valuectr:SetText(newValue)
 end
 

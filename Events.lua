@@ -41,6 +41,8 @@ function DragonTracker.Events.onNewDragon(dragon)
     }
 
     dragon.GUI.item = DragonTracker.GUI:createItem(dragon)
+
+    DragonTracker.Events.onDragonChangeType(dragon)
 end
 
 --[[
@@ -50,6 +52,32 @@ end
 --]]
 function DragonTracker.Events.onRemoveAllFromDragonList(dragonList)
     DragonTracker.GUI:resetItem()
+end
+
+--[[
+-- Called when a dragon's type change
+--
+-- @param Dragon dragon The concerned dragon
+--]]
+function DragonTracker.Events.onDragonChangeType(dragon)
+    if dragon.GUI == nil then
+        return
+    end
+    
+    dragon.GUI.item:changeColor(dragon.type.colorRGB, 1)
+end
+
+--[[
+-- Called when a dragon is killed
+--
+-- @param Dragon dragon The killed dragon
+--]]
+function DragonTracker.Events.onDragonKilled(dragon)
+    if dragon.GUI == nil then
+        return
+    end
+    
+    dragon.GUI.item:changeColor(dragon.type.colorRGB, 0)
 end
 
 --[[
