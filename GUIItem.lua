@@ -13,13 +13,15 @@ function DragonTracker.GUIItem:new(dragon)
     local guiItem = {
         dragon   = dragon,
         labelctr = nil,
+        valuectr = nil,
         title    = dragon.GUI.title,
         value    = ""
     }
 
     setmetatable(guiItem, self)
     
-    guiItem.labelctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx]
+    guiItem.labelctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Label"]
+    guiItem.valuectr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Value"]
 
     return guiItem
 end
@@ -29,6 +31,7 @@ end
 --]]
 function DragonTracker.GUIItem:clear()
     self.labelctr:SetText("")
+    self.valuectr:SetText("")
 end
 
 --[[
@@ -38,6 +41,7 @@ end
 --]]
 function DragonTracker.GUIItem:display(status)
     self.labelctr:SetHidden(not status)
+    self.valuectr:SetHidden(not status)
 end
 
 --[[
@@ -74,7 +78,8 @@ function DragonTracker.GUIItem:update()
     end
 
     self.value = newValue
-    self.labelctr:SetText(newValue)
+    self.labelctr:SetText(self.title)
+    self.valuectr:SetText(newValue)
 end
 
 --[[
@@ -92,13 +97,11 @@ function DragonTracker.GUIItem:obtainSinceValue(dragonStatus)
     if timerInfo == nil then
         return string.format(
             GetString(SI_DRAGON_TRACKER_GUI_SIMPLE),
-            self.title,
             statusText
         )
     else
         return string.format(
             GetString(SI_DRAGON_TRACKER_GUI_STATUS),
-            self.title,
             statusText,
             timerInfo.value,
             timerInfo.unit
@@ -120,7 +123,6 @@ function DragonTracker.GUIItem:obtainRepopInValue(dragonStatus)
     else
         return string.format(
             GetString(SI_DRAGON_TRACKER_GUI_REPOP),
-            self.title,
             timerInfo.value,
             timerInfo.unit
         )

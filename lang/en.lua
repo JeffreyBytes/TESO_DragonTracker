@@ -1,11 +1,25 @@
 -- ENGLISH LANGUAGE LOCALIZATION
 
 -- GUI message
-ZO_CreateStringId("SI_DRAGON_TRACKER_GUI_REPOP",  "%s : Repop in ~%d %s")
-ZO_CreateStringId("SI_DRAGON_TRACKER_GUI_STATUS", "%s : %s since %d %s")
-ZO_CreateStringId("SI_DRAGON_TRACKER_GUI_SIMPLE", "%s : %s")
+
+-- When we know dragon repop time
+-- %d : Number of hour/minute/second before repop
+-- %s : Time unit (see "GUI Timer" translations)
+ZO_CreateStringId("SI_DRAGON_TRACKER_GUI_REPOP",  ": Repop in ~%d %s")
+
+-- When we don't know repop time, we display killed since...
+-- %s : Dragon status (flying/waiting/in fight/...)
+-- %d : Number of hour/minute/second since the kill
+-- %s : Time unit (see "GUI Timer" translations)
+ZO_CreateStringId("SI_DRAGON_TRACKER_GUI_STATUS", ": %s since %d %s")
+
+-- When we don't since how long a dragon has a status
+-- %s : Dragon status (flying/waiting/in fight/...)
+ZO_CreateStringId("SI_DRAGON_TRACKER_GUI_SIMPLE", ": %s")
 
 -- GUI Timer
+
+-- Times unit
 ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_SECOND", "sec")
 ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_MINUTE", "min")
 ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_HOUR",   "h")
