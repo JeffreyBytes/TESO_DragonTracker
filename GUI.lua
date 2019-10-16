@@ -85,6 +85,9 @@ function DragonTracker.GUI:createItem(dragon)
 
     item:show()
 
+    -- To have the correct valuectr x coord when loading
+    self:changeLabelType(DragonTracker.savedVariables.labelFormat)
+
     return item
 end
 
@@ -101,4 +104,44 @@ function DragonTracker.GUI:resetItem()
 
     self.items   = {}
     self.nbItems = 0
+end
+
+--[[
+-- Define the label type to use on  the location name.
+--]]
+function DragonTracker.GUI:labelUseName()
+    self:changeLabelType("ln")
+end
+
+--[[
+-- Define the label type to use on  the cardinal point.
+--]]
+function DragonTracker.GUI:labelUseCardinalPoint()
+    self:changeLabelType("cp")
+end
+
+--[[
+-- Change the label to use and call the method to move the value controler
+-- relative to the max width of labels.
+--
+-- @param string newType The new type of label ("cp" or "ln")
+--]]
+function DragonTracker.GUI:changeLabelType(newType)
+    DragonTracker.savedVariables.labelFormat = newType
+
+    local itemIdx   = 1
+    local widthMax  = 0
+    local widthText = 0
+
+    for itemIdx = 1, self.nbItems do
+        widthText = self.items[itemIdx]:updateTitle(newType)
+
+        if widthText > widthMax then
+            widthMax = widthText
+        end
+    end
+
+    for itemIdx = 1, self.nbItems do
+        self.items[itemIdx]:moveValueCtr(widthMax)
+    end
 end

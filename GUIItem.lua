@@ -10,11 +10,13 @@ DragonTracker.GUIItem.__index = DragonTracker.GUIItem
 --]]
 function DragonTracker.GUIItem:new(dragon)
 
+    local titleFormat = DragonTracker.savedVariables.labelFormat
+
     local guiItem = {
         dragon   = dragon,
         labelctr = nil,
         valuectr = nil,
-        title    = dragon.GUI.title,
+        title    = dragon.GUI.title[titleFormat],
         value    = ""
     }
 
@@ -27,7 +29,36 @@ function DragonTracker.GUIItem:new(dragon)
 end
 
 --[[
--- Define the text value of the LabelControl to empty string
+-- Change the title type to use and update label text.
+--
+-- @param string newTitleType The new type of title to use
+--
+-- @return number The width taken by the label text.
+--]]
+function DragonTracker.GUIItem:updateTitle(newTitleType)
+    self.title = self.dragon.GUI.title[newTitleType]
+    
+    if self.labelctr:GetText() ~= "" then
+        self.labelctr:SetText(self.title)
+    end
+
+    return self.labelctr:GetStringWidth(self.title)
+end
+
+--[[
+-- Move the value controler relative to the label width.
+--
+-- @param number labelWidth : The max width of all labels text
+--]]
+function DragonTracker.GUIItem:moveValueCtr(labelWidth)
+    local isValidAnchor, point, relativeTo, relativePoint, offsetX, offsetY, anchorConstrains = self.valuectr:GetAnchor()
+
+    self.valuectr:ClearAnchors()
+    self.valuectr:SetAnchor(point, relativeTo, relativePoint, labelWidth + 5, offsetY, anchorConstrains)
+end
+
+--[[
+-- Define the text value of LabelControls to empty string
 --]]
 function DragonTracker.GUIItem:clear()
     self.labelctr:SetText("")
