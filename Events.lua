@@ -72,3 +72,17 @@ function DragonTracker.Events.onGuiChanged(eventCode)
         return
     end
 end
+
+--[[
+-- Called when player use slash command /dragontrackerlabeltype.
+-- Used to change label name to use between cardinal point and location name.
+--
+-- @param string labelMode the value after the command
+--]]
+function DragonTracker.Events.changeLabelType(labelMode)
+    if labelMode == "name" then
+        DragonTracker.GUI:labelUseName()
+    else
+        DragonTracker.GUI:labelUseCardinalPoint()
+    end
+end
