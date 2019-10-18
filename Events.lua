@@ -64,7 +64,12 @@ function DragonTracker.Events.onDragonChangeType(dragon)
         return
     end
     
-    dragon.GUI.item:changeColor(dragon.type.colorRGB, 1)
+    local alpha = 1
+    if dragon.type.colorRGB == nil then
+        alpha = 0
+    end
+
+    dragon.GUI.item:changeColor(dragon.type.colorRGB, alpha)
 end
 
 --[[
@@ -77,7 +82,7 @@ function DragonTracker.Events.onDragonKilled(dragon)
         return
     end
     
-    dragon.GUI.item:changeColor(dragon.type.colorRGB, 0)
+    dragon.GUI.item:changeColor(nil, 0)
 end
 
 --[[

@@ -27,6 +27,7 @@ function DragonTracker.GUIItem:new(dragon)
     guiItem.labelctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Label"]
     guiItem.valuectr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Value"]
 
+    guiItem:changeColor({r=0, g=0, b=0}, 0)
     guiItem:show()
     guiItem:defineTooltips()
 
@@ -77,7 +78,11 @@ end
 -- @param number alpha The alpha value (0 to 1)
 --]]
 function DragonTracker.GUIItem:changeColor(newColor, alpha)
-    self.colorctr:SetCenterColor(newColor.r, newColor.g, newColor.b, alpha)
+    if newColor == nil then
+        self.colorctr:SetCenterColor(0, 0, 0, alpha)
+    else
+        self.colorctr:SetCenterColor(newColor.r, newColor.g, newColor.b, alpha)
+    end
 end
 
 --[[
