@@ -41,6 +41,8 @@ function DragonTracker.Events.onNewDragon(dragon)
     }
 
     dragon.GUI.item = DragonTracker.GUI:createItem(dragon)
+
+    DragonTracker.Events.onDragonChangeType(dragon)
 end
 
 --[[
@@ -50,6 +52,37 @@ end
 --]]
 function DragonTracker.Events.onRemoveAllFromDragonList(dragonList)
     DragonTracker.GUI:resetItem()
+end
+
+--[[
+-- Called when a dragon's type change
+--
+-- @param Dragon dragon The concerned dragon
+--]]
+function DragonTracker.Events.onDragonChangeType(dragon)
+    if dragon.GUI == nil then
+        return
+    end
+    
+    local alpha = 1
+    if dragon.type.colorRGB == nil then
+        alpha = 0
+    end
+
+    dragon.GUI.item:changeColor(dragon.type.colorRGB, alpha)
+end
+
+--[[
+-- Called when a dragon is killed
+--
+-- @param Dragon dragon The killed dragon
+--]]
+function DragonTracker.Events.onDragonKilled(dragon)
+    if dragon.GUI == nil then
+        return
+    end
+    
+    dragon.GUI.item:changeColor(nil, 0)
 end
 
 --[[
@@ -70,5 +103,19 @@ end
 function DragonTracker.Events.onGuiChanged(eventCode)
     if DragonTracker.ready == false then
         return
+    end
+end
+
+--[[
+-- Called when player use slash command /dragontrackerlabeltype.
+-- Used to change label name to use between cardinal point and location name.
+--
+-- @param string labelMode the value after the command
+--]]
+function DragonTracker.Events.changeLabelType(labelMode)
+    if labelMode == "name" then
+        DragonTracker.GUI:labelUseName()
+    else
+        DragonTracker.GUI:labelUseCardinalPoint()
     end
 end

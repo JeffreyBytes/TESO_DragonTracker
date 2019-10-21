@@ -10,25 +10,116 @@ DragonTracker.GUIItem.__index = DragonTracker.GUIItem
 --]]
 function DragonTracker.GUIItem:new(dragon)
 
+    local titleFormat = DragonTracker.savedVariables.labelFormat
+
     local guiItem = {
         dragon   = dragon,
+        colorctr = nil,
         labelctr = nil,
-        title    = dragon.GUI.title,
+        valuectr = nil,
+        title    = dragon.GUI.title[titleFormat],
         value    = ""
     }
 
     setmetatable(guiItem, self)
     
-    guiItem.labelctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx]
+    guiItem.colorctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Color"]
+    guiItem.labelctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Label"]
+    guiItem.valuectr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Value"]
+
+    guiItem:changeColor({r=0, g=0, b=0}, 0)
+    guiItem:show()
+    guiItem:defineTooltips()
 
     return guiItem
 end
 
 --[[
--- Define the text value of the LabelControl to empty string
+-- Define all tooltip
+--]]
+function DragonTracker.GUIItem:defineTooltips()
+    local guiItem = self
+
+    -- Color control tooltip
+    self.colorctr:SetHandler("OnMouseEnter", function(self)
+        local colorTooltipTxt = guiItem:obtainTypeTooltipText()
+
+        if colorTooltipTxt ~= "" then
+            ZO_Tooltips_ShowTextTooltip(self, BOTTOM, colorTooltipTxt)
+        end
+    end)
+
+    self.colorctr:SetHandler("OnMouseExit", function(self)
+        ZO_Tooltips_HideTextTooltip()
+    end)
+end
+
+--[[
+-- Return the text to use in color tooltip
+--]]
+function DragonTracker.GUIItem:obtainTypeTooltipText()
+    if self.dragon.type.name == "" then
+        return ""
+    end
+
+    return zo_strformat(
+        "<<1>> (<<2>>)",
+        self.dragon.type.name,
+        self.dragon.type.colorTxt
+    )
+end
+
+--[[
+-- To change the color in the dragon color box
+--
+-- @param table newColor The new color to use.
+--  The table must contain properties "r", "g" and "b"
+--  /!\ It's 0-1 RGB values, not 0-255
+-- @param number alpha The alpha value (0 to 1)
+--]]
+function DragonTracker.GUIItem:changeColor(newColor, alpha)
+    if newColor == nil then
+        self.colorctr:SetCenterColor(0, 0, 0, alpha)
+    else
+        self.colorctr:SetCenterColor(newColor.r, newColor.g, newColor.b, alpha)
+    end
+end
+
+--[[
+-- Change the title type to use and update label text.
+--
+-- @param string newTitleType The new type of title to use
+--
+-- @return number The width taken by the label text.
+--]]
+function DragonTracker.GUIItem:changeTitleType(newTitleType)
+    local anchorOffsetX = 18 -- I don't want to do a call to GetAnchor()
+
+    self.title = self.dragon.GUI.title[newTitleType]
+    self.labelctr:SetText(self.title)
+
+    return self.labelctr:GetStringWidth(self.title) + anchorOffsetX
+end
+
+--[[
+-- Move the value controler relative to the label width.
+--
+-- @param number labelWidth : The max width of all labels text
+--]]
+function DragonTracker.GUIItem:moveValueCtr(labelWidth)
+    local isValidAnchor, point, relativeTo, relativePoint, offsetX, offsetY, anchorConstrains = self.valuectr:GetAnchor()
+
+    self.valuectr:ClearAnchors()
+    self.valuectr:SetAnchor(point, relativeTo, relativePoint, labelWidth + 5, offsetY, anchorConstrains)
+end
+
+--[[
+-- Define the text value of LabelControls to empty string
 --]]
 function DragonTracker.GUIItem:clear()
+    self.colorctr:SetCenterColor(0, 0, 0, 0)
     self.labelctr:SetText("")
+    self.valuectr:SetText("")
 end
 
 --[[
@@ -37,7 +128,9 @@ end
 -- @param boolean status true to show it, false to hide it
 --]]
 function DragonTracker.GUIItem:display(status)
+    self.colorctr:SetHidden(not status)
     self.labelctr:SetHidden(not status)
+    self.valuectr:SetHidden(not status)
 end
 
 --[[
@@ -74,7 +167,8 @@ function DragonTracker.GUIItem:update()
     end
 
     self.value = newValue
-    self.labelctr:SetText(newValue)
+    -- self.labelctr:SetText(self.title)
+    self.valuectr:SetText(newValue)
 end
 
 --[[
@@ -92,13 +186,11 @@ function DragonTracker.GUIItem:obtainSinceValue(dragonStatus)
     if timerInfo == nil then
         return string.format(
             GetString(SI_DRAGON_TRACKER_GUI_SIMPLE),
-            self.title,
             statusText
         )
     else
         return string.format(
             GetString(SI_DRAGON_TRACKER_GUI_STATUS),
-            self.title,
             statusText,
             timerInfo.value,
             timerInfo.unit
@@ -120,7 +212,6 @@ function DragonTracker.GUIItem:obtainRepopInValue(dragonStatus)
     else
         return string.format(
             GetString(SI_DRAGON_TRACKER_GUI_REPOP),
-            self.title,
             timerInfo.value,
             timerInfo.unit
         )

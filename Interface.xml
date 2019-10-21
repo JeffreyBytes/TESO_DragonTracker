@@ -7,14 +7,40 @@
 				DragonTracker.Events.onGuiMoveStop()
 			</OnMoveStop>
 			<Controls>
-				<Label name="DragonTrackerGUIItem1" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="0" offsetX="0"/>
+				<Backdrop name="DragonTrackerGUIItem1Color" edgeColor="ffffff" centerColor="00000000" hidden="true" mouseEnabled="true">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="5" offsetX="0"/>
+					<Dimensions x="15" y="15" />
+					<Edge edgeSize="1" />
+				</Backdrop>
+				<Label name="DragonTrackerGUIItem1Label" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="0" offsetX="18"/>
 				</Label>
-				<Label name="DragonTrackerGUIItem2" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="20" offsetX="0"/>
+				<Label name="DragonTrackerGUIItem1Value" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="0" offsetX="80"/>
 				</Label>
-				<Label name="DragonTrackerGUIItem3" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="40" offsetX="0"/>
+
+				<Backdrop name="DragonTrackerGUIItem2Color" edgeColor="ffffff" centerColor="00000000" hidden="true" mouseEnabled="true">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="25" offsetX="0"/>
+					<Dimensions x="15" y="15" />
+					<Edge edgeSize="1" />
+				</Backdrop>
+				<Label name="DragonTrackerGUIItem2Label" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="20" offsetX="18"/>
+				</Label>
+				<Label name="DragonTrackerGUIItem2Value" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="20" offsetX="80"/>
+				</Label>
+
+				<Backdrop name="DragonTrackerGUIItem3Color" edgeColor="ffffff" centerColor="00000000" hidden="true" mouseEnabled="true">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="45" offsetX="0"/>
+					<Dimensions x="15" y="15" />
+					<Edge edgeSize="1" />
+				</Backdrop>
+				<Label name="DragonTrackerGUIItem3Label" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="40" offsetX="18"/>
+				</Label>
+				<Label name="DragonTrackerGUIItem3Value" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="40" offsetX="50"/>
 				</Label>
 			</Controls>
 		</TopLevelControl>
