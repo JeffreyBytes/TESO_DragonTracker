@@ -46,6 +46,15 @@ function DragonTracker.Events.onNewDragon(dragon)
 end
 
 --[[
+-- Called when all dragon are created from DragonList
+--
+-- @param table dragonList The DragonList table
+--]]
+function DragonTracker.Events.onCreateAllDragon(dragonList)
+    DragonTracker.GUI:changeLabelType(DragonTracker.savedVariables.labelFormat)
+end
+
+--[[
 -- Called when all dragon is removed from DragonList
 --
 -- @param table dragonList The DragonList table
