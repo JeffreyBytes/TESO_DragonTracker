@@ -7,6 +7,10 @@ LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
     DragonTracker.Events.onNewDragon
 )
 LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
+    LibDragonWorldEvent.Events.callbackEvents.dragonList.createAll,
+    DragonTracker.Events.onCreateAllDragon
+)
+LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
     LibDragonWorldEvent.Events.callbackEvents.dragonList.removeAll,
     DragonTracker.Events.onRemoveAllFromDragonList
 )

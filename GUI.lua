@@ -85,9 +85,6 @@ function DragonTracker.GUI:createItem(dragon)
 
     item:show()
 
-    -- To have the correct valuectr x coord when loading
-    self:changeLabelType(DragonTracker.savedVariables.labelFormat)
-
     return item
 end
 

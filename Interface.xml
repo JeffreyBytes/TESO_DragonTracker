@@ -1,7 +1,7 @@
 <GuiXml>
 	<Controls>
 		<TopLevelControl name="DragonTrackerGUI" mouseEnabled="true" movable="true" hidden="false">
-			<Dimensions x="200" y="60" />
+			<Dimensions x="400" y="60" />
 			<Anchor relativeTo="GuiRoot" relativePoint="LEFT" offsetY="0" offsetX="0"/>
 			<OnMoveStop>
 				DragonTracker.Events.onGuiMoveStop()
@@ -16,7 +16,7 @@
 					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="0" offsetX="18"/>
 				</Label>
 				<Label name="DragonTrackerGUIItem1Value" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="0" offsetX="80"/>
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="0" offsetX="180"/>
 				</Label>
 
 				<Backdrop name="DragonTrackerGUIItem2Color" edgeColor="ffffff" centerColor="00000000" hidden="true" mouseEnabled="true">
@@ -28,7 +28,7 @@
 					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="20" offsetX="18"/>
 				</Label>
 				<Label name="DragonTrackerGUIItem2Value" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="20" offsetX="80"/>
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="20" offsetX="180"/>
 				</Label>
 
 				<Backdrop name="DragonTrackerGUIItem3Color" edgeColor="ffffff" centerColor="00000000" hidden="true" mouseEnabled="true">
@@ -40,7 +40,7 @@
 					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="40" offsetX="18"/>
 				</Label>
 				<Label name="DragonTrackerGUIItem3Value" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="40" offsetX="50"/>
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="40" offsetX="180"/>
 				</Label>
 			</Controls>
 		</TopLevelControl>

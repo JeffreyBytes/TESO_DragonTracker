@@ -11,7 +11,13 @@ DragonTracker.ready          = false
 function DragonTracker:Initialise()
     DragonTracker.savedVariables = ZO_SavedVars:NewAccountWide("DragonTrackerSavedVariables", 1, nil, {})
 
-    if DragonTracker.savedVariables.labelFormat == nil then
+    local labelFormat = DragonTracker.savedVariables.labelFormat
+
+    if labelFormat == nil then
+        DragonTracker.savedVariables.labelFormat = "cp"
+    end
+
+    if labelFormat ~= "cp" and labelFormat ~= "ln" then
         DragonTracker.savedVariables.labelFormat = "cp"
     end
 
