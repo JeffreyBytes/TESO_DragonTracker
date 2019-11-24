@@ -9,7 +9,7 @@
 			<Controls>
 				<Backdrop name="DragonTrackerGUIItem1Color" edgeColor="ffffff" centerColor="00000000" hidden="true" mouseEnabled="true">
 					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="5" offsetX="0"/>
-					<Dimensions x="15" y="15" />
+					<Dimensions x="12" y="12" />
 					<Edge edgeSize="1" />
 				</Backdrop>
 				<Label name="DragonTrackerGUIItem1Label" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
@@ -21,7 +21,7 @@
 
 				<Backdrop name="DragonTrackerGUIItem2Color" edgeColor="ffffff" centerColor="00000000" hidden="true" mouseEnabled="true">
 					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="25" offsetX="0"/>
-					<Dimensions x="15" y="15" />
+					<Dimensions x="12" y="12" />
 					<Edge edgeSize="1" />
 				</Backdrop>
 				<Label name="DragonTrackerGUIItem2Label" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
@@ -33,7 +33,7 @@
 
 				<Backdrop name="DragonTrackerGUIItem3Color" edgeColor="ffffff" centerColor="00000000" hidden="true" mouseEnabled="true">
 					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetY="45" offsetX="0"/>
-					<Dimensions x="15" y="15" />
+					<Dimensions x="12" y="12" />
 					<Edge edgeSize="1" />
 				</Backdrop>
 				<Label name="DragonTrackerGUIItem3Label" font="ZoFontGame" wrapMode="ELLIPSIS" verticalAlignment="TOPLEFT" text="">
