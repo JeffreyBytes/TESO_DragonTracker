@@ -27,6 +27,7 @@ function DragonTracker.GUIItem:new(dragon)
     guiItem.labelctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Label"]
     guiItem.valuectr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Value"]
 
+    guiItem.valuectrXOffsetShift = 15
     guiItem:changeColor({r=0, g=0, b=0}, 0)
     guiItem:show()
     guiItem:defineTooltips()
@@ -98,7 +99,7 @@ function DragonTracker.GUIItem:changeTitleType(newTitleType)
     self.title = self.dragon.GUI.title[newTitleType]
     self.labelctr:SetText(self.title)
 
-    return self.labelctr:GetStringWidth(self.title) + anchorOffsetX
+    return self.labelctr:GetTextWidth() + anchorOffsetX
 end
 
 --[[
@@ -110,7 +111,7 @@ function DragonTracker.GUIItem:moveValueCtr(labelWidth)
     local isValidAnchor, point, relativeTo, relativePoint, offsetX, offsetY, anchorConstrains = self.valuectr:GetAnchor()
 
     self.valuectr:ClearAnchors()
-    self.valuectr:SetAnchor(point, relativeTo, relativePoint, labelWidth + 5, offsetY, anchorConstrains)
+    self.valuectr:SetAnchor(point, relativeTo, relativePoint, labelWidth + self.valuectrXOffsetShift, offsetY, anchorConstrains)
 end
 
 --[[
