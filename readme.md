@@ -85,10 +85,15 @@ Contain all functions called when a listened event is triggered.
 * `DragonTracker.Events.onLoaded` : Called when the addon is loaded
 * `DragonTracker.Events.onLoadScreen` : Called after each load screen
 * `DragonTracker.Events.onNewDragon` : Called when a new dragon instance is created
+* `DragonTracker.Events.onCreateAllDragon` : Called when all dragon are created from DragonList
 * `DragonTracker.Events.onRemoveAllFromDragonList` : Called when all dragon is removed from DragonList
+* `DragonTracker.Events.onDragonChangeType` : Called when a dragon's type change
+* `DragonTracker.Events.onDragonKilled` : Called when a dragon is killed
 * `DragonTracker.Events.onGuiMoveStop` : Called when GUI items have been moved by the user
 * `DragonTracker.Events.onGuiChanged` : Called when something changes in the GUI (like open inventory).  
 Used to debug only, the line to add the listener on the event is commented.
+* `DragonTracker.Events.changeLabelType` : Called when player use slash command /dragontrackerlabeltype.  
+Used to change label name to use between cardinal point and location name.
 
 ### GUI.lua
 
@@ -109,10 +114,13 @@ Methods :
 * `DragonTracker.GUI:restorePosition` : Restore the GUI's position from savedVariables
 * `DragonTracker.GUI:savePosition` : Save the GUI's position from savedVariables
 * `DragonTracker.GUI:defineFragment` : Define GUI has a fragment linked to scenes.  
--- With that, the GUI is hidden when we open a menu (like inventory or map)
+With that, the GUI is hidden when we open a menu (like inventory or map)
 * `DragonTracker.GUI:display` : Hide or show all GUIItems.
 * `DragonTracker.GUI:createItem` : To create a GUIItem instance for a Dragon
 * `DragonTracker.GUI:resetItem` : To reset the list of GUIItems
+* `DragonTracker.GUI:labelUseName` : Define the label type to use on the location name.
+* `DragonTracker.GUI:labelUseCardinalPoint` : Define the label type to use on  the cardinal point.
+* `DragonTracker.GUI:changeLabelType` : Change the label to use and call the method to move the value controler relative to the max width of labels
 
 ### GUIItems.lua
 
@@ -124,13 +132,20 @@ Each GUIItem is linked to a Dragon instance. Else, the text value is empty and l
 Properties :
 
 * `dragon` : The Dragon instance linked to the GUIItem
-* `labelctr` : The LabelControl in interface
+* `colorctr` : The Color square in the interface
+* `labelctr` : The label control in the interface used to display location
+* `valuectr` : The Label control in the interface used to display the status and the timer
 * `title` : The prefix to use for the dragon (like "North")
 * `value` : The text displayed
 
 Methods :
 
 * `DragonTracker.GUIItem:new` : To instanciate a new GUIItem instance
+* `DragonTracker.GUIItem:defineTooltips` : Define all tooltip 
+* `DragonTracker.GUIItem:obtainTypeTooltipText` : Return the text to use in color tooltip
+* `DragonTracker.GUIItem:changeColor` : To change the color in the dragon color box 
+* `DragonTracker.GUIItem:changeTitleType` : Change the title type to use and update label text.
+* `DragonTracker.GUIItem:moveValueCtr` : Move the value controler relative to the label width.
 * `DragonTracker.GUIItem:clear` : Define the text value as empty string
 * `DragonTracker.GUIItem:display` : Define the value of SetHidden to show or hide the label
 * `DragonTracker.GUIItem:show` : Show the label
