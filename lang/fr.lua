@@ -24,3 +24,7 @@ ZO_CreateStringId("SI_DRAGON_TRACKER_GUI_SIMPLE", ": %s")
 ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_SECOND", "sec")
 ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_MINUTE", "min")
 ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_HOUR",   "h")
+
+
+-- Bindings
+ZO_CreateStringId("SI_BINDING_NAME_DRAGON_TRACKER_TOGGLE", "Afficher/Masquer")

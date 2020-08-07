@@ -12,6 +12,11 @@ DragonTracker.GUI.nbItems   = 0
 -- @var table Ref to the SavedVariables.gui table
 DragonTracker.GUI.savedVars = nil
 
+-- @var bool To know if the GUI should be displayed (user config only)
+-- It's not the current GUI display status because the user can accept to
+-- display it but not be in a dragon's zone (so the GUI will be hidden) !
+DragonTracker.GUI.toDisplay = false
+
 --[[
 -- Initialise the GUI
 --]]
@@ -66,11 +71,28 @@ end
 -- @param boolean status true to show it, false to hide it
 --]]
 function DragonTracker.GUI:display(status)
+    if status == true and self.savedVars.toDisplay == false then
+        status = false
+    end
+
     -- self.container:SetHidden(not status) -- Not work :(
-    
     local itemIdx = 1
     for itemIdx = 1, self.nbItems do
         self.items[itemIdx]:display(status)
+    end
+end
+
+--[[
+-- Switch the status of toDisplay to be the invert of the previous status, and
+-- call self:display() to update the GUI
+--]]
+function DragonTracker.GUI:toggleToDisplay()
+    self.savedVars.toDisplay = not self.savedVars.toDisplay
+
+    if self.savedVars.toDisplay == true then
+        self:display(LibDragonWorldEvent.Zone.onDragonMap)
+    else
+        self:display(false)
     end
 end
 

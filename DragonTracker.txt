@@ -16,6 +16,7 @@ GUI.lua
 GUIItem.lua
 GUITimer.lua
 Run.lua
+Bindings.xml
 
 ;
 ; This Add-on is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates. 

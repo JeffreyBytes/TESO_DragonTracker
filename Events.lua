@@ -128,3 +128,14 @@ function DragonTracker.Events.changeLabelType(labelMode)
         DragonTracker.GUI:labelUseCardinalPoint()
     end
 end
+
+--[[
+-- Called when player use the keybind to show/hide the GUI
+--]]
+function DragonTracker.Events.keybindingsToggle()
+    if DragonTracker.ready == false then
+        return
+    end
+
+    DragonTracker.GUI:toggleToDisplay()
+end

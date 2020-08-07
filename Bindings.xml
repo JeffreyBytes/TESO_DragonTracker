@@ -1,0 +1,9 @@
+<Bindings>
+	<Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+		<Category name="Dragon Tracker">
+			<Action name="DRAGON_TRACKER_TOGGLE">
+				<Up>DragonTracker.Events.keybindingsToggle()</Up>
+			</Action>
+		</Category>
+	</Layer>
+</Bindings>
