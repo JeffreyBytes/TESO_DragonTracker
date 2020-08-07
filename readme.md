@@ -75,6 +75,13 @@ Declared variables :
 * `DragonTracker.name` : The addon name
 * `DragonTracker.savedVariables` : The `ZO_SavedVars` table which contains saved variable for this addon.
 * `DragonTracker.ready` : If the addon is ready to be used
+* `DragonTracker.LAM` : The library LibAddonMenu2
+
+Methods :
+
+* `DragonTracker:Initialise` : Module initialiser  
+Intiialise savedVariables, settings panel and GUI
+* `DragonTracker:initSavedVars` : Initialise all savedVariable's default values
 
 ### Events.lua
 
@@ -94,6 +101,7 @@ Contain all functions called when a listened event is triggered.
 Used to debug only, the line to add the listener on the event is commented.
 * `DragonTracker.Events.changeLabelType` : Called when player use slash command /dragontrackerlabeltype.  
 Used to change label name to use between cardinal point and location name.
+* `DragonTracker.Events.keybindingsToggle` : Called when player use the keybind to show/hide the GUI
 
 ### GUI.lua
 
@@ -106,6 +114,10 @@ Properties :
 * `container` : The TopLevelControl in interface
 * `items` : List of GUIItems associate to a dragon
 * `nbItems` : Number of GUIItems in `items`.
+* `savedVars` : A direct access to `DragonTracker.savedVariables.gui` which contain all saved variables used by the GUI.
+* `fragment` : The fragment used to define when the GUI is displayed
+* `toDisplay` : To know if the GUI should be displayed (user config only)  
+It's not the current GUI display status because the user can accept to display it but not be in a dragon's zone (so the GUI will be hidden) !
 
 Methods :
 
@@ -113,14 +125,21 @@ Methods :
 * `DragonTracker.GUI:obtainContainer` : Obtain the TopLevelControl's table
 * `DragonTracker.GUI:restorePosition` : Restore the GUI's position from savedVariables
 * `DragonTracker.GUI:savePosition` : Save the GUI's position from savedVariables
+* `DragonTracker.GUI:restoreLock` : Restore the GUI locked status
+* `DragonTracker.GUI:isLocked` : Return the status if the GUI should be locked or not
+* `DragonTracker.GUI:defineLocked` : Define if the GUI should be locked or not, and update the GUI to lock it (or not)
 * `DragonTracker.GUI:defineFragment` : Define GUI has a fragment linked to scenes.  
 With that, the GUI is hidden when we open a menu (like inventory or map)
+* `DragonTracker.GUI:isDisplayWithWMap` : Return the status if the GUI should be display in the world map interface
+* `DragonTracker.GUI:defineDisplayWithWMap` : Define the status which define if the GUI is displayed in the world map interface or not, and update the fragment to apply the new status.
 * `DragonTracker.GUI:display` : Hide or show all GUIItems.
+* `DragonTracker.GUI:toggleToDisplay` : Switch the status of toDisplay to be the invert of the previous status, and call self:display() to update the GUI
 * `DragonTracker.GUI:createItem` : To create a GUIItem instance for a Dragon
 * `DragonTracker.GUI:resetItem` : To reset the list of GUIItems
 * `DragonTracker.GUI:labelUseName` : Define the label type to use on the location name.
 * `DragonTracker.GUI:labelUseCardinalPoint` : Define the label type to use on  the cardinal point.
-* `DragonTracker.GUI:changeLabelType` : Change the label to use and call the method to move the value controler relative to the max width of labels
+* `DragonTracker.GUI:obtainLabelType` : Return the current labelFormat used
+* `DragonTracker.GUI:defineLabelType` : Define the label to use and call the method to move the value controler relative to the max width of labels
 
 ### GUIItems.lua
 
@@ -168,6 +187,24 @@ Contain all function to manage the timer used to display "since..."
 Methods :
 
 * `DragonTracker.GUITimer.update` : Callback function on timer. Called each 1sec in dragons zone. Update the GUI for each dragon.
+
+### Settings.lua
+
+Table : `DragonTracker.Settings`
+
+Contain all function used to build the settings panel
+
+Properties :
+
+* `panelName` : The name of the settings panel
+
+Methods :
+
+* `DragonTracker.Settings:init` : Initialise the settings panel
+* `DragonTracker.Settings:build` : Build the settings panel
+* `DragonTracker.Settings:buildGUILocked` : Build the "GUI Locked" part of the panel
+* `DragonTracker.Settings:buildDisplayedWithWorldMap` : Build the "Displayed with the World Map" part of the panel
+* `DragonTracker.Settings:buildPositionType` : Build the "Position type" part of the panel
 
 ### Run.lua
 
