@@ -51,7 +51,7 @@ end
 -- @param table dragonList The DragonList table
 --]]
 function DragonTracker.Events.onCreateAllDragon(dragonList)
-    DragonTracker.GUI:changeLabelType(DragonTracker.savedVariables.labelFormat)
+    DragonTracker.GUI:changeLabelType(DragonTracker.savedVariables.gui.labelFormat)
 end
 
 --[[

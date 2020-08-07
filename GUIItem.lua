@@ -10,7 +10,7 @@ DragonTracker.GUIItem.__index = DragonTracker.GUIItem
 --]]
 function DragonTracker.GUIItem:new(dragon)
 
-    local titleFormat = DragonTracker.savedVariables.labelFormat
+    local titleFormat = DragonTracker.savedVariables.gui.labelFormat
 
     local guiItem = {
         dragon   = dragon,

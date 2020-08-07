@@ -9,10 +9,15 @@ DragonTracker.GUI.items     = {}
 -- @var number Number of GUIItems in items
 DragonTracker.GUI.nbItems   = 0
 
+-- @var table Ref to the SavedVariables.gui table
+DragonTracker.GUI.savedVars = nil
+
 --[[
 -- Initialise the GUI
 --]]
 function DragonTracker.GUI:init()
+    self.savedVars = DragonTracker.savedVariables.gui
+    
     self:obtainContainer()
     self:defineFragment()
     self:restorePosition()
@@ -29,8 +34,8 @@ end
 -- Restore the GUI's position from savedVariables
 --]]
 function DragonTracker.GUI:restorePosition()
-    local left = DragonTracker.savedVariables.left
-    local top  = DragonTracker.savedVariables.top
+    local left = self.savedVars.position.left
+    local top  = self.savedVars.position.top
 
     self.container:ClearAnchors()
     self.container:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, left, top)
@@ -40,8 +45,8 @@ end
 -- Save the GUI's position from savedVariables
 --]]
 function DragonTracker.GUI:savePosition()
-    DragonTracker.savedVariables.left = self.container:GetLeft()
-    DragonTracker.savedVariables.top  = self.container:GetTop()
+    self.savedVars.position.left = self.container:GetLeft()
+    self.savedVars.position.top  = self.container:GetTop()
 end
 
 --[[
@@ -107,14 +112,14 @@ end
 -- Define the label type to use on  the location name.
 --]]
 function DragonTracker.GUI:labelUseName()
-    self:changeLabelType("ln")
+    self:defineLabelType("ln")
 end
 
 --[[
 -- Define the label type to use on  the cardinal point.
 --]]
 function DragonTracker.GUI:labelUseCardinalPoint()
-    self:changeLabelType("cp")
+    self:defineLabelType("cp")
 end
 
 --[[
@@ -124,7 +129,7 @@ end
 -- @param string newType The new type of label ("cp" or "ln")
 --]]
 function DragonTracker.GUI:changeLabelType(newType)
-    DragonTracker.savedVariables.labelFormat = newType
+    self.savedVars.labelFormat = newType
 
     local itemIdx   = 1
     local widthMax  = 0
