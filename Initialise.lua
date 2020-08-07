@@ -3,15 +3,17 @@ DragonTracker = {}
 DragonTracker.name           = "DragonTracker"
 DragonTracker.savedVariables = nil
 DragonTracker.ready          = false
+DragonTracker.LAM            = LibAddonMenu2
 
 --[[
 -- Module initialiser
--- Intiialise savedVariables and GUI
+-- Intiialise savedVariables, settings panel and GUI
 --]]
 function DragonTracker:Initialise()
     DragonTracker.savedVariables = ZO_SavedVars:NewAccountWide("DragonTrackerSavedVariables", 1, nil, {})
     self:initSavedVars()
 
+    DragonTracker.Settings:init()
     DragonTracker.GUI:init()
     DragonTracker.ready = true
 end
