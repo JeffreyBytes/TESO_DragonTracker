@@ -31,4 +31,5 @@ ZO_CreateStringId("SI_BINDING_NAME_DRAGON_TRACKER_TOGGLE", "Afficher/Masquer")
 
 
 -- Settings
-ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_LOCK_UI", "Verrouiller l'interface")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_LOCK_UI", "Verrouiller l'interface")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_DISPLAY_WITH_WM", "Afficher avec la carte")

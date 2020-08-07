@@ -12,6 +12,9 @@ DragonTracker.GUI.nbItems   = 0
 -- @var table Ref to the SavedVariables.gui table
 DragonTracker.GUI.savedVars = nil
 
+-- @var table The fragment used to define when the GUI is displayed
+DragonTracker.GUI.fragment  = nil
+
 -- @var bool To know if the GUI should be displayed (user config only)
 -- It's not the current GUI display status because the user can accept to
 -- display it but not be in a dragon's zone (so the GUI will be hidden) !
@@ -92,10 +95,37 @@ end
 -- With that, the GUI is hidden when we open a menu (like inventory or map)
 --]]
 function DragonTracker.GUI:defineFragment()
-    local fragment = ZO_SimpleSceneFragment:New(self.container)
+    self.fragment = ZO_SimpleSceneFragment:New(self.container)
 
-    SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("hudui"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("hud"):AddFragment(self.fragment)
+    SCENE_MANAGER:GetScene("hudui"):AddFragment(self.fragment)
+
+    self:defineDisplayWithWMap(self.savedVars.displayWithWMap)
+end
+
+--[[
+-- Return the status if the GUI should be display in the world map interface
+--
+-- @return bool
+--]]
+function DragonTracker.GUI:isDisplayWithWMap()
+    return self.savedVars.displayWithWMap
+end
+
+--[[
+-- Define the status which define if the GUI is displayed in the world map
+-- interface or not, and update the fragment to apply the new status.
+--
+-- @param bool value
+--]]
+function DragonTracker.GUI:defineDisplayWithWMap(value)
+    self.savedVars.displayWithWMap = value
+
+    if value == true then
+        SCENE_MANAGER:GetScene("worldMap"):AddFragment(self.fragment)
+    else
+        SCENE_MANAGER:GetScene("worldMap"):RemoveFragment(self.fragment)
+    end
 end
 
 --[[

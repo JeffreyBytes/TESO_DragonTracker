@@ -30,4 +30,5 @@ ZO_CreateStringId("SI_BINDING_NAME_DRAGON_TRACKER_TOGGLE", "Show/Hide")
 
 
 -- Settings
-ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_LOCK_UI", "Lock UI")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_LOCK_UI", "Lock UI")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_DISPLAY_WITH_WM", "Displayed with the map")

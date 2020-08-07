@@ -23,6 +23,7 @@ end
 function DragonTracker.Settings:build()
     local optionsData = {
         self:buildGUILocked(),
+        self:buildDisplayedWithWorldMap(),
     }
 
     DragonTracker.LAM:RegisterOptionControls(self.panelName, optionsData)
@@ -42,6 +43,24 @@ function DragonTracker.Settings:buildGUILocked()
         end,
         setFunc = function(value)
             DragonTracker.GUI:defineLocked(value)
+        end,
+    }
+end
+
+--[[
+-- Build the "Displayed with the World Map" part of the panel
+--
+-- @return table
+--]]
+function DragonTracker.Settings:buildDisplayedWithWorldMap()
+    return {
+        type = "checkbox",
+        name = GetString(SI_DRAGON_TRACKER_SETTINGS_DISPLAY_WITH_WM),
+        getFunc = function()
+            return DragonTracker.GUI:isDisplayWithWMap()
+        end,
+        setFunc = function(value)
+            DragonTracker.GUI:defineDisplayWithWMap(value)
         end,
     }
 end
