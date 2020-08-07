@@ -24,6 +24,7 @@ function DragonTracker.Settings:build()
     local optionsData = {
         self:buildGUILocked(),
         self:buildDisplayedWithWorldMap(),
+        self:buildPositionType()
     }
 
     DragonTracker.LAM:RegisterOptionControls(self.panelName, optionsData)
@@ -64,4 +65,27 @@ function DragonTracker.Settings:buildDisplayedWithWorldMap()
         end,
     }
 end
-
+
+--[[
+-- Build the "Position type" part of the panel
+--
+-- @return table
+--]]
+function DragonTracker.Settings:buildPositionType()
+    return {
+        type          = "dropdown",
+        name          = GetString(SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE),
+        tooltip       = GetString(SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE_TOOLTIP),
+        choices       = {
+            GetString(SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE_CHOICE_LN),
+            GetString(SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE_CHOICE_CP)
+        },
+        choicesValues = {"ln", "cp"},
+        getFunc       = function()
+            return DragonTracker.GUI:obtainLabelType()
+        end,
+        setFunc       = function(labelMode)
+            DragonTracker.Events.changeLabelType(labelMode)
+        end
+    }
+end

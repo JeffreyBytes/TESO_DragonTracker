@@ -31,4 +31,8 @@ ZO_CreateStringId("SI_BINDING_NAME_DRAGON_TRACKER_TOGGLE", "Show/Hide")
 
 -- Settings
 ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_LOCK_UI", "Lock UI")
-ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_DISPLAY_WITH_WM", "Displayed with the map")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_DISPLAY_WITH_WM", "Displayed with the map")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE", "Position type")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE_TOOLTIP", "Work only in Northern Elsweyr. Quests in Southern Elsweyr use cardinal points.")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE_CHOICE_LN", "Location name")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE_CHOICE_CP", "Cardinal point")

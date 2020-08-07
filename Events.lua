@@ -51,7 +51,7 @@ end
 -- @param table dragonList The DragonList table
 --]]
 function DragonTracker.Events.onCreateAllDragon(dragonList)
-    DragonTracker.GUI:changeLabelType(DragonTracker.savedVariables.gui.labelFormat)
+    DragonTracker.GUI:defineLabelType(DragonTracker.savedVariables.gui.labelFormat)
 end
 
 --[[
@@ -116,13 +116,13 @@ function DragonTracker.Events.onGuiChanged(eventCode)
 end
 
 --[[
--- Called when player use slash command /dragontrackerlabeltype.
+-- Called when player use slash command "/dragontrackerlabeltype" or from settings panel.
 -- Used to change label name to use between cardinal point and location name.
 --
 -- @param string labelMode the value after the command
 --]]
 function DragonTracker.Events.changeLabelType(labelMode)
-    if labelMode == "name" then
+    if labelMode == "name" or labelMode == "ln" then
         DragonTracker.GUI:labelUseName()
     else
         DragonTracker.GUI:labelUseCardinalPoint()

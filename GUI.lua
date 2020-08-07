@@ -208,12 +208,21 @@ function DragonTracker.GUI:labelUseCardinalPoint()
 end
 
 --[[
--- Change the label to use and call the method to move the value controler
+-- Return the current labelFormat used
+--
+-- @return string "cp" (cardinal point) or "ln" (location name)
+--]]
+function DragonTracker.GUI:obtainLabelType()
+    return self.savedVars.labelFormat
+end
+
+--[[
+-- Define the label to use and call the method to move the value controler
 -- relative to the max width of labels.
 --
 -- @param string newType The new type of label ("cp" or "ln")
 --]]
-function DragonTracker.GUI:changeLabelType(newType)
+function DragonTracker.GUI:defineLabelType(newType)
     self.savedVars.labelFormat = newType
 
     local itemIdx   = 1
