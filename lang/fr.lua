@@ -27,4 +27,8 @@ ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_HOUR",   "h")
 
 
 -- Bindings
-ZO_CreateStringId("SI_BINDING_NAME_DRAGON_TRACKER_TOGGLE", "Afficher/Masquer")
+ZO_CreateStringId("SI_BINDING_NAME_DRAGON_TRACKER_TOGGLE", "Afficher/Masquer")
+
+
+-- Settings
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_LOCK_UI", "Verrouiller l'interface")

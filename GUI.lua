@@ -26,6 +26,7 @@ function DragonTracker.GUI:init()
     self:obtainContainer()
     self:defineFragment()
     self:restorePosition()
+    self:restoreLock()
 end
 
 --[[
@@ -52,6 +53,38 @@ end
 function DragonTracker.GUI:savePosition()
     self.savedVars.position.left = self.container:GetLeft()
     self.savedVars.position.top  = self.container:GetTop()
+end
+
+--[[
+-- Restore the GUI locked status
+--]]
+function DragonTracker.GUI:restoreLock()
+    if self.savedVars.locked == nil then
+        self.savedVars.locked = false
+    end
+
+    self:defineLocked(self.savedVars.locked)
+end
+
+--[[
+-- Return the status if the GUI should be locked or not
+--
+-- @return bool
+--]]
+function DragonTracker.GUI:isLocked()
+    return self.savedVars.locked
+end
+
+--[[
+-- Define if the GUI should be locked or not, and update the GUI to lock it (or not)
+--
+-- @param bool isLocked The new locked status
+--]]
+function DragonTracker.GUI:defineLocked(isLocked)
+    self.container:SetMouseEnabled(not isLocked)
+    self.container:SetMovable(not isLocked)
+
+    self.savedVars.locked = isLocked
 end
 
 --[[
