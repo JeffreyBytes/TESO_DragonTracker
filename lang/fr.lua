@@ -24,3 +24,16 @@ ZO_CreateStringId("SI_DRAGON_TRACKER_GUI_SIMPLE", ": %s")
 ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_SECOND", "sec")
 ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_MINUTE", "min")
 ZO_CreateStringId("SI_DRAGON_TRACKER_TIMER_HOUR",   "h")
+
+
+-- Bindings
+ZO_CreateStringId("SI_BINDING_NAME_DRAGON_TRACKER_TOGGLE", "Afficher/Masquer")
+
+
+-- Settings
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_LOCK_UI", "Verrouiller l'interface")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_DISPLAY_WITH_WM", "Afficher avec la carte")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_POSITION_NAME", "Type de position")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_POSITION_NAME_TOOLTIP", "Ne fonctionne qu'au Nord d'Elsweyr. Les quêtes utilisent les points cardinaux à Elsweyr Sud.")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_POSITION_NAME_CHOICE_LN", "Nom du lieux")
+ZO_CreateStringId("SI_DRAGON_TRACKER_SETTINGS_POSITION_NAME_CHOICE_CP", "Points cardinaux")

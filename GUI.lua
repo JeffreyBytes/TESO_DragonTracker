@@ -9,13 +9,27 @@ DragonTracker.GUI.items     = {}
 -- @var number Number of GUIItems in items
 DragonTracker.GUI.nbItems   = 0
 
+-- @var table Ref to the SavedVariables.gui table
+DragonTracker.GUI.savedVars = nil
+
+-- @var table The fragment used to define when the GUI is displayed
+DragonTracker.GUI.fragment  = nil
+
+-- @var bool To know if the GUI should be displayed (user config only)
+-- It's not the current GUI display status because the user can accept to
+-- display it but not be in a dragon's zone (so the GUI will be hidden) !
+DragonTracker.GUI.toDisplay = false
+
 --[[
 -- Initialise the GUI
 --]]
 function DragonTracker.GUI:init()
+    self.savedVars = DragonTracker.savedVariables.gui
+    
     self:obtainContainer()
     self:defineFragment()
     self:restorePosition()
+    self:restoreLock()
 end
 
 --[[
@@ -29,8 +43,8 @@ end
 -- Restore the GUI's position from savedVariables
 --]]
 function DragonTracker.GUI:restorePosition()
-    local left = DragonTracker.savedVariables.left
-    local top  = DragonTracker.savedVariables.top
+    local left = self.savedVars.position.left
+    local top  = self.savedVars.position.top
 
     self.container:ClearAnchors()
     self.container:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, left, top)
@@ -40,8 +54,40 @@ end
 -- Save the GUI's position from savedVariables
 --]]
 function DragonTracker.GUI:savePosition()
-    DragonTracker.savedVariables.left = self.container:GetLeft()
-    DragonTracker.savedVariables.top  = self.container:GetTop()
+    self.savedVars.position.left = self.container:GetLeft()
+    self.savedVars.position.top  = self.container:GetTop()
+end
+
+--[[
+-- Restore the GUI locked status
+--]]
+function DragonTracker.GUI:restoreLock()
+    if self.savedVars.locked == nil then
+        self.savedVars.locked = false
+    end
+
+    self:defineLocked(self.savedVars.locked)
+end
+
+--[[
+-- Return the status if the GUI should be locked or not
+--
+-- @return bool
+--]]
+function DragonTracker.GUI:isLocked()
+    return self.savedVars.locked
+end
+
+--[[
+-- Define if the GUI should be locked or not, and update the GUI to lock it (or not)
+--
+-- @param bool isLocked The new locked status
+--]]
+function DragonTracker.GUI:defineLocked(isLocked)
+    self.container:SetMouseEnabled(not isLocked)
+    self.container:SetMovable(not isLocked)
+
+    self.savedVars.locked = isLocked
 end
 
 --[[
@@ -49,10 +95,37 @@ end
 -- With that, the GUI is hidden when we open a menu (like inventory or map)
 --]]
 function DragonTracker.GUI:defineFragment()
-    local fragment = ZO_SimpleSceneFragment:New(self.container)
+    self.fragment = ZO_SimpleSceneFragment:New(self.container)
 
-    SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("hudui"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("hud"):AddFragment(self.fragment)
+    SCENE_MANAGER:GetScene("hudui"):AddFragment(self.fragment)
+
+    self:defineDisplayWithWMap(self.savedVars.displayWithWMap)
+end
+
+--[[
+-- Return the status if the GUI should be display in the world map interface
+--
+-- @return bool
+--]]
+function DragonTracker.GUI:isDisplayWithWMap()
+    return self.savedVars.displayWithWMap
+end
+
+--[[
+-- Define the status which define if the GUI is displayed in the world map
+-- interface or not, and update the fragment to apply the new status.
+--
+-- @param bool value
+--]]
+function DragonTracker.GUI:defineDisplayWithWMap(value)
+    self.savedVars.displayWithWMap = value
+
+    if value == true then
+        SCENE_MANAGER:GetScene("worldMap"):AddFragment(self.fragment)
+    else
+        SCENE_MANAGER:GetScene("worldMap"):RemoveFragment(self.fragment)
+    end
 end
 
 --[[
@@ -61,11 +134,28 @@ end
 -- @param boolean status true to show it, false to hide it
 --]]
 function DragonTracker.GUI:display(status)
+    if status == true and self.savedVars.toDisplay == false then
+        status = false
+    end
+
     -- self.container:SetHidden(not status) -- Not work :(
-    
     local itemIdx = 1
     for itemIdx = 1, self.nbItems do
         self.items[itemIdx]:display(status)
+    end
+end
+
+--[[
+-- Switch the status of toDisplay to be the invert of the previous status, and
+-- call self:display() to update the GUI
+--]]
+function DragonTracker.GUI:toggleToDisplay()
+    self.savedVars.toDisplay = not self.savedVars.toDisplay
+
+    if self.savedVars.toDisplay == true then
+        self:display(LibDragonWorldEvent.Zone.onDragonMap)
+    else
+        self:display(false)
     end
 end
 
@@ -107,24 +197,33 @@ end
 -- Define the label type to use on  the location name.
 --]]
 function DragonTracker.GUI:labelUseName()
-    self:changeLabelType("ln")
+    self:defineLabelType("ln")
 end
 
 --[[
 -- Define the label type to use on  the cardinal point.
 --]]
 function DragonTracker.GUI:labelUseCardinalPoint()
-    self:changeLabelType("cp")
+    self:defineLabelType("cp")
 end
 
 --[[
--- Change the label to use and call the method to move the value controler
+-- Return the current labelFormat used
+--
+-- @return string "cp" (cardinal point) or "ln" (location name)
+--]]
+function DragonTracker.GUI:obtainLabelType()
+    return self.savedVars.labelFormat
+end
+
+--[[
+-- Define the label to use and call the method to move the value controler
 -- relative to the max width of labels.
 --
 -- @param string newType The new type of label ("cp" or "ln")
 --]]
-function DragonTracker.GUI:changeLabelType(newType)
-    DragonTracker.savedVariables.labelFormat = newType
+function DragonTracker.GUI:defineLabelType(newType)
+    self.savedVars.labelFormat = newType
 
     local itemIdx   = 1
     local widthMax  = 0

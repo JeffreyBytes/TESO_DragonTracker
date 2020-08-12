@@ -10,7 +10,7 @@ DragonTracker.GUIItem.__index = DragonTracker.GUIItem
 --]]
 function DragonTracker.GUIItem:new(dragon)
 
-    local titleFormat = DragonTracker.savedVariables.labelFormat
+    local titleFormat = DragonTracker.savedVariables.gui.labelFormat
 
     local guiItem = {
         dragon   = dragon,
@@ -57,6 +57,8 @@ end
 
 --[[
 -- Return the text to use in color tooltip
+--
+-- @return string
 --]]
 function DragonTracker.GUIItem:obtainTypeTooltipText()
     if self.dragon.type.name == "" then
