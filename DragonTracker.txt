@@ -2,7 +2,7 @@
 ## Description: Track all dragons status in Elsweyr
 ## Version: 2.3.0
 ## Author: bulton-fr
-## APIVersion: 100029
+## APIVersion: 100031 100032
 ## SavedVariables: DragonTrackerSavedVariables
 ## DependsOn: LibDragonWorldEvent LibAddonMenu-2.0>=30
 
