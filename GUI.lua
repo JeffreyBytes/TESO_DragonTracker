@@ -153,7 +153,7 @@ function DragonTracker.GUI:toggleToDisplay()
     self.savedVars.toDisplay = not self.savedVars.toDisplay
 
     if self.savedVars.toDisplay == true then
-        self:display(LibDragonWorldEvent.Zone.onDragonMap)
+        self:display(LibDragonWorldEvent.Dragons.ZoneInfo.onMap)
     else
         self:display(false)
     end
