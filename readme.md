@@ -7,7 +7,7 @@ And, you can install the addon World Event Alert in addition if you want because
 
 ## Dependencies
 
-One library : [`LibDragonWorldEvent`](https://www.esoui.com/downloads/info2473-LibDragonWorldEvent.html).
+One library : [`LibWorldEvents`](https://www.esoui.com/downloads/info2473-LibWorldEvents.html).
 
 ## Install it
 
@@ -39,10 +39,10 @@ Game Events triggered :
 * `EVENT_PLAYER_ACTIVATED` : When a load screen displayed
 * `EVENT_GAME_CAMERA_UI_MODE_CHANGED` : A change in camera mode (free mouse, open inventory, etc). **In released versions, this event is not triggered.** I use it to dump some data when I dev or debug.
 
-`LibDragonWorldEvent` events triggered :
+`LibWorldEvents` events triggered :
 
-* `LibDragonWorldEvent.Events.callbackEvents.dragon.new` : When a new dragon instance is created.
-* `LibDragonWorldEvent.Events.callbackEvents.dragonList.removeAll` : When all dragon are removed from `DragonList`.
+* `LibWorldEvents.Events.callbackEvents.dragon.new` : When a new dragon instance is created.
+* `LibWorldEvents.Events.callbackEvents.dragonList.removeAll` : When all dragon are removed from `DragonList`.
 
 Note : Dark anchor, world bosses, etc are not trigger WorldEvent events. So I cannot catch events on them.
 
@@ -180,7 +180,7 @@ Methods :
 ### GUITimer.lua
 
 Table : `DragonTracker.GUITimer`  
-Extends : `LibDragonWorldEvent.Timer`
+Extends : `LibWorldEvents.Timer`
 
 Contain all function to manage the timer used to display "since..."
 

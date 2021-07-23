@@ -25,8 +25,8 @@ function DragonTracker.Events.onLoadScreen(eventCode, initial)
         return
     end
 
-    DragonTracker.GUITimer:changeStatus(LibDragonWorldEvent.Dragons.ZoneInfo.onMap)
-    DragonTracker.GUI:display(LibDragonWorldEvent.Dragons.ZoneInfo.onMap)
+    DragonTracker.GUITimer:changeStatus(LibWorldEvents.Dragons.ZoneInfo.onMap)
+    DragonTracker.GUI:display(LibWorldEvents.Dragons.ZoneInfo.onMap)
 end
 
 --[[

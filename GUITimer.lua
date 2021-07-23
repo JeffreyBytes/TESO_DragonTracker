@@ -1,4 +1,4 @@
-DragonTracker.GUITimer         = setmetatable({}, {__index = LibDragonWorldEvent.Timer})
+DragonTracker.GUITimer         = setmetatable({}, {__index = LibWorldEvents.Timer})
 DragonTracker.GUITimer.__index = DragonTracker.GUITimer
 
 -- @var string name The timer's name
@@ -13,7 +13,7 @@ DragonTracker.GUITimer.time = 1000
 -- Update the GUI for each dragons.
 --]]
 function DragonTracker.GUITimer:update()
-    LibDragonWorldEvent.Dragons.DragonList:execOnAll(function(dragon)
+    LibWorldEvents.Dragons.DragonList:execOnAll(function(dragon)
         dragon.GUI.item:update()
     end)
 end

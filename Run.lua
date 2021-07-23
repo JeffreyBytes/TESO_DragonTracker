@@ -2,24 +2,24 @@ EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_ADD_ON_LOADED, DragonTr
 EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_PLAYER_ACTIVATED, DragonTracker.Events.onLoadScreen)
 -- EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_GAME_CAMERA_UI_MODE_CHANGED, DragonTracker.Events.onGuiChanged) -- Used to dump some data, so to debug only
 
-LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
-    LibDragonWorldEvent.Events.callbackEvents.dragon.new,
+LibWorldEvents.Events.callbackManager:RegisterCallback(
+    LibWorldEvents.Events.callbackEvents.dragon.new,
     DragonTracker.Events.onNewDragon
 )
-LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
-    LibDragonWorldEvent.Events.callbackEvents.dragonList.createAll,
+LibWorldEvents.Events.callbackManager:RegisterCallback(
+    LibWorldEvents.Events.callbackEvents.dragonList.createAll,
     DragonTracker.Events.onCreateAllDragon
 )
-LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
-    LibDragonWorldEvent.Events.callbackEvents.dragonList.removeAll,
+LibWorldEvents.Events.callbackManager:RegisterCallback(
+    LibWorldEvents.Events.callbackEvents.dragonList.removeAll,
     DragonTracker.Events.onRemoveAllFromDragonList
 )
-LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
-    LibDragonWorldEvent.Events.callbackEvents.dragon.changeType,
+LibWorldEvents.Events.callbackManager:RegisterCallback(
+    LibWorldEvents.Events.callbackEvents.dragon.changeType,
     DragonTracker.Events.onDragonChangeType
 )
-LibDragonWorldEvent.Events.callbackManager:RegisterCallback(
-    LibDragonWorldEvent.Events.callbackEvents.dragon.killed,
+LibWorldEvents.Events.callbackManager:RegisterCallback(
+    LibWorldEvents.Events.callbackEvents.dragon.killed,
     DragonTracker.Events.onDragonKilled
 )
 

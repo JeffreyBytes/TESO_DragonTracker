@@ -155,8 +155,8 @@ end
 --]]
 function DragonTracker.GUIItem:update()
     local dragonStatus = self.dragon.status.current
-    local killedStatus = LibDragonWorldEvent.Dragons.DragonStatus.list.killed
-    local repopTime    = LibDragonWorldEvent.Dragons.ZoneInfo.repopTime
+    local killedStatus = LibWorldEvents.Dragons.DragonStatus.list.killed
+    local repopTime    = LibWorldEvents.Dragons.ZoneInfo.repopTime
     local newValue     = ""
 
     if dragonStatus == killedStatus and repopTime > 0 then
@@ -229,7 +229,7 @@ end
 -- @return string
 --]]
 function DragonTracker.GUIItem:obtainStatusText(dragonStatus)
-    local statusList = LibDragonWorldEvent.Dragons.DragonStatus.list
+    local statusList = LibWorldEvents.Dragons.DragonStatus.list
 
     if dragonStatus == statusList.killed then
         return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_KILLED)
@@ -272,7 +272,7 @@ end
 -- @return table
 --]]
 function DragonTracker.GUIItem:obtainInTimerInfo(dragonTime)
-    local repopTime  = LibDragonWorldEvent.Dragons.ZoneInfo.repopTime
+    local repopTime  = LibWorldEvents.Dragons.ZoneInfo.repopTime
 
     if dragonTime == 0 then
         return nil
