@@ -17,10 +17,9 @@ end
 -- Called when the user's interface loads and their character is activated after logging in or performing a reload of the UI.
 -- This happens after <EVENT_ADD_ON_LOADED>, so the UI and all addons should be initialised already.
 --
--- @param integer eventCode
--- @param boolean initial : true if the user just logged on, false with a UI reload (for example)
+-- @param table zone : The Zone instance from LibWorldEvents
 --]]
-function DragonTracker.Events.onLoadScreen(eventCode, initial)
+function DragonTracker.Events.onZoneUpdate(zone)
     if DragonTracker.ready == false then
         return
     end
