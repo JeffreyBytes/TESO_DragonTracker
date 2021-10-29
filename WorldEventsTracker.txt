@@ -1,9 +1,9 @@
-## Title: Dragon Tracker
-## Description: Track all dragons status in Elsweyr
-## Version: 2.4.1
+## Title: World Events Tracker
+## Description: Track all world events status in Tamriel
+## Version: 3.0.0
 ## Author: bulton-fr
 ## APIVersion: 100035
-## SavedVariables: DragonTrackerSavedVariables
+## SavedVariables: WorldEventsTrackerSavedVariables
 ## DependsOn: LibWorldEvents LibAddonMenu-2.0>=30
 
 lang\en.lua

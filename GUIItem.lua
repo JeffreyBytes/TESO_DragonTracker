@@ -1,5 +1,5 @@
-DragonTracker.GUIItem = {}
-DragonTracker.GUIItem.__index = DragonTracker.GUIItem
+WorldEventsTracker.GUIItem = {}
+WorldEventsTracker.GUIItem.__index = WorldEventsTracker.GUIItem
 
 --[[
 -- Instanciate a new GUIItem "object"
@@ -8,9 +8,9 @@ DragonTracker.GUIItem.__index = DragonTracker.GUIItem
 --
 -- @return GUIItem
 --]]
-function DragonTracker.GUIItem:new(dragon)
+function WorldEventsTracker.GUIItem:new(dragon)
 
-    local titleFormat = DragonTracker.savedVariables.gui.labelFormat
+    local titleFormat = WorldEventsTracker.savedVariables.gui.labelFormat
 
     local guiItem = {
         dragon   = dragon,
@@ -23,9 +23,9 @@ function DragonTracker.GUIItem:new(dragon)
 
     setmetatable(guiItem, self)
     
-    guiItem.colorctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Color"]
-    guiItem.labelctr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Label"]
-    guiItem.valuectr = _G["DragonTrackerGUIItem" .. dragon.dragonIdx .. "Value"]
+    guiItem.colorctr = _G["WorldEventsTrackerGUIItem" .. dragon.dragonIdx .. "Color"]
+    guiItem.labelctr = _G["WorldEventsTrackerGUIItem" .. dragon.dragonIdx .. "Label"]
+    guiItem.valuectr = _G["WorldEventsTrackerGUIItem" .. dragon.dragonIdx .. "Value"]
 
     guiItem.valuectrXOffsetShift = 15
     guiItem:changeColor({r=0, g=0, b=0}, 0)
@@ -38,7 +38,7 @@ end
 --[[
 -- Define all tooltip
 --]]
-function DragonTracker.GUIItem:defineTooltips()
+function WorldEventsTracker.GUIItem:defineTooltips()
     local guiItem = self
 
     -- Color control tooltip
@@ -60,7 +60,7 @@ end
 --
 -- @return string
 --]]
-function DragonTracker.GUIItem:obtainTypeTooltipText()
+function WorldEventsTracker.GUIItem:obtainTypeTooltipText()
     if self.dragon.type.name == "" then
         return ""
     end
@@ -80,7 +80,7 @@ end
 --  /!\ It's 0-1 RGB values, not 0-255
 -- @param number alpha The alpha value (0 to 1)
 --]]
-function DragonTracker.GUIItem:changeColor(newColor, alpha)
+function WorldEventsTracker.GUIItem:changeColor(newColor, alpha)
     if newColor == nil then
         self.colorctr:SetCenterColor(0, 0, 0, alpha)
     else
@@ -95,7 +95,7 @@ end
 --
 -- @return number The width taken by the label text.
 --]]
-function DragonTracker.GUIItem:changeTitleType(newTitleType)
+function WorldEventsTracker.GUIItem:changeTitleType(newTitleType)
     local anchorOffsetX = 18 -- I don't want to do a call to GetAnchor()
 
     self.title = self.dragon.GUI.title[newTitleType]
@@ -109,7 +109,7 @@ end
 --
 -- @param number labelWidth : The max width of all labels text
 --]]
-function DragonTracker.GUIItem:moveValueCtr(labelWidth)
+function WorldEventsTracker.GUIItem:moveValueCtr(labelWidth)
     local isValidAnchor, point, relativeTo, relativePoint, offsetX, offsetY, anchorConstrains = self.valuectr:GetAnchor()
 
     self.valuectr:ClearAnchors()
@@ -119,7 +119,7 @@ end
 --[[
 -- Define the text value of LabelControls to empty string
 --]]
-function DragonTracker.GUIItem:clear()
+function WorldEventsTracker.GUIItem:clear()
     self.colorctr:SetCenterColor(0, 0, 0, 0)
     self.labelctr:SetText("")
     self.valuectr:SetText("")
@@ -130,7 +130,7 @@ end
 --
 -- @param boolean status true to show it, false to hide it
 --]]
-function DragonTracker.GUIItem:display(status)
+function WorldEventsTracker.GUIItem:display(status)
     self.colorctr:SetHidden(not status)
     self.labelctr:SetHidden(not status)
     self.valuectr:SetHidden(not status)
@@ -139,21 +139,21 @@ end
 --[[
 -- Show the container (LabelControl)
 --]]
-function DragonTracker.GUIItem:show()
+function WorldEventsTracker.GUIItem:show()
     self:display(true)
 end
 
 --[[
 -- Hide the container (LabelControl)
 --]]
-function DragonTracker.GUIItem:hide()
+function WorldEventsTracker.GUIItem:hide()
     self:display(false)
 end
 
 --[[
 -- Update the message displayed in GUI for a specific dragon
 --]]
-function DragonTracker.GUIItem:update()
+function WorldEventsTracker.GUIItem:update()
     local dragonStatus = self.dragon.status.current
     local killedStatus = LibWorldEvents.Dragons.DragonStatus.list.killed
     local repopTime    = LibWorldEvents.Dragons.ZoneInfo.repopTime
@@ -181,7 +181,7 @@ end
 --
 -- @return string
 --]]
-function DragonTracker.GUIItem:obtainSinceValue(dragonStatus)
+function WorldEventsTracker.GUIItem:obtainSinceValue(dragonStatus)
     local dragonTime = self.dragon.status.time
     local statusText = self:obtainStatusText(dragonStatus)
     local timerInfo  = self:obtainSinceTimerInfo(dragonTime)
@@ -206,7 +206,7 @@ end
 --
 -- @return string
 --]]
-function DragonTracker.GUIItem:obtainRepopInValue(dragonStatus)
+function WorldEventsTracker.GUIItem:obtainRepopInValue(dragonStatus)
     local dragonTime = self.dragon.status.time
     local timerInfo  = self:obtainInTimerInfo(dragonTime)
 
@@ -228,7 +228,7 @@ end
 --
 -- @return string
 --]]
-function DragonTracker.GUIItem:obtainStatusText(dragonStatus)
+function WorldEventsTracker.GUIItem:obtainStatusText(dragonStatus)
     local statusList = LibWorldEvents.Dragons.DragonStatus.list
 
     if dragonStatus == statusList.killed then
@@ -253,7 +253,7 @@ end
 --
 -- @return table
 --]]
-function DragonTracker.GUIItem:obtainSinceTimerInfo(dragonTime)
+function WorldEventsTracker.GUIItem:obtainSinceTimerInfo(dragonTime)
     if dragonTime == 0 then
         return nil
     end
@@ -271,7 +271,7 @@ end
 --
 -- @return table
 --]]
-function DragonTracker.GUIItem:obtainInTimerInfo(dragonTime)
+function WorldEventsTracker.GUIItem:obtainInTimerInfo(dragonTime)
     local repopTime  = LibWorldEvents.Dragons.ZoneInfo.repopTime
 
     if dragonTime == 0 then
@@ -296,7 +296,7 @@ end
 --
 -- @return table
 --]]
-function DragonTracker.GUIItem:formatTime(timeValue)
+function WorldEventsTracker.GUIItem:formatTime(timeValue)
     local timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_SECOND)
 
     if timeValue > 60 then

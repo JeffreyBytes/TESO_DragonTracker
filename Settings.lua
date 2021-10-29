@@ -1,33 +1,33 @@
-DragonTracker.Settings = {}
+WorldEventsTracker.Settings = {}
 
 -- @var string panelName The name of the settings panel
-DragonTracker.Settings.panelName = "DragonTrackerSettingsPanel"
+WorldEventsTracker.Settings.panelName = "WorldEventsTrackerSettingsPanel"
 
 --[[
 -- Initialise the settings panel
 --]]
-function DragonTracker.Settings:init()
+function WorldEventsTracker.Settings:init()
     local panelData = {
         type   = "panel",
         name   = "Dragon Tracker",
         author = "bulton-fr",
     }
 
-    DragonTracker.LAM:RegisterAddonPanel(self.panelName, panelData)
+    WorldEventsTracker.LAM:RegisterAddonPanel(self.panelName, panelData)
     self:build()
 end
 
 --[[
 -- Build the settings panel
 --]]
-function DragonTracker.Settings:build()
+function WorldEventsTracker.Settings:build()
     local optionsData = {
         self:buildGUILocked(),
         self:buildDisplayedWithWorldMap(),
         self:buildPositionType()
     }
 
-    DragonTracker.LAM:RegisterOptionControls(self.panelName, optionsData)
+    WorldEventsTracker.LAM:RegisterOptionControls(self.panelName, optionsData)
 end
 
 --[[
@@ -35,15 +35,15 @@ end
 --
 -- @return table
 --]]
-function DragonTracker.Settings:buildGUILocked()
+function WorldEventsTracker.Settings:buildGUILocked()
     return {
         type = "checkbox",
         name = GetString(SI_DRAGON_TRACKER_SETTINGS_LOCK_UI),
         getFunc = function()
-            return DragonTracker.GUI:isLocked()
+            return WorldEventsTracker.GUI:isLocked()
         end,
         setFunc = function(value)
-            DragonTracker.GUI:defineLocked(value)
+            WorldEventsTracker.GUI:defineLocked(value)
         end,
     }
 end
@@ -53,15 +53,15 @@ end
 --
 -- @return table
 --]]
-function DragonTracker.Settings:buildDisplayedWithWorldMap()
+function WorldEventsTracker.Settings:buildDisplayedWithWorldMap()
     return {
         type = "checkbox",
         name = GetString(SI_DRAGON_TRACKER_SETTINGS_DISPLAY_WITH_WM),
         getFunc = function()
-            return DragonTracker.GUI:isDisplayWithWMap()
+            return WorldEventsTracker.GUI:isDisplayWithWMap()
         end,
         setFunc = function(value)
-            DragonTracker.GUI:defineDisplayWithWMap(value)
+            WorldEventsTracker.GUI:defineDisplayWithWMap(value)
         end,
     }
 end
@@ -71,7 +71,7 @@ end
 --
 -- @return table
 --]]
-function DragonTracker.Settings:buildPositionType()
+function WorldEventsTracker.Settings:buildPositionType()
     return {
         type          = "dropdown",
         name          = GetString(SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE),
@@ -82,10 +82,10 @@ function DragonTracker.Settings:buildPositionType()
         },
         choicesValues = {"ln", "cp"},
         getFunc       = function()
-            return DragonTracker.GUI:obtainLabelType()
+            return WorldEventsTracker.GUI:obtainLabelType()
         end,
         setFunc       = function(labelMode)
-            DragonTracker.Events.changeLabelType(labelMode)
+            WorldEventsTracker.Events.changeLabelType(labelMode)
         end
     }
 end

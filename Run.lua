@@ -1,30 +1,30 @@
-EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_ADD_ON_LOADED, DragonTracker.Events.onLoaded)
--- EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_PLAYER_ACTIVATED, DragonTracker.Events.onLoadScreen)
--- EVENT_MANAGER:RegisterForEvent(DragonTracker.name, EVENT_GAME_CAMERA_UI_MODE_CHANGED, DragonTracker.Events.onGuiChanged) -- Used to dump some data, so to debug only
+EVENT_MANAGER:RegisterForEvent(WorldEventsTracker.name, EVENT_ADD_ON_LOADED, WorldEventsTracker.Events.onLoaded)
+-- EVENT_MANAGER:RegisterForEvent(WorldEventsTracker.name, EVENT_PLAYER_ACTIVATED, WorldEventsTracker.Events.onLoadScreen)
+-- EVENT_MANAGER:RegisterForEvent(WorldEventsTracker.name, EVENT_GAME_CAMERA_UI_MODE_CHANGED, WorldEventsTracker.Events.onGuiChanged) -- Used to dump some data, so to debug only
 
 LibWorldEvents.Events.callbackManager:RegisterCallback(
     LibWorldEvents.Events.callbackEvents.zone.updateInfo,
-    DragonTracker.Events.onZoneUpdate
+    WorldEventsTracker.Events.onZoneUpdate
 )
 LibWorldEvents.Events.callbackManager:RegisterCallback(
     LibWorldEvents.Events.callbackEvents.dragon.new,
-    DragonTracker.Events.onNewDragon
+    WorldEventsTracker.Events.onNewDragon
 )
 LibWorldEvents.Events.callbackManager:RegisterCallback(
     LibWorldEvents.Events.callbackEvents.dragonList.createAll,
-    DragonTracker.Events.onCreateAllDragon
+    WorldEventsTracker.Events.onCreateAllDragon
 )
 LibWorldEvents.Events.callbackManager:RegisterCallback(
     LibWorldEvents.Events.callbackEvents.dragonList.removeAll,
-    DragonTracker.Events.onRemoveAllFromDragonList
+    WorldEventsTracker.Events.onRemoveAllFromDragonList
 )
 LibWorldEvents.Events.callbackManager:RegisterCallback(
     LibWorldEvents.Events.callbackEvents.dragon.changeType,
-    DragonTracker.Events.onDragonChangeType
+    WorldEventsTracker.Events.onDragonChangeType
 )
 LibWorldEvents.Events.callbackManager:RegisterCallback(
     LibWorldEvents.Events.callbackEvents.dragon.killed,
-    DragonTracker.Events.onDragonKilled
+    WorldEventsTracker.Events.onDragonKilled
 )
 
-SLASH_COMMANDS["/dragontrackerlabeltype"] = DragonTracker.Events.changeLabelType
+SLASH_COMMANDS["/WorldEventsTrackerlabeltype"] = WorldEventsTracker.Events.changeLabelType

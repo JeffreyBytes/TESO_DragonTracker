@@ -1,4 +1,4 @@
-DragonTracker.Events = {}
+WorldEventsTracker.Events = {}
 
 --[[
 -- Called when the addon is loaded
@@ -6,10 +6,10 @@ DragonTracker.Events = {}
 -- @param number eventCode
 -- @param string addonName name of the loaded addon
 --]]
-function DragonTracker.Events.onLoaded(eventCode, addOnName)
+function WorldEventsTracker.Events.onLoaded(eventCode, addOnName)
     -- The event fires each time *any* addon loads - but we only care about when our own addon loads.
-    if addOnName == DragonTracker.name then
-        DragonTracker:Initialise()
+    if addOnName == WorldEventsTracker.name then
+        WorldEventsTracker:Initialise()
     end
 end
 
@@ -19,13 +19,13 @@ end
 --
 -- @param table zone : The Zone instance from LibWorldEvents
 --]]
-function DragonTracker.Events.onZoneUpdate(zone)
-    if DragonTracker.ready == false then
+function WorldEventsTracker.Events.onZoneUpdate(zone)
+    if WorldEventsTracker.ready == false then
         return
     end
 
-    DragonTracker.GUITimer:changeStatus(LibWorldEvents.Dragons.ZoneInfo.onMap)
-    DragonTracker.GUI:display(LibWorldEvents.Dragons.ZoneInfo.onMap)
+    WorldEventsTracker.GUITimer:changeStatus(LibWorldEvents.Dragons.ZoneInfo.onMap)
+    WorldEventsTracker.GUI:display(LibWorldEvents.Dragons.ZoneInfo.onMap)
 end
 
 --[[
@@ -33,15 +33,15 @@ end
 --
 -- @param table dragon The new dragon instance
 --]]
-function DragonTracker.Events.onNewDragon(dragon)
+function WorldEventsTracker.Events.onNewDragon(dragon)
     dragon.GUI = {
         item  = nil,
         title = dragon.title,
     }
 
-    dragon.GUI.item = DragonTracker.GUI:createItem(dragon)
+    dragon.GUI.item = WorldEventsTracker.GUI:createItem(dragon)
 
-    DragonTracker.Events.onDragonChangeType(dragon)
+    WorldEventsTracker.Events.onDragonChangeType(dragon)
 end
 
 --[[
@@ -49,8 +49,8 @@ end
 --
 -- @param table dragonList The DragonList table
 --]]
-function DragonTracker.Events.onCreateAllDragon(dragonList)
-    DragonTracker.GUI:defineLabelType(DragonTracker.savedVariables.gui.labelFormat)
+function WorldEventsTracker.Events.onCreateAllDragon(dragonList)
+    WorldEventsTracker.GUI:defineLabelType(WorldEventsTracker.savedVariables.gui.labelFormat)
 end
 
 --[[
@@ -58,8 +58,8 @@ end
 --
 -- @param table dragonList The DragonList table
 --]]
-function DragonTracker.Events.onRemoveAllFromDragonList(dragonList)
-    DragonTracker.GUI:resetItem()
+function WorldEventsTracker.Events.onRemoveAllFromDragonList(dragonList)
+    WorldEventsTracker.GUI:resetItem()
 end
 
 --[[
@@ -67,7 +67,7 @@ end
 --
 -- @param Dragon dragon The concerned dragon
 --]]
-function DragonTracker.Events.onDragonChangeType(dragon)
+function WorldEventsTracker.Events.onDragonChangeType(dragon)
     if dragon.GUI == nil then
         return
     end
@@ -85,7 +85,7 @@ end
 --
 -- @param Dragon dragon The killed dragon
 --]]
-function DragonTracker.Events.onDragonKilled(dragon)
+function WorldEventsTracker.Events.onDragonKilled(dragon)
     if dragon.GUI == nil then
         return
     end
@@ -96,45 +96,45 @@ end
 --[[
 -- Called when GUI items has been moved by user
 --]]
-function DragonTracker.Events.onGuiMoveStop()
-    if DragonTracker.ready == false then
+function WorldEventsTracker.Events.onGuiMoveStop()
+    if WorldEventsTracker.ready == false then
         return
     end
 
-    DragonTracker.GUI:savePosition()
+    WorldEventsTracker.GUI:savePosition()
 end
 
 --[[
 -- Called when something change in GUI (like open inventory).
 -- Used to some debug, the add to event is commented.
 --]]
-function DragonTracker.Events.onGuiChanged(eventCode)
-    if DragonTracker.ready == false then
+function WorldEventsTracker.Events.onGuiChanged(eventCode)
+    if WorldEventsTracker.ready == false then
         return
     end
 end
 
 --[[
--- Called when player use slash command "/dragontrackerlabeltype" or from settings panel.
+-- Called when player use slash command "/WorldEventsTrackerlabeltype" or from settings panel.
 -- Used to change label name to use between cardinal point and location name.
 --
 -- @param string labelMode the value after the command
 --]]
-function DragonTracker.Events.changeLabelType(labelMode)
+function WorldEventsTracker.Events.changeLabelType(labelMode)
     if labelMode == "name" or labelMode == "ln" then
-        DragonTracker.GUI:labelUseName()
+        WorldEventsTracker.GUI:labelUseName()
     else
-        DragonTracker.GUI:labelUseCardinalPoint()
+        WorldEventsTracker.GUI:labelUseCardinalPoint()
     end
 end
 
 --[[
 -- Called when player use the keybind to show/hide the GUI
 --]]
-function DragonTracker.Events.keybindingsToggle()
-    if DragonTracker.ready == false then
+function WorldEventsTracker.Events.keybindingsToggle()
+    if WorldEventsTracker.ready == false then
         return
     end
 
-    DragonTracker.GUI:toggleToDisplay()
+    WorldEventsTracker.GUI:toggleToDisplay()
 end
