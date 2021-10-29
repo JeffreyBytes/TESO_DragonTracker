@@ -27,4 +27,4 @@ LibWorldEvents.Events.callbackManager:RegisterCallback(
     WorldEventsTracker.Events.onDragonKilled
 )
 
-SLASH_COMMANDS["/WorldEventsTrackerlabeltype"] = WorldEventsTracker.Events.changeLabelType
+SLASH_COMMANDS["/worldeventstrackerlabeltype"] = WorldEventsTracker.Events.changeLabelType
