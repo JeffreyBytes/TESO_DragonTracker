@@ -6,9 +6,6 @@ WorldEventsTracker.GUI.container = nil
 -- @var table List of GUIItems associate to a dragon
 WorldEventsTracker.GUI.items     = {}
 
--- @var number Number of GUIItems in items
-WorldEventsTracker.GUI.nbItems   = 0
-
 -- @var table Ref to the SavedVariables.gui table
 WorldEventsTracker.GUI.savedVars = nil
 
@@ -139,9 +136,10 @@ function WorldEventsTracker.GUI:display(status)
     end
 
     -- self.container:SetHidden(not status) -- Not work :(
-    local itemIdx = 1
-    for itemIdx = 1, self.nbItems do
-        self.items[itemIdx]:display(status)
+    for itemIdx, item in ipairs(self.items) do
+        if self.items[itemIdx].used == true then
+            self.items[itemIdx]:display(status)
+        end
     end
 end
 
@@ -167,30 +165,29 @@ end
 -- @return GUIItem
 --]]
 function WorldEventsTracker.GUI:createItem(dragon)
-    local item    = WorldEventsTracker.GUIItem:new(dragon)
-    local itemIdx = self.nbItems + 1
+    local itemIdx = dragon.dragonIdx
 
-    self.items[itemIdx] = item
-    self.nbItems        = itemIdx
+    if self.items[itemIdx] ~= nil then
+        self.items[itemIdx]:reset()
+    else
+        self.items[itemIdx] = WorldEventsTracker.GUIItem:new(itemIdx)
+    end
 
-    item:show()
+    self.items[itemIdx]:setDragon(dragon)
+    self.items[itemIdx]:show()
 
-    return item
+    return self.items[itemIdx]
 end
 
 --[[
 -- To reset the list of GUIItems
 --]]
-function WorldEventsTracker.GUI:resetItem()
-    local itemIdx = 1
-
-    for itemIdx = 1, self.nbItems do
-        self.items[itemIdx]:clear()
-        self.items[itemIdx]:hide()
+function WorldEventsTracker.GUI:resetAllItems()
+    for itemIdx, item in ipairs(self.items) do
+        if self.items[itemIdx].used == true then
+            self.items[itemIdx]:reset()
+        end
     end
-
-    self.items   = {}
-    self.nbItems = 0
 end
 
 --[[
@@ -229,15 +226,19 @@ function WorldEventsTracker.GUI:defineLabelType(newType)
     local widthMax  = 0
     local widthText = 0
 
-    for itemIdx = 1, self.nbItems do
-        widthText = self.items[itemIdx]:changeTitleType(newType)
+    for itemIdx, item in ipairs(self.items) do
+        if self.items[itemIdx].used == true then
+            widthText = self.items[itemIdx]:changeTitleType(newType)
 
-        if widthText > widthMax then
-            widthMax = widthText
+            if widthText > widthMax then
+                widthMax = widthText
+            end
         end
     end
 
-    for itemIdx = 1, self.nbItems do
-        self.items[itemIdx]:moveValueCtr(widthMax)
+    for itemIdx, item in ipairs(self.items) do
+        if self.items[itemIdx].used == true then
+            self.items[itemIdx]:moveValueCtr(widthMax)
+        end
     end
 end

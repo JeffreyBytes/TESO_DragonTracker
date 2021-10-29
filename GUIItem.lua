@@ -1,6 +1,8 @@
 WorldEventsTracker.GUIItem = {}
 WorldEventsTracker.GUIItem.__index = WorldEventsTracker.GUIItem
 
+WorldEventsTracker.GUIItem.offsetYRelColor = -5
+
 --[[
 -- Instanciate a new GUIItem "object"
 --
@@ -8,31 +10,69 @@ WorldEventsTracker.GUIItem.__index = WorldEventsTracker.GUIItem
 --
 -- @return GUIItem
 --]]
-function WorldEventsTracker.GUIItem:new(dragon)
+function WorldEventsTracker.GUIItem:new(itemIdx)
 
     local titleFormat = WorldEventsTracker.savedVariables.gui.labelFormat
 
     local guiItem = {
-        dragon   = dragon,
+        used     = false,
+        dragon   = nil,
+        control  = nil,
         colorctr = nil,
         labelctr = nil,
         valuectr = nil,
-        title    = dragon.GUI.title[titleFormat],
+        title    = "",
         value    = ""
     }
 
     setmetatable(guiItem, self)
-    
-    guiItem.colorctr = _G["WorldEventsTrackerGUIItem" .. dragon.dragonIdx .. "Color"]
-    guiItem.labelctr = _G["WorldEventsTrackerGUIItem" .. dragon.dragonIdx .. "Label"]
-    guiItem.valuectr = _G["WorldEventsTrackerGUIItem" .. dragon.dragonIdx .. "Value"]
 
-    guiItem.valuectrXOffsetShift = 15
+    guiItem.control = CreateControlFromVirtual(
+        "WorldEventsTrackerGUIItem",
+        WorldEventsTrackerGUI,
+        "WorldEventsTrackerGUIRow",
+        itemIdx
+    )
+
+    guiItem.control:ClearAnchors()
+    if itemIdx > 1 then
+        local prevItemIdx = itemIdx - 1
+        guiItem.control:SetAnchor(
+            TOPLEFT,
+            _G["WorldEventsTrackerGUIItem"..prevItemIdx],
+            BOTTOMLEFT,
+            0,
+            0
+        )
+    else
+        guiItem.control:SetAnchor(TOPLEFT, WorldEventsTrackerGUI, TOPLEFT, 0, 0)
+    end
+
+    guiItem.colorctr = guiItem.control:GetNamedChild("Color")
+    guiItem.labelctr = guiItem.control:GetNamedChild("Label")
+    guiItem.valuectr = guiItem.control:GetNamedChild("Value")
+
     guiItem:changeColor({r=0, g=0, b=0}, 0)
     guiItem:show()
     guiItem:defineTooltips()
 
     return guiItem
+end
+
+function WorldEventsTracker.GUIItem:setDragon(dragon)
+    self.used   = true
+    self.dragon = dragon
+    self.title  = dragon.GUI.title[titleFormat]
+end
+
+function WorldEventsTracker.GUIItem:reset()
+    self:clear()
+    self:hide()
+
+    self.used   = false
+    self.dragon = nil
+    self.title  = ""
+    self.value  = ""
 end
 
 --[[
@@ -96,12 +136,10 @@ end
 -- @return number The width taken by the label text.
 --]]
 function WorldEventsTracker.GUIItem:changeTitleType(newTitleType)
-    local anchorOffsetX = 18 -- I don't want to do a call to GetAnchor()
-
     self.title = self.dragon.GUI.title[newTitleType]
     self.labelctr:SetText(self.title)
 
-    return self.labelctr:GetTextWidth() + anchorOffsetX
+    return self.labelctr:GetTextWidth()
 end
 
 --[[
@@ -110,10 +148,14 @@ end
 -- @param number labelWidth : The max width of all labels text
 --]]
 function WorldEventsTracker.GUIItem:moveValueCtr(labelWidth)
-    local isValidAnchor, point, relativeTo, relativePoint, offsetX, offsetY, anchorConstrains = self.valuectr:GetAnchor()
-
     self.valuectr:ClearAnchors()
-    self.valuectr:SetAnchor(point, relativeTo, relativePoint, labelWidth + self.valuectrXOffsetShift, offsetY, anchorConstrains)
+    self.valuectr:SetAnchor(
+        TOPLEFT,
+        self.colorctr,
+        TOPRIGHT,
+        labelWidth + 10,
+        self.offsetYRelColor
+    )
 end
 
 --[[

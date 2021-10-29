@@ -59,7 +59,7 @@ end
 -- @param table dragonList The DragonList table
 --]]
 function WorldEventsTracker.Events.onRemoveAllFromDragonList(dragonList)
-    WorldEventsTracker.GUI:resetItem()
+    WorldEventsTracker.GUI:resetAllItems()
 end
 
 --[[

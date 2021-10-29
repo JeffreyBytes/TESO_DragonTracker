@@ -113,7 +113,6 @@ Properties :
 
 * `container` : The TopLevelControl in interface
 * `items` : List of GUIItems associate to a dragon
-* `nbItems` : Number of GUIItems in `items`.
 * `savedVars` : A direct access to `WorldEventsTracker.savedVariables.gui` which contain all saved variables used by the GUI.
 * `fragment` : The fragment used to define when the GUI is displayed
 * `toDisplay` : To know if the GUI should be displayed (user config only)  
@@ -135,7 +134,7 @@ With that, the GUI is hidden when we open a menu (like inventory or map)
 * `WorldEventsTracker.GUI:display` : Hide or show all GUIItems.
 * `WorldEventsTracker.GUI:toggleToDisplay` : Switch the status of toDisplay to be the invert of the previous status, and call self:display() to update the GUI
 * `WorldEventsTracker.GUI:createItem` : To create a GUIItem instance for a Dragon
-* `WorldEventsTracker.GUI:resetItem` : To reset the list of GUIItems
+* `WorldEventsTracker.GUI:resetAllItems` : To reset the list of GUIItems
 * `WorldEventsTracker.GUI:labelUseName` : Define the label type to use on the location name.
 * `WorldEventsTracker.GUI:labelUseCardinalPoint` : Define the label type to use on  the cardinal point.
 * `WorldEventsTracker.GUI:obtainLabelType` : Return the current labelFormat used
