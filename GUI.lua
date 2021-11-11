@@ -151,10 +151,23 @@ function WorldEventsTracker.GUI:toggleToDisplay()
     self.savedVars.toDisplay = not self.savedVars.toDisplay
 
     if self.savedVars.toDisplay == true then
-        self:display(LibWorldEvents.Dragons.ZoneInfo.onMap)
+        self:display(LibWorldEvents.Zone.onWorldEventMap)
     else
         self:display(false)
     end
+end
+
+function WorldEventsTracker.GUI:show()
+    self.savedVars.toDisplay = true
+
+    if LibWorldEvents.Zone.onWorldEventMap == true then
+        self:display(true)
+    end
+end
+
+function WorldEventsTracker.GUI:hide()
+    self.savedVars.toDisplay = false
+    self:display(false)
 end
 
 --[[
@@ -164,8 +177,8 @@ end
 --
 -- @return GUIItem
 --]]
-function WorldEventsTracker.GUI:createItem(dragon)
-    local itemIdx = dragon.dragonIdx
+function WorldEventsTracker.GUI:createItem(event)
+    local itemIdx = event.eventIdx
 
     if self.items[itemIdx] ~= nil then
         self.items[itemIdx]:reset()
@@ -173,7 +186,7 @@ function WorldEventsTracker.GUI:createItem(dragon)
         self.items[itemIdx] = WorldEventsTracker.GUIItem:new(itemIdx)
     end
 
-    self.items[itemIdx]:setDragon(dragon)
+    self.items[itemIdx]:setEvent(event)
     self.items[itemIdx]:show()
 
     return self.items[itemIdx]

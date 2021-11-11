@@ -13,7 +13,14 @@ WorldEventsTracker.GUITimer.time = 1000
 -- Update the GUI for each dragons.
 --]]
 function WorldEventsTracker.GUITimer:update()
-    LibWorldEvents.Dragons.DragonList:execOnAll(function(dragon)
-        dragon.GUI.item:update()
-    end)
+    if LibWorldEvents.Dragons.ZoneInfo.onMap == true then
+        LibWorldEvents.Dragons.DragonList:execOnAll(function(dragon)
+            dragon.GUI.item:update()
+        end)
+    else
+        -- poi events; update method not called on others maps
+        LibWorldEvents.POI.POIList:execOnAll(function(poi)
+            poi.GUI.item:update()
+        end)
+    end
 end

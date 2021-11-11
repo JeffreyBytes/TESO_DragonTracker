@@ -24,8 +24,8 @@ function WorldEventsTracker.Events.onZoneUpdate(zone)
         return
     end
 
-    WorldEventsTracker.GUITimer:changeStatus(LibWorldEvents.Dragons.ZoneInfo.onMap)
-    WorldEventsTracker.GUI:display(LibWorldEvents.Dragons.ZoneInfo.onMap)
+    WorldEventsTracker.GUITimer:changeStatus(LibWorldEvents.Zone.onWorldEventMap)
+    WorldEventsTracker.GUI:display(LibWorldEvents.Zone.onWorldEventMap)
 end
 
 --[[
@@ -91,6 +91,23 @@ function WorldEventsTracker.Events.onDragonKilled(dragon)
     end
     
     dragon.GUI.item:changeColor(nil, 0)
+end
+
+function WorldEventsTracker.Events.onNewPOI(poi)
+    poi.GUI = {
+        item  = nil,
+        title = poi.title,
+    }
+
+    poi.GUI.item = WorldEventsTracker.GUI:createItem(poi)
+end
+
+function WorldEventsTracker.Events.onCreateAllPOI()
+    WorldEventsTracker.GUI:defineLabelType(WorldEventsTracker.savedVariables.gui.labelFormat)
+end
+
+function WorldEventsTracker.Events.onRemoveAllFromPOIList()
+    WorldEventsTracker.GUI:resetAllItems()
 end
 
 --[[

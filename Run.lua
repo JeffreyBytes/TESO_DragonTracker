@@ -6,6 +6,8 @@ LibWorldEvents.Events.callbackManager:RegisterCallback(
     LibWorldEvents.Events.callbackEvents.zone.updateInfo,
     WorldEventsTracker.Events.onZoneUpdate
 )
+
+-- Dragons events
 LibWorldEvents.Events.callbackManager:RegisterCallback(
     LibWorldEvents.Events.callbackEvents.dragon.new,
     WorldEventsTracker.Events.onNewDragon
@@ -25,6 +27,20 @@ LibWorldEvents.Events.callbackManager:RegisterCallback(
 LibWorldEvents.Events.callbackManager:RegisterCallback(
     LibWorldEvents.Events.callbackEvents.dragon.killed,
     WorldEventsTracker.Events.onDragonKilled
+)
+
+-- POI
+LibWorldEvents.Events.callbackManager:RegisterCallback(
+    LibWorldEvents.Events.callbackEvents.poi.new,
+    WorldEventsTracker.Events.onNewPOI
+)
+LibWorldEvents.Events.callbackManager:RegisterCallback(
+    LibWorldEvents.Events.callbackEvents.poiList.createAll,
+    WorldEventsTracker.Events.onCreateAllPOI
+)
+LibWorldEvents.Events.callbackManager:RegisterCallback(
+    LibWorldEvents.Events.callbackEvents.poiList.removeAll,
+    WorldEventsTracker.Events.onRemoveAllFromPOIList
 )
 
 SLASH_COMMANDS["/worldeventstrackerlabeltype"] = WorldEventsTracker.Events.changeLabelType
