@@ -9,7 +9,7 @@ WorldEventsTracker.Settings.panelName = "WorldEventsTrackerSettingsPanel"
 function WorldEventsTracker.Settings:init()
     local panelData = {
         type   = "panel",
-        name   = "Dragon Tracker",
+        name   = "World Events Tracker",
         author = "bulton-fr",
     }
 
