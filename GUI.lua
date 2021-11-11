@@ -3,7 +3,7 @@ WorldEventsTracker.GUI = {}
 -- @var table The TopLevelControl in interface
 WorldEventsTracker.GUI.container = nil
 
--- @var table List of GUIItems associate to a dragon
+-- @var table List of all GUIItems instancied
 WorldEventsTracker.GUI.items     = {}
 
 -- @var table Ref to the SavedVariables.gui table
@@ -157,6 +157,9 @@ function WorldEventsTracker.GUI:toggleToDisplay()
     end
 end
 
+--[[
+-- Show the UI
+--]]
 function WorldEventsTracker.GUI:show()
     self.savedVars.toDisplay = true
 
@@ -165,15 +168,18 @@ function WorldEventsTracker.GUI:show()
     end
 end
 
+--[[
+-- Hide the UI
+--]]
 function WorldEventsTracker.GUI:hide()
     self.savedVars.toDisplay = false
     self:display(false)
 end
 
 --[[
--- To create a GUIItem instance for a Dragon and show it
+-- To create a GUIItem instance for a Dragon|POI and show it
 --
--- @param Dragon dragon The dragon instance to link with the new GUIItem
+-- @param Dragon|POI event The dragon|poi instance to link with the new GUIItem
 --
 -- @return GUIItem
 --]]
@@ -204,14 +210,14 @@ function WorldEventsTracker.GUI:resetAllItems()
 end
 
 --[[
--- Define the label type to use on  the location name.
+-- Define the label type to use on the location name.
 --]]
 function WorldEventsTracker.GUI:labelUseName()
     self:defineLabelType("ln")
 end
 
 --[[
--- Define the label type to use on  the cardinal point.
+-- Define the label type to use on the cardinal point.
 --]]
 function WorldEventsTracker.GUI:labelUseCardinalPoint()
     self:defineLabelType("cp")

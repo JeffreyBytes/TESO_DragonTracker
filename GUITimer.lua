@@ -9,8 +9,8 @@ WorldEventsTracker.GUITimer.time = 1000
 
 --[[
 -- Callback function on timer.
--- Called each 1sec in dragons zone.
--- Update the GUI for each dragons.
+-- Called each 1sec in dragons|poi zone.
+-- Update the GUI for each dragons|poi.
 --]]
 function WorldEventsTracker.GUITimer:update()
     if LibWorldEvents.Dragons.ZoneInfo.onMap == true then

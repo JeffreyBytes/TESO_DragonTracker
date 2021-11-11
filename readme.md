@@ -99,8 +99,6 @@ Contain all functions called when a listened event is triggered.
 * `WorldEventsTracker.Events.onGuiMoveStop` : Called when GUI items have been moved by the user
 * `WorldEventsTracker.Events.onGuiChanged` : Called when something changes in the GUI (like open inventory).  
 Used to debug only, the line to add the listener on the event is commented.
-* `WorldEventsTracker.Events.changeLabelType` : Called when player use slash command /WorldEventsTrackerlabeltype.  
-Used to change label name to use between cardinal point and location name.
 * `WorldEventsTracker.Events.keybindingsToggle` : Called when player use the keybind to show/hide the GUI
 
 ### GUI.lua

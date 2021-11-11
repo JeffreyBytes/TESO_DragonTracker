@@ -93,6 +93,11 @@ function WorldEventsTracker.Events.onDragonKilled(dragon)
     dragon.GUI.item:changeColor(nil, 0)
 end
 
+--[[
+-- Called when a new poi instance is created
+--
+-- @param table poi The new poi instance
+--]]
 function WorldEventsTracker.Events.onNewPOI(poi)
     poi.GUI = {
         item  = nil,
@@ -102,10 +107,16 @@ function WorldEventsTracker.Events.onNewPOI(poi)
     poi.GUI.item = WorldEventsTracker.GUI:createItem(poi)
 end
 
+--[[
+-- Called when all poi are created from POIList
+--]]
 function WorldEventsTracker.Events.onCreateAllPOI()
     WorldEventsTracker.GUI:defineLabelType(WorldEventsTracker.savedVariables.gui.labelFormat)
 end
 
+--[[
+-- Called when all poi is removed from POIList
+--]]
 function WorldEventsTracker.Events.onRemoveAllFromPOIList()
     WorldEventsTracker.GUI:resetAllItems()
 end
@@ -142,6 +153,11 @@ function WorldEventsTracker.Events.keybindingsToggle()
     WorldEventsTracker.GUI:toggleToDisplay()
 end
 
+--[[
+-- Called when the slash command is used
+--
+-- @param string extra All arguments passed to the command
+--]]
 function WorldEventsTracker.Events.command(extra)
     -- Thanks to wiki for argument parser
     local options = {}

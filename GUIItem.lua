@@ -57,6 +57,11 @@ function WorldEventsTracker.GUIItem:new(itemIdx)
     return guiItem
 end
 
+--[[
+-- Set a new dragon|poi to associate with the guiItem
+--
+-- @param Dragon|POI event
+--]]
 function WorldEventsTracker.GUIItem:setEvent(event)
     self.used  = true
     self.event = event
@@ -74,6 +79,9 @@ function WorldEventsTracker.GUIItem:setEvent(event)
     end
 end
 
+--[[
+-- reset all properties of the guiItem and hide it
+--]]
 function WorldEventsTracker.GUIItem:reset()
     self:clear()
     self:hide()
