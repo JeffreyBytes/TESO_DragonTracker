@@ -43,4 +43,8 @@ LibWorldEvents.Events.callbackManager:RegisterCallback(
     WorldEventsTracker.Events.onRemoveAllFromPOIList
 )
 
-SLASH_COMMANDS["/worldeventstrackerlabeltype"] = WorldEventsTracker.Events.changeLabelType
+if SLASH_COMMANDS["/wet"] == nil then
+    SLASH_COMMANDS["/wet"] = WorldEventsTracker.Events.command
+end
+
+SLASH_COMMANDS["/worldeventstracker"] = WorldEventsTracker.Events.command

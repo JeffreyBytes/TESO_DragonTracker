@@ -85,7 +85,11 @@ function WorldEventsTracker.Settings:buildPositionType()
             return WorldEventsTracker.GUI:obtainLabelType()
         end,
         setFunc       = function(labelMode)
-            WorldEventsTracker.Events.changeLabelType(labelMode)
+            if labelMode == "ln" then
+                WorldEventsTracker.GUI:labelUseName()
+            else
+                WorldEventsTracker.GUI:labelUseCardinalPoint()
+            end
         end
     }
 end

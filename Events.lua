@@ -132,20 +132,6 @@ function WorldEventsTracker.Events.onGuiChanged(eventCode)
 end
 
 --[[
--- Called when player use slash command "/WorldEventsTrackerlabeltype" or from settings panel.
--- Used to change label name to use between cardinal point and location name.
---
--- @param string labelMode the value after the command
---]]
-function WorldEventsTracker.Events.changeLabelType(labelMode)
-    if labelMode == "name" or labelMode == "ln" then
-        WorldEventsTracker.GUI:labelUseName()
-    else
-        WorldEventsTracker.GUI:labelUseCardinalPoint()
-    end
-end
-
---[[
 -- Called when player use the keybind to show/hide the GUI
 --]]
 function WorldEventsTracker.Events.keybindingsToggle()
@@ -154,4 +140,33 @@ function WorldEventsTracker.Events.keybindingsToggle()
     end
 
     WorldEventsTracker.GUI:toggleToDisplay()
+end
+
+function WorldEventsTracker.Events.command(extra)
+    -- Thanks to wiki for argument parser
+    local options = {}
+    local searchResult = { string.match(extra, "^(%S*)%s*(.-)$") }
+    for i,v in pairs(searchResult) do
+        if (v ~= nil and v ~= "") then
+            options[i] = string.lower(v)
+        end
+    end
+
+    if #options == 0 then
+        WorldEventsTracker.GUI:toggleToDisplay()
+    elseif options[1] == "show" then
+        WorldEventsTracker.GUI:show()
+    elseif options[1] == "hide" then
+        WorldEventsTracker.GUI:hide()
+    elseif options[1] == "label" then
+        if options[2] == nil then
+            d('WorldEventsTracker : You must indicate the label type to use ("cp", or "name", or "ln")')
+        elseif options[2] == "name" or options[2] == "ln" then
+            WorldEventsTracker.GUI:labelUseName()
+        else
+            WorldEventsTracker.GUI:labelUseCardinalPoint()
+        end
+    else
+        d("WorldEventsTracker : Unknown argument")
+    end
 end
