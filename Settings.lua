@@ -38,7 +38,7 @@ end
 function WorldEventsTracker.Settings:buildGUILocked()
     return {
         type = "checkbox",
-        name = GetString(SI_DRAGON_TRACKER_SETTINGS_LOCK_UI),
+        name = GetString(SI_WORLD_EVENTS_TRACKER_SETTINGS_LOCK_UI),
         getFunc = function()
             return WorldEventsTracker.GUI:isLocked()
         end,
@@ -56,7 +56,7 @@ end
 function WorldEventsTracker.Settings:buildDisplayedWithWorldMap()
     return {
         type = "checkbox",
-        name = GetString(SI_DRAGON_TRACKER_SETTINGS_DISPLAY_WITH_WM),
+        name = GetString(SI_WORLD_EVENTS_TRACKER_SETTINGS_DISPLAY_WITH_WM),
         getFunc = function()
             return WorldEventsTracker.GUI:isDisplayWithWMap()
         end,
@@ -74,11 +74,11 @@ end
 function WorldEventsTracker.Settings:buildPositionType()
     return {
         type          = "dropdown",
-        name          = GetString(SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE),
-        tooltip       = GetString(SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE_TOOLTIP),
+        name          = GetString(SI_WORLD_EVENTS_TRACKER_SETTINGS_POSITION_TYPE),
+        tooltip       = GetString(SI_WORLD_EVENTS_TRACKER_SETTINGS_POSITION_TYPE_TOOLTIP),
         choices       = {
-            GetString(SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE_CHOICE_LN),
-            GetString(SI_DRAGON_TRACKER_SETTINGS_POSITION_TYPE_CHOICE_CP)
+            GetString(SI_WORLD_EVENTS_TRACKER_SETTINGS_POSITION_TYPE_CHOICE_LN),
+            GetString(SI_WORLD_EVENTS_TRACKER_SETTINGS_POSITION_TYPE_CHOICE_CP)
         },
         choicesValues = {"ln", "cp"},
         getFunc       = function()

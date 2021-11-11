@@ -230,12 +230,12 @@ function WorldEventsTracker.GUIItem:obtainSinceValue(dragonStatus)
 
     if timerInfo == nil then
         return string.format(
-            GetString(SI_DRAGON_TRACKER_GUI_SIMPLE),
+            GetString(SI_WORLD_EVENTS_TRACKER_GUI_SIMPLE),
             statusText
         )
     else
         return string.format(
-            GetString(SI_DRAGON_TRACKER_GUI_STATUS),
+            GetString(SI_WORLD_EVENTS_TRACKER_GUI_STATUS),
             statusText,
             timerInfo.value,
             timerInfo.unit
@@ -256,7 +256,7 @@ function WorldEventsTracker.GUIItem:obtainRepopInValue(dragonStatus)
         return self:obtainSinceValue(dragonStatus)
     else
         return string.format(
-            GetString(SI_DRAGON_TRACKER_GUI_REPOP),
+            GetString(SI_WORLD_EVENTS_TRACKER_GUI_REPOP),
             timerInfo.value,
             timerInfo.unit
         )
@@ -274,18 +274,18 @@ function WorldEventsTracker.GUIItem:obtainStatusText(dragonStatus)
     local statusList = LibWorldEvents.Dragons.DragonStatus.list
 
     if dragonStatus == statusList.killed then
-        return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_KILLED)
+        return GetString(SI_LIB_WORLD_EVENTS_STATUS_KILLED)
     elseif dragonStatus == statusList.waiting then
-        return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_WAITING)
+        return GetString(SI_LIB_WORLD_EVENTS_STATUS_WAITING)
     elseif dragonStatus == statusList.fight then
-        return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_FIGHT)
+        return GetString(SI_LIB_WORLD_EVENTS_STATUS_FIGHT)
     elseif dragonStatus == statusList.weak then
-        return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_WEAK)
+        return GetString(SI_LIB_WORLD_EVENTS_STATUS_WEAK)
     elseif dragonStatus == statusList.flying then
-        return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_FLYING)
+        return GetString(SI_LIB_WORLD_EVENTS_STATUS_FLYING)
     end
 
-    return GetString(SI_LIB_DRAGON_WORLD_EVENT_STATUS_UNKNOWN)
+    return GetString(SI_LIB_WORLD_EVENTS_STATUS_UNKNOWN)
 end
 
 --[[
@@ -339,16 +339,16 @@ end
 -- @return table
 --]]
 function WorldEventsTracker.GUIItem:formatTime(timeValue)
-    local timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_SECOND)
+    local timeUnit = GetString(SI_WORLD_EVENTS_TRACKER_TIMER_SECOND)
 
     if timeValue > 60 then
         timeValue = timeValue / 60
-        timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_MINUTE)
+        timeUnit = GetString(SI_WORLD_EVENTS_TRACKER_TIMER_MINUTE)
     end
 
     if timeValue > 60 then
         timeValue = timeValue / 60
-        timeUnit = GetString(SI_DRAGON_TRACKER_TIMER_HOUR)
+        timeUnit = GetString(SI_WORLD_EVENTS_TRACKER_TIMER_HOUR)
     end
 
     return {
