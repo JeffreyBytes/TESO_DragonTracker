@@ -1,31 +1,31 @@
-DragonTracker = {}
+WorldEventsTracker = {}
 
-DragonTracker.name           = "DragonTracker"
-DragonTracker.savedVariables = nil
-DragonTracker.ready          = false
-DragonTracker.LAM            = LibAddonMenu2
+WorldEventsTracker.name           = "WorldEventsTracker"
+WorldEventsTracker.savedVariables = nil
+WorldEventsTracker.ready          = false
+WorldEventsTracker.LAM            = LibAddonMenu2
 
 --[[
 -- Module initialiser
 -- Intiialise savedVariables, settings panel and GUI
 --]]
-function DragonTracker:Initialise()
-    DragonTracker.savedVariables = ZO_SavedVars:NewAccountWide("DragonTrackerSavedVariables", 1, nil, {})
+function WorldEventsTracker:Initialise()
+    WorldEventsTracker.savedVariables = ZO_SavedVars:NewAccountWide("WorldEventsTrackerSavedVariables", 1, nil, {})
     self:initSavedVars()
 
-    DragonTracker.Settings:init()
-    DragonTracker.GUI:init()
-    DragonTracker.ready = true
+    WorldEventsTracker.Settings:init()
+    WorldEventsTracker.GUI:init()
+    WorldEventsTracker.ready = true
 end
 
 --[[
 -- Initialise all savedVariable's default values
 --]]
-function DragonTracker:initSavedVars()
-    if DragonTracker.savedVariables.gui == nil then
-        DragonTracker.savedVariables.gui = {}
+function WorldEventsTracker:initSavedVars()
+    if WorldEventsTracker.savedVariables.gui == nil then
+        WorldEventsTracker.savedVariables.gui = {}
     end
-    local gui = DragonTracker.savedVariables.gui
+    local gui = WorldEventsTracker.savedVariables.gui
 
     if gui.labelFormat == nil then
         gui.labelFormat = "cp"
@@ -57,16 +57,16 @@ function DragonTracker:initSavedVars()
     end
 
     -- Convert old gui info
-    if DragonTracker.savedVariables.labelFormat ~= nil then
-        gui.labelFormat = DragonTracker.savedVariables.labelFormat
-        DragonTracker.savedVariables.labelFormat = nil
+    if WorldEventsTracker.savedVariables.labelFormat ~= nil then
+        gui.labelFormat = WorldEventsTracker.savedVariables.labelFormat
+        WorldEventsTracker.savedVariables.labelFormat = nil
     end
-    if DragonTracker.savedVariables.left ~= nil then
-        gui.position.left = DragonTracker.savedVariables.left
-        DragonTracker.savedVariables.left = nil
+    if WorldEventsTracker.savedVariables.left ~= nil then
+        gui.position.left = WorldEventsTracker.savedVariables.left
+        WorldEventsTracker.savedVariables.left = nil
     end
-    if DragonTracker.savedVariables.top ~= nil then
-        gui.position.top = DragonTracker.savedVariables.top
-        DragonTracker.savedVariables.top = nil
+    if WorldEventsTracker.savedVariables.top ~= nil then
+        gui.position.top = WorldEventsTracker.savedVariables.top
+        WorldEventsTracker.savedVariables.top = nil
     end
 end
