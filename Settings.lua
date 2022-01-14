@@ -24,7 +24,19 @@ function WorldEventsTracker.Settings:build()
     local optionsData = {
         self:buildGUILocked(),
         self:buildDisplayedWithWorldMap(),
-        self:buildPositionType()
+        self:buildPositionType(),
+        {
+            type = "header",
+            name = GetString(SI_WORLD_EVENTS_TRACKER_SETTINGS_TRACK_HEAD)
+        },
+        {
+            type = "description",
+            text = GetString(SI_WORLD_EVENTS_TRACKER_SETTINGS_TRACK_DESC)
+        },
+        self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.DOLMEN),
+        self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.GEYSER),
+        self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.DRAGON),
+        self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.HARROWSTORM)
     }
 
     WorldEventsTracker.LAM:RegisterOptionControls(self.panelName, optionsData)
@@ -91,5 +103,23 @@ function WorldEventsTracker.Settings:buildPositionType()
                 WorldEventsTracker.GUI:labelUseCardinalPoint()
             end
         end
+    }
+end
+
+--[[
+-- Build the "Track Dolmen" part of the panel
+--
+-- @return table
+--]]
+function WorldEventsTracker.Settings:buildTrack(trackedType)
+    return {
+        type = "checkbox",
+        name = GetString(_G["SI_WORLD_EVENTS_TRACKER_SETTINGS_TRACK_"..string.upper(trackedType)]),
+        getFunc = function()
+            return WorldEventsTracker.GUI:isTracked(trackedType)
+        end,
+        setFunc = function(value)
+            WorldEventsTracker.GUI:defineTracked(trackedType, value)
+        end,
     }
 end

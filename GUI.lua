@@ -126,12 +126,53 @@ function WorldEventsTracker.GUI:defineDisplayWithWMap(value)
 end
 
 --[[
+-- Return the status if the GUI should be display in the world map interface
+--
+-- @return bool
+--]]
+function WorldEventsTracker.GUI:isTracked(trackType)
+    return self.savedVars.track[trackType]
+end
+
+--[[
+-- Define the status which define if the GUI is displayed in the world map
+-- interface or not, and update the fragment to apply the new status.
+--
+-- @param bool value
+--]]
+function WorldEventsTracker.GUI:defineTracked(trackType, value)
+    self.savedVars.track[trackType] = value
+
+    self:display(LibWorldEvents.Zone.onWorldEventMap)
+end
+
+--[[
+-- Check if the gui should be displayed for the current world event on the map
+--
+-- @return boolean
+--]]
+function WorldEventsTracker.GUI:checkDisplay()
+    if LibWorldEvents.Zone.onWorldEventMap == false then
+        return false
+    end
+
+    local currentWE = LibWorldEvents.Zone.worldEventMapType
+    if self.savedVars.track[currentWE] == false then
+        return false
+    end
+
+    return self.savedVars.toDisplay
+end
+
+--[[
 -- Hide or show all GUIItems.
 --
 -- @param boolean status true to show it, false to hide it
 --]]
 function WorldEventsTracker.GUI:display(status)
     if status == true and self.savedVars.toDisplay == false then
+        status = false
+    elseif status == true and self:checkDisplay() == false then
         status = false
     end
 

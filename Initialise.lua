@@ -56,6 +56,23 @@ function WorldEventsTracker:initSavedVars()
         gui.toDisplay = true
     end
 
+    if gui.track == nil then
+        gui.track = {}
+    end
+
+    if gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.DOLMEN] == nil then
+        gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.DOLMEN] = true
+    end
+    if gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.GEYSER] == nil then
+        gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.GEYSER] = true
+    end
+    if gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.DRAGON] == nil then
+        gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.DRAGON] = true
+    end
+    if gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.HARROWSTORM] == nil then
+        gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.HARROWSTORM] = true
+    end
+
     -- Convert old gui info
     if WorldEventsTracker.savedVariables.labelFormat ~= nil then
         gui.labelFormat = WorldEventsTracker.savedVariables.labelFormat
