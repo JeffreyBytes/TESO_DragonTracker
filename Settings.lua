@@ -36,7 +36,8 @@ function WorldEventsTracker.Settings:build()
         self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.DOLMEN),
         self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.GEYSER),
         self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.DRAGON),
-        self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.HARROWSTORM)
+        self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.HARROWSTORM),
+        self:buildTrack(LibWorldEvents.Zone.WORLD_EVENT_TYPE.VOLCANIC_VENT)
     }
 
     WorldEventsTracker.LAM:RegisterOptionControls(self.panelName, optionsData)
