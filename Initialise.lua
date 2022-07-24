@@ -72,6 +72,9 @@ function WorldEventsTracker:initSavedVars()
     if gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.HARROWSTORM] == nil then
         gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.HARROWSTORM] = true
     end
+    if gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.VOLCANIC_VENT] == nil then
+        gui.track[LibWorldEvents.Zone.WORLD_EVENT_TYPE.VOLCANIC_VENT] = true
+    end
 
     -- Convert old gui info
     if WorldEventsTracker.savedVariables.labelFormat ~= nil then
