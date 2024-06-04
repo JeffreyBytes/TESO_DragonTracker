@@ -27,7 +27,7 @@ ZO_CreateStringId("SI_WORLD_EVENTS_TRACKER_TIMER_HOUR",   "h")
 
 
 -- Bindings
-ZO_CreateStringId("SI_BINDING_NAME_DRAGON_TRACKER_TOGGLE", "Afficher/Masquer")
+ZO_CreateStringId("SI_BINDING_NAME_WORLD_EVENTS_TRACKER_TOGGLE", "Afficher/Masquer")
 
 
 -- Settings
