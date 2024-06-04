@@ -26,4 +26,4 @@ ZO_CreateStringId("SI_WORLD_EVENTS_TRACKER_TIMER_HOUR",   "Std")
 
 
 -- Bindings
-ZO_CreateStringId("SI_BINDING_NAME_DRAGON_TRACKER_TOGGLE", "Ein-/Ausblenden")
+ZO_CreateStringId("SI_BINDING_NAME_WORLD_EVENTS_TRACKER_TOGGLE", "Ein-/Ausblenden")
